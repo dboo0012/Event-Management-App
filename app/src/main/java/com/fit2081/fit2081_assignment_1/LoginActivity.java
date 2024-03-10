@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class loginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +27,29 @@ public class loginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill both username and password fields", Toast.LENGTH_SHORT).show();
         } else {
             // verify that password and username matches that of persistent storage
-            // verifyCredentials(username, password);
-            boolean isVerified = false;
+            boolean isVerified = verifyCredentials(username, password);
 
             if (isVerified) {
                 // Username and password verified
                 String out = "Successfully logged in!";
                 Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
-                // Go to sign in page
-//                Intent dashboardIntent = new Intent(this, dashboard.class); // Points to the dahsboard activity
-//                startActivity(dashboardIntent);
+                // Go to dashboard
+                Intent dashboardIntent = new Intent(this, DashboardActivity.class); // Points to the dahsboard activity
+                startActivity(dashboardIntent);
             } else {
                 Toast.makeText(this, "Oops! Username or Password incorrect.", Toast.LENGTH_SHORT).show();
+                // Reset the username and password fields
+                findUsername.setText("");
+                findPassword.setText("");
             }
         }
+    }
+
+    public boolean verifyCredentials(String username, String password){
+        boolean isVerifiedUser = false;
+
+        // Verify the user with the database
+
+        return isVerifiedUser;
     }
 }

@@ -4,34 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".loginActivity">
 
     <TextView
-        android:id="@+id/tv_newAccount"
-        android:layout_width="211dp"
-        android:layout_height="131dp"
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="84dp"
-        android:text="New account"
+        android:text="Login"
         android:textSize="48sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="307dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="440dp"
-        android:onClick="signUpButtonOnClick"
-        android:text="Sign up"
-        android:textColorHighlight="#2196F3"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
-        android:id="@+id/signUpPassword"
+        android:id="@+id/loginPassword"
         android:layout_width="307dp"
         android:layout_height="48dp"
         android:layout_marginStart="60dp"
@@ -40,10 +27,10 @@
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/loginUsername" />
 
     <EditText
-        android:id="@+id/signUpUsername"
+        android:id="@+id/loginUsername"
         android:layout_width="307dp"
         android:layout_height="48dp"
         android:layout_marginStart="60dp"
@@ -53,31 +40,18 @@
         android:inputType="text"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_newAccount" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="60dp"
-        android:text="Already registered?"
-        android:textColor="#9F9494"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_login" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="12dp"
-        android:onClick="launchLogin"
+        android:layout_marginTop="36dp"
         android:text="Login"
         android:textColorHighlight="#2196F3"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

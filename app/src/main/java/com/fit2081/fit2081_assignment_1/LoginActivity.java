@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Oops! Username or Password incorrect.", Toast.LENGTH_SHORT).show();
                 // Reset the username and password fields
-                findUsername.setText("");
+//                findUsername.setText("");
                 findPassword.setText("");
             }
         }

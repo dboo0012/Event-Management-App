@@ -27,22 +27,19 @@ public class LoginActivity extends AppCompatActivity {
         getDataFromSharedPreferences();
 
         // Debugging
-        Log.d(LOG_KEY, "launched main activity");
+        Log.d(LOG_KEY, "launched Login activity");
     }
 
     public void getDataFromSharedPreferences(){
-        // initialise shared preference class variable to access Android's persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
+        // Get the username in the shared preferences
+        String storedUsername = getStoredUsername();
 
-        // save key-value pairs to the shared preference file
-        String studentNameRestored = sharedPreferences.getString(DatabaseStore.KEY_USERNAME, "");
-
-        // update the UI using retrieved values
-        findUsername.setText(studentNameRestored);
+        // Prefill the username field
+        findUsername.setText(storedUsername);
     }
 
     public void loginButtonOnClick(View view) {
-        // Parsing the username and password
+        // Parsing the username and password of the EditText fields
         String username = findUsername.getText().toString();
         String password = findPassword.getText().toString();
 
@@ -68,11 +65,24 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public boolean verifyCredentials(String username, String password){
-        boolean isVerifiedUser = false;
+    private String getStoredUsername(){
+        // Initialise shared preference class variable to access persistent storage
+        SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
 
-        // Verify the user with the database
+        // Get the username key from sharedPreferences
+        return sharedPreferences.getString(DatabaseStore.KEY_USERNAME, "");
+    }
 
-        return isVerifiedUser;
+    private String getStoredPassword(){
+        // Initialise shared preference class variable to access persistent storage
+        SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
+
+        // Get the username key from sharedPreferences
+        return sharedPreferences.getString(DatabaseStore.KEY_PASSWORD, "");
+    }
+
+    private boolean verifyCredentials(String username, String password){
+        // Verify the user with the sharedPreferences
+        return username.equals(getStoredUsername()) && password.equals(getStoredPassword());
     }
 }

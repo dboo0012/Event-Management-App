@@ -19,14 +19,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d(LOG_KEY, "launched main activity");
-
         // Assign the username and password values
         findUsername = findViewById(R.id.signUpUsername);
         findPassword = findViewById(R.id.signUpPassword);
+
+        // Debugging
+        Log.d(LOG_KEY, "launched main activity");
     }
 
     public void signUpButtonOnClick(View view){
+        // Parsing the username and password of the EditText fields (signUp activity)
         String username = findUsername.getText().toString();
         String password = findPassword.getText().toString();
 
@@ -34,28 +36,30 @@ public class MainActivity extends AppCompatActivity {
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill both username and password fields", Toast.LENGTH_SHORT).show();
         } else {
+            // Save new user sign up credentials to shared preferences
             saveDataToSharedPreferences(username, password);
             String out = String.format("Successfully registered %s!", username);
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
-            // Go to login page
+            // Go to login activity
             launchLogin(view);
         }
     }
 
     public void launchLogin(View view){
         Intent loginIntent = new Intent(this, LoginActivity.class); // Points to the login activity
-        startActivity(loginIntent);
+        startActivity(loginIntent); // Starts the new intent
     }
 
     public void saveDataToSharedPreferences(String username, String password){
-        // Shared prefereces (test ONLY)
+        // Initialise shared preference class variable to access persistent storage
         SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        // Create a static key
+        SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
+
+        // Update the values of the shared preference
         editor.putString(DatabaseStore.KEY_USERNAME, username);
         editor.putString(DatabaseStore.KEY_PASSWORD, password);
         editor.apply();
-        // Do set text to save previous
+
 //        findUsername.setText(username);
     }
 }

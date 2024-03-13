@@ -24,7 +24,7 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="585dp"
         android:background="@drawable/custom_button"
-        android:onClick=""
+        android:onClick="createEventCategoryButtonOnClick"
         android:text="Create category"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -32,13 +32,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/switch_isCategoryActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="61dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="184dp"
-        android:text="Switch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintStart_toEndOf="@+id/tv_isActive"

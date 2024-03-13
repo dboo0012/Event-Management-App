@@ -17,20 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginButton"
-        android:layout_width="307dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="548dp"
-        android:background="@drawable/custom_button"
-        android:onClick="createEventCategoryButtonOnClick"
-        android:text="Create category"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/et_categoryId"
         android:layout_width="255dp"
@@ -54,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
 
     <TextView
-        android:id="@+id/tv_eventIdValue"
+        android:id="@+id/tv_categoryId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
@@ -73,7 +59,7 @@
         android:text="Name:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_categoryId" />
 
     <EditText
         android:id="@+id/et_eventCategoryId"
@@ -127,5 +113,19 @@
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toEndOf="@+id/tv_isActive"
         app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/createCategoryButton"
+        android:layout_width="307dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="548dp"
+        android:background="@drawable/custom_button"
+        android:onClick="createEventCategoryButtonOnClick"
+        android:text="Create category"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

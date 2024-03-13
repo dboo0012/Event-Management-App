@@ -14,11 +14,11 @@ import android.widget.Toast;
 
 public class EventCategoryActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
-    TextView testView;
-    EditText findCategoryId;
+    TextView findCategoryId;
+//    EditText findCategoryId;
     EditText findCategoryName;
     EditText findEventCount;
-    Switch findIsCategoryActive;
+    Switch findCategoryIsActive;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -29,11 +29,11 @@ public class EventCategoryActivity extends AppCompatActivity {
         // Generate category ID (with method)
 
         // Assign the attributes
-        findCategoryId = findViewById(R.id.et_categoryId);
+//        findCategoryId = findViewById(R.id.et_categoryId);
         findCategoryName = findViewById(R.id.et_eventCategoryId);
         findEventCount = findViewById(R.id.et_eventName);
-        findIsCategoryActive = findViewById(R.id.switch_isCategoryActive);
-        testView = findViewById(R.id.tv_eventIdValue);
+        findCategoryIsActive = findViewById(R.id.switch_isCategoryActive);
+        findCategoryId = findViewById(R.id.tv_categoryId);
 //        findIsCategoryActive.setChecked(false);
 
         // set category id field to default every time
@@ -46,7 +46,7 @@ public class EventCategoryActivity extends AppCompatActivity {
     public void createEventCategoryButtonOnClick(View view){
         // Parse the values
         String categoryName = findCategoryName.getText().toString();
-        boolean isCategoryActive = findIsCategoryActive.isChecked();
+        boolean isCategoryActive = findCategoryIsActive.isChecked();
         int eventCount;
 
         // TO BE VERIFIED if it can be used
@@ -63,13 +63,12 @@ public class EventCategoryActivity extends AppCompatActivity {
         } else {
             String categoryId = generateCategoryID();
 
-            saveAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive);
+            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive);
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
 
             findCategoryId.setText(categoryId);
-            testView.setText(categoryId);
         }
 
     }
@@ -80,7 +79,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         return id;
     }
 
-    public void saveAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
+    public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
         // Initialise shared preference class variable to access persistent storage
         SharedPreferences sharedPreferences = getSharedPreferences("CategorySharedPref.java", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor

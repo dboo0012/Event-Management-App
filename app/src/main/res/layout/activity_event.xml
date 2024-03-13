@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
 
     <TextView
-        android:id="@+id/tv_eventIdValue"
+        android:id="@+id/tv_categoryId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
@@ -48,7 +48,7 @@
         android:text="Category ID:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_categoryId" />
 
     <EditText
         android:id="@+id/et_eventCategoryId"
@@ -118,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
 
     <Switch
-        android:id="@+id/switch_isCategoryActive"
+        android:id="@+id/switch_isEventActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -127,18 +127,16 @@
         app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginButton"
+        android:id="@+id/saveEventButton"
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="628dp"
+        android:layout_marginTop="504dp"
         android:background="@drawable/custom_button"
-        android:onClick=""
         android:text="Save Event"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

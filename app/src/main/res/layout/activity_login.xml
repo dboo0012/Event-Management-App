@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_loginUsername" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginButton"
+        android:id="@+id/createCategoryButton"
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="48dp"

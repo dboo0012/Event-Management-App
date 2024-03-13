@@ -31,15 +31,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/switch_isCategoryActive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="31dp"
-        app:layout_constraintStart_toEndOf="@+id/tv_isActive"
-        app:layout_constraintTop_toBottomOf="@+id/et_eventCount" />
-
     <EditText
         android:id="@+id/et_categoryId"
         android:layout_width="255dp"
@@ -51,30 +42,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
 
-    <EditText
-        android:id="@+id/et_categoryName"
-        android:layout_width="241dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="48dp"
-        android:ems="10"
-        android:hint="Enter Category name"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_categoryName" />
-
-    <EditText
-        android:id="@+id/et_eventCount"
-        android:layout_width="240dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="48dp"
-        android:ems="10"
-        android:hint="Enter Event Count"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventCount" />
-
     <TextView
-        android:id="@+id/tv_categoryId"
+        android:id="@+id/tv_eventId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
@@ -85,18 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
 
     <TextView
-        android:id="@+id/tv_categoryName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="32dp"
-        android:text="Name:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_categoryIdValue" />
-
-    <TextView
-        android:id="@+id/tv_categoryIdValue"
+        android:id="@+id/tv_eventIdValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
@@ -104,10 +62,32 @@
         android:text="(auto generated upon creation)"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_categoryId" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventId" />
 
     <TextView
-        android:id="@+id/tv_eventCount"
+        android:id="@+id/tv_eventCategoryId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="32dp"
+        android:text="Name:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
+
+    <EditText
+        android:id="@+id/et_eventCategoryId"
+        android:layout_width="241dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="48dp"
+        android:ems="10"
+        android:hint="Enter Category name"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategoryId" />
+
+    <TextView
+        android:id="@+id/tv_eventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
@@ -115,7 +95,18 @@
         android:text="Event Count:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_categoryName" />
+        app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
+
+    <EditText
+        android:id="@+id/et_eventName"
+        android:layout_width="240dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="48dp"
+        android:ems="10"
+        android:hint="Enter Event Count"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventName" />
 
     <TextView
         android:id="@+id/tv_isActive"
@@ -126,6 +117,15 @@
         android:text="Is Active?"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_eventCount" />
+        app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
+
+    <Switch
+        android:id="@+id/switch_isCategoryActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_isActive"
+        app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

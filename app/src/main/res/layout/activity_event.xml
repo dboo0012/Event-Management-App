@@ -17,6 +17,115 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_eventId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="32dp"
+        android:text="Event ID:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
+
+    <TextView
+        android:id="@+id/tv_eventIdValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="7dp"
+        android:text="(auto generated upon creation)"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventId" />
+
+    <TextView
+        android:id="@+id/tv_eventCategoryId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="32dp"
+        android:text="Category ID:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
+
+    <EditText
+        android:id="@+id/et_eventCategoryId"
+        android:layout_width="241dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="48dp"
+        android:ems="10"
+        android:hint="Enter Category ID"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategoryId" />
+
+    <TextView
+        android:id="@+id/tv_eventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="32dp"
+        android:text="Name:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
+
+    <EditText
+        android:id="@+id/et_eventName"
+        android:layout_width="240dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="48dp"
+        android:ems="10"
+        android:hint="Enter Event Name"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventName" />
+
+
+    <TextView
+        android:id="@+id/tv_ticketsAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="32dp"
+        android:text="Tickets available:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
+
+    <EditText
+        android:id="@+id/et_ticketsAvailable"
+        android:layout_width="240dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="48dp"
+        android:ems="10"
+        android:hint="Enter Available Tickets"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ticketsAvailable" />
+
+    <TextView
+        android:id="@+id/tv_isActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="32dp"
+        android:text="Is Active?"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
+
+    <Switch
+        android:id="@+id/switch_isCategoryActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_isActive"
+        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
         android:layout_width="307dp"

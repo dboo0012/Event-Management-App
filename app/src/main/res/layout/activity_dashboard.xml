@@ -6,12 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".DashboardActivity">
 
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="100dp"
+        android:text="Dashboard"
+        android:textSize="48sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/eventCategoryButton"
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="272dp"
         android:background="@drawable/custom_button"
         android:onClick="eventCategoryButtonOnClick"
         android:text="Create event category"
@@ -25,13 +36,13 @@
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="364dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/custom_button"
         android:onClick="addEventButtonOnClick"
         android:text="Add event"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/eventCategoryButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

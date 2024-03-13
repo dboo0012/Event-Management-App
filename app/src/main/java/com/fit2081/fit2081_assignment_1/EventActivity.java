@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EventActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -32,11 +33,32 @@ public class EventActivity extends AppCompatActivity {
 
     public void saveEventButtonOnClick(View view){
         String categoryId = findCategoryId.getText().toString();
+        String eventName = findEventName.getText().toString();
+        int ticketsAvailable;
+        boolean isEventActive = findEventIsActive.isChecked();
+
+        try{
+            ticketsAvailable = Integer.parseInt(findTicketsAvailable.getText().toString());
+        } catch (Exception e){
+            ticketsAvailable = 0;
+        }
+
+        // form validation
+        if (categoryId.isEmpty()){
+            Toast.makeText(this, "Category ID required", Toast.LENGTH_SHORT).show();
+        } else if (eventName.isEmpty()) {
+            Toast.makeText(this, "Event name is required", Toast.LENGTH_SHORT).show();
+        } else {
+            String generatedEventId = generateEventId();
+
+        }
 
     }
 
-    private void generateEventId(){
+    private String generateEventId(){
+        String eventId = "EME-10776";
 
+        return eventId;
     }
 
     private void saveEventAttributeToSharedPreferences(){

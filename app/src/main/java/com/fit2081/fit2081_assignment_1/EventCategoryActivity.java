@@ -88,7 +88,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         editor.putString(CategorySharedPref.KEY_CATEGORY_ID, categoryId);
         editor.putString(CategorySharedPref.KEY_CATEGORY_NAME, categoryName);
         editor.putInt(CategorySharedPref.KEY_EVENT_COUNT, eventCount);
-        editor.putBoolean(CategorySharedPref.KEY_IS_ACTIVE, isActive);
+        editor.putBoolean(CategorySharedPref.KEY_IS_CATEGORY_ACTIVE, isActive);
 
         // Apply the changes
         editor.apply();

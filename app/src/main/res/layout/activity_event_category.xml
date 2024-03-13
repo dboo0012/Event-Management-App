@@ -22,7 +22,7 @@
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="585dp"
+        android:layout_marginTop="548dp"
         android:background="@drawable/custom_button"
         android:onClick="createEventCategoryButtonOnClick"
         android:text="Create category"
@@ -35,60 +35,50 @@
         android:id="@+id/switch_isCategoryActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="61dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="184dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="31dp"
         app:layout_constraintStart_toEndOf="@+id/tv_isActive"
         app:layout_constraintTop_toBottomOf="@+id/et_eventCount" />
 
-    <TextView
-        android:id="@+id/tv_categoryIdValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="150dp"
-        android:text="(auto generated upon creation)"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tv_categoryId"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
+    <EditText
+        android:id="@+id/et_categoryId"
+        android:layout_width="255dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="48dp"
+        android:ems="10"
+        android:hint="(auto generated upon creation)"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_categoryId" />
 
     <EditText
         android:id="@+id/et_categoryName"
         android:layout_width="241dp"
         android:layout_height="47dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="101dp"
+        android:layout_marginStart="48dp"
         android:ems="10"
-        android:hint="Event Category name"
+        android:hint="Enter Category name"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.197"
-        app:layout_constraintStart_toEndOf="@+id/tv_categoryName"
-        app:layout_constraintTop_toBottomOf="@+id/tv_categoryIdValue" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_categoryName" />
 
     <EditText
         android:id="@+id/et_eventCount"
-        android:layout_width="64dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="240dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="48dp"
         android:ems="10"
+        android:hint="Enter Event Count"
         android:inputType="number"
-        app:layout_constraintStart_toEndOf="@+id/tv_eventCount"
-        app:layout_constraintTop_toBottomOf="@+id/et_categoryName" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventCount" />
 
     <TextView
         android:id="@+id/tv_categoryId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="68dp"
         android:text="Category ID:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,33 +88,33 @@
         android:id="@+id/tv_categoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="17dp"
         android:text="Name:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_categoryId" />
+        app:layout_constraintTop_toBottomOf="@+id/et_categoryId" />
 
     <TextView
         android:id="@+id/tv_eventCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="32dp"
         android:text="Event Count:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_categoryName" />
+        app:layout_constraintTop_toBottomOf="@+id/et_categoryName" />
 
     <TextView
         android:id="@+id/tv_isActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="64dp"
-        android:text="Is Active:"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="32dp"
+        android:text="Is Active?"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventCount" />
+        app:layout_constraintTop_toBottomOf="@+id/et_eventCount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

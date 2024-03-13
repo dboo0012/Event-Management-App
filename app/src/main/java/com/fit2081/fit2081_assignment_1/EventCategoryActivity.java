@@ -26,7 +26,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         // Generate category ID (with method)
 
         // Assign the attributes
-//        findCategoryId = findViewById(R.id.tv_categoryId);
+        findCategoryId = findViewById(R.id.et_categoryId);
         findCategoryName = findViewById(R.id.et_categoryName);
         findEventCount = findViewById(R.id.et_eventCount);
         findIsCategoryActive = findViewById(R.id.switch_isCategoryActive);
@@ -45,7 +45,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         boolean isCategoryActive = findIsCategoryActive.isChecked();
         int eventCount;
 
-        // TO BE VERIFIED
+        // TO BE VERIFIED if it can be used
         try{
             eventCount = Integer.parseInt(findEventCount.getText().toString());
         } catch (Exception e){
@@ -63,6 +63,8 @@ public class EventCategoryActivity extends AppCompatActivity {
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+
+            findCategoryId.setText(categoryId);
         }
 
     }

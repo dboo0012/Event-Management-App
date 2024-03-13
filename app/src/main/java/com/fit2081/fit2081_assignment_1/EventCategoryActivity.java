@@ -11,40 +11,48 @@ import android.widget.Switch;
 
 public class EventCategoryActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
-    EditText findEventName;
+    EditText findCategoryName;
     EditText findEventCount;
-    Switch isEventActive;
+    Switch findIsCategoryActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_category);
 
+        // Generate category ID (with method)
+
         // Assign the attributes
-        findEventName = findViewById(R.id.et_categoryName);
+        findCategoryName = findViewById(R.id.et_categoryName);
         findEventCount = findViewById(R.id.et_eventCount);
-        isEventActive = findViewById(R.id.switch_isCategoryActive);
+        findIsCategoryActive = findViewById(R.id.switch_isCategoryActive);
+//        findIsCategoryActive.setChecked(false);
 
         // Debugging
-        Log.d(key, "launched main activity");
+        Log.d(key, "launched event category activity");
     }
 
     public void createEventCategoryButtonOnClick(View view){
+        // Parse the values
+        String categoryName = findCategoryName.getText().toString();
+        int eventCount = Integer.parseInt(findEventCount.getText().toString());
+        boolean isCategoryActive = findIsCategoryActive.isChecked();
+
         // form validation
         // check that event category name is filled
     }
 
-    public void saveAttributesToSharedPreferences(String username, String password){
+    public void saveAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
         // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("CategorySharedPref.java", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
-        // Update the values of the shared preference
-        editor.putString(DatabaseStore.KEY_USERNAME, username);
-        editor.putString(DatabaseStore.KEY_PASSWORD, password);
+        // Add all attributes to SharedPreferences
+        editor.putString(CategorySharedPref.categoryId, categoryId);
+        editor.putString(CategorySharedPref.categoryName, categoryName);
+        editor.putInt(CategorySharedPref.eventCount, eventCount);
+        editor.putBoolean(CategorySharedPref.isActive, isActive);
+
         editor.apply();
-
-//        findUsername.setText(username);
     }
-
 }

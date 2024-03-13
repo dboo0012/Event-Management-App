@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-    public static String LOG_KEY = "Launched";
+    String key = MainActivity.LOG_KEY;
     EditText findUsername;
     EditText findPassword;
     @Override
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         fetchDataFromSharedPreferences();
 
         // Debugging
-        Log.d(LOG_KEY, "launched Login activity");
+        Log.d(key, "launched Login activity");
     }
 
     private String getStoredUsername(){
@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
 
         // Get the username key from sharedPreferences
-        return sharedPreferences.getString(DatabaseStore.KEY_USERNAME, "");
+        return sharedPreferences.getString(UserSharedPref.KEY_USERNAME, "");
     }
 
     private String getStoredPassword(){
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
 
         // Get the username key from sharedPreferences
-        return sharedPreferences.getString(DatabaseStore.KEY_PASSWORD, "");
+        return sharedPreferences.getString(UserSharedPref.KEY_PASSWORD, "");
     }
 
     public void fetchDataFromSharedPreferences(){

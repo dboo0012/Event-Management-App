@@ -52,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveDataToSharedPreferences(String username, String password){
         // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSharedPref.java", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
         // Update the values of the shared preference
-        editor.putString(DatabaseStore.KEY_USERNAME, username);
-        editor.putString(DatabaseStore.KEY_PASSWORD, password);
+        editor.putString(UserSharedPref.KEY_USERNAME, username);
+        editor.putString(UserSharedPref.KEY_PASSWORD, password);
         editor.apply();
 
 //        findUsername.setText(username);

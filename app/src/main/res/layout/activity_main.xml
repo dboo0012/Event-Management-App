@@ -11,8 +11,8 @@
         android:layout_width="211dp"
         android:layout_height="131dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="152dp"
-        android:text="New account"
+        android:layout_marginTop="60dp"
+        android:text="Register"
         android:textSize="48sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="485dp"
+        android:layout_marginTop="452dp"
         android:background="@drawable/custom_button"
         android:onClick="signUpButtonOnClick"
         android:text="Sign up"
@@ -31,37 +31,80 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/signUpPassword"
-        android:layout_width="307dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="8dp"
+        android:text="Username"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_newAccount" />
 
     <EditText
         android:id="@+id/signUpUsername"
         android:layout_width="307dp"
         android:layout_height="48dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="48dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="text"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_newAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+
+    <TextView
+        android:id="@+id/tv_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="9dp"
+        android:text="Confirm Password"
+        app:layout_constraintBottom_toTopOf="@+id/signUpConfirmPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
+
+    <EditText
+        android:id="@+id/signUpPassword"
+        android:layout_width="307dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="1dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirmPassword" />
+
+    <TextView
+        android:id="@+id/tv_confirmPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="8dp"
+        android:text="Password"
+        app:layout_constraintBottom_toTopOf="@+id/signUpPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
+
+    <EditText
+        android:id="@+id/signUpConfirmPassword"
+        android:layout_width="307dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="60dp"
         android:text="Already registered?"
         android:textColor="#9F9494"
         android:textSize="16sp"

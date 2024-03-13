@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class EventCategoryActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -39,7 +40,15 @@ public class EventCategoryActivity extends AppCompatActivity {
         boolean isCategoryActive = findIsCategoryActive.isChecked();
 
         // form validation
-        // check that event category name is filled
+        if (categoryName.isEmpty()){ // check that event category name is filled
+            Toast.makeText(this, "Event category name required", Toast.LENGTH_SHORT).show();
+        } else {
+//            saveAttributesToSharedPreferences(<?>,categoryName, eventCount, isCategoryActive);
+
+            String out = "Category saved successfully: CME-1084"; // Show event category ID
+            Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void saveAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){

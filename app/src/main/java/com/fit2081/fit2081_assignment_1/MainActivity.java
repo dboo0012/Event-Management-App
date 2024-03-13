@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     public static String LOG_KEY = "Launched";
     EditText findUsername;
     EditText findPassword;
+    EditText findConfirmPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         // Assign the username and password values
         findUsername = findViewById(R.id.signUpUsername);
         findPassword = findViewById(R.id.signUpPassword);
+        findConfirmPassword = findViewById(R.id.signUpConfirmPassword);
 
         // Debugging
         Log.d(LOG_KEY, "launched main activity");
@@ -31,10 +33,13 @@ public class MainActivity extends AppCompatActivity {
         // Parsing the username and password of the EditText fields (signUp activity)
         String username = findUsername.getText().toString();
         String password = findPassword.getText().toString();
+        String confirmPassword = findConfirmPassword.getText().toString();
 
         // Check if both fields are filled
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill both username and password fields", Toast.LENGTH_SHORT).show();
+        } else if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT).show();
         } else {
             // Save new user sign up credentials to shared preferences
             saveDataToSharedPreferences(username, password);
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
             // Go to login activity
             launchLogin(view);
+            Log.d(LOG_KEY, "saved data to user shared preferences");
         }
     }
 

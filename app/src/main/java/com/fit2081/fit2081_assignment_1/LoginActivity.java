@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getStoredUsername(){
         // Initialise shared preference variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSharedPref.java", MODE_PRIVATE);
 
         // Get the username key from sharedPreferences
         return sharedPreferences.getString(UserSharedPref.KEY_USERNAME, "");
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getStoredPassword(){
         // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("DatabaseStore.java", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSharedPref.java", MODE_PRIVATE);
 
         // Get the username key from sharedPreferences
         return sharedPreferences.getString(UserSharedPref.KEY_PASSWORD, "");

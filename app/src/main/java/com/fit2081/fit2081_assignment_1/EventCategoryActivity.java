@@ -2,6 +2,7 @@ package com.fit2081.fit2081_assignment_1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,11 +14,13 @@ import android.widget.Toast;
 
 public class EventCategoryActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
-    TextView findCategoryId;
+    TextView testView;
+    EditText findCategoryId;
     EditText findCategoryName;
     EditText findEventCount;
     Switch findIsCategoryActive;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         findCategoryName = findViewById(R.id.et_categoryName);
         findEventCount = findViewById(R.id.et_eventCount);
         findIsCategoryActive = findViewById(R.id.switch_isCategoryActive);
+        testView = findViewById(R.id.tv_categoryIdValue);
 //        findIsCategoryActive.setChecked(false);
 
         // set category id field to default every time
@@ -65,6 +69,7 @@ public class EventCategoryActivity extends AppCompatActivity {
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
 
             findCategoryId.setText(categoryId);
+            testView.setText(categoryId);
         }
 
     }

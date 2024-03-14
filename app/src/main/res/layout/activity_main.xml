@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/android_background">
 
     <TextView
         android:id="@+id/tv_newAccount"
@@ -13,6 +14,7 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="60dp"
         android:text="Register"
+        android:textColor="#FFFFFF"
         android:textSize="48sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +40,7 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="8dp"
         android:text="Username"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_newAccount" />
 
@@ -50,6 +53,8 @@
         android:hint="Username"
         android:inputType="text"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#BDB8B8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_loginPassword" />
 
@@ -60,6 +65,7 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="9dp"
         android:text="Confirm Password"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/signUpConfirmPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
@@ -73,6 +79,8 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#BDB8B8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirmPassword" />
 
@@ -83,6 +91,7 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="8dp"
         android:text="Password"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/signUpPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
@@ -96,6 +105,8 @@
         android:ems="10"
         android:hint="Confirm Password"
         android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#BDB8B8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 
@@ -106,7 +117,7 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="60dp"
         android:text="Already registered?"
-        android:textColor="#9F9494"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpButton" />

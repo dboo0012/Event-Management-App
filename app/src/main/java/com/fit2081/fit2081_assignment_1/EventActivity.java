@@ -3,6 +3,7 @@ package com.fit2081.fit2081_assignment_1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -61,7 +62,13 @@ public class EventActivity extends AppCompatActivity {
         return eventId;
     }
 
-    private void saveEventAttributeToSharedPreferences(){
+    private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
+        // Get the destination to save the event attributes
+        SharedPreferences sharedPreferences = getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
+
+        editor.apply();
     }
 }

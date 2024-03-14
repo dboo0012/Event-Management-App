@@ -81,7 +81,7 @@ public class EventCategoryActivity extends AppCompatActivity {
 
     public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
         // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("CategorySharedPref.java", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(CategorySharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
         // Add all attributes to SharedPreferences

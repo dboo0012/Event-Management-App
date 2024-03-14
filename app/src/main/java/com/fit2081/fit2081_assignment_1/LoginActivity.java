@@ -24,31 +24,31 @@ public class LoginActivity extends AppCompatActivity {
         findPassword = findViewById(R.id.loginPassword);
 
         // Load shared preferences here to prefill username
-        fetchDataFromSharedPreferences();
+        findUsername.setText(fetchDataFromSharedPreferences(UserSharedPref.FILE_NAME, UserSharedPref.KEY_USERNAME));
 
         // Debugging
         Log.d(key, "launched Login activity");
     }
 
-    private String getStoredUsername(){
-        // Initialise shared preference variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSharedPref.java", MODE_PRIVATE);
+//    private String getStoredUsername(){
+//        // Initialise shared preference variable to access persistent storage
+//        SharedPreferences sharedPreferences = getSharedPreferences(UserSharedPref.FILE_NAME, MODE_PRIVATE);
+//
+//        // Get the username key from sharedPreferences
+//        return sharedPreferences.getString(UserSharedPref.KEY_USERNAME, "");
+//    }
+//
+//    private String getStoredPassword(){
+//        // Initialise shared preference class variable to access persistent storage
+//        SharedPreferences sharedPreferences = getSharedPreferences(UserSharedPref.FILE_NAME, MODE_PRIVATE);
+//
+//        // Get the username key from sharedPreferences
+//        return sharedPreferences.getString(UserSharedPref.KEY_PASSWORD, "");
+//    }
 
-        // Get the username key from sharedPreferences
-        return sharedPreferences.getString(UserSharedPref.KEY_USERNAME, "");
-    }
-
-    private String getStoredPassword(){
-        // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSharedPref.java", MODE_PRIVATE);
-
-        // Get the username key from sharedPreferences
-        return sharedPreferences.getString(UserSharedPref.KEY_PASSWORD, "");
-    }
-
-    public void fetchDataFromSharedPreferences(){
-        // Prefill the username field by getting shared preference username value
-        findUsername.setText(getStoredUsername());
+    private String fetchDataFromSharedPreferences(String destination, String key){
+        SharedPreferences sharedPreferences = getSharedPreferences(destination, MODE_PRIVATE);
+        return sharedPreferences.getString(key, "");
     }
 
     public void loginButtonOnClick(View view) {
@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean verifyCredentials(String username, String password){
         // Verify the user with the sharedPreferences
-        return username.equals(getStoredUsername()) && password.equals(getStoredPassword());
+        return username.equals(fetchDataFromSharedPreferences(UserSharedPref.FILE_NAME, UserSharedPref.KEY_USERNAME))
+                && password.equals(fetchDataFromSharedPreferences(UserSharedPref.FILE_NAME, UserSharedPref.KEY_PASSWORD));
     }
 }

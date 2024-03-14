@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    public static String LOG_KEY = "Launched";
+    public static final String LOG_KEY = "Launched";
     EditText findUsername;
     EditText findPassword;
     EditText findConfirmPassword;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveDataToSharedPreferences(String username, String password){
         // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSharedPref.java", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(UserSharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
         // Update the values of the shared preference

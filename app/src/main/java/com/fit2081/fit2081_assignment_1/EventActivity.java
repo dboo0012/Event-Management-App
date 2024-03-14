@@ -64,13 +64,10 @@ public class EventActivity extends AppCompatActivity {
             // show the generated event ID
             findEventId.setText(generatedEventId);
         }
-
     }
 
     private String generateEventId(){
-        String eventId = "EME-10776";
-
-        return eventId;
+        return String.format("E%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(5));
     }
 
     private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){

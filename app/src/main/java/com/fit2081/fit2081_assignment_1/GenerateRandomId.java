@@ -11,7 +11,7 @@ public class GenerateRandomId {
         for (int i=0; i < stringLength; i++){
             // Choose a random letter between A-Z
             int randomInt = random.nextInt(26);
-            char randomChar = (char) ('A'+randomInt);
+            char randomChar = (char) ('A' + randomInt);
             res.append(randomChar);
         }
 

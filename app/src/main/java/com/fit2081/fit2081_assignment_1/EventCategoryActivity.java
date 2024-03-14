@@ -12,10 +12,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class EventCategoryActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
     TextView findCategoryId;
-//    EditText findCategoryId;
     EditText findCategoryName;
     EditText findEventCount;
     Switch findCategoryIsActive;
@@ -29,12 +30,10 @@ public class EventCategoryActivity extends AppCompatActivity {
         // Generate category ID (with method)
 
         // Assign the attributes
-//        findCategoryId = findViewById(R.id.et_categoryId);
         findCategoryName = findViewById(R.id.et_eventCategoryId);
         findEventCount = findViewById(R.id.et_eventName);
         findCategoryIsActive = findViewById(R.id.switch_isCategoryActive);
         findCategoryId = findViewById(R.id.tv_eventIdValue);
-//        findIsCategoryActive.setChecked(false);
 
         // set category id field to default every time
 //        findCategoryId.setText("(auto generated upon creation");
@@ -56,6 +55,9 @@ public class EventCategoryActivity extends AppCompatActivity {
             eventCount = 0;
         }
 
+//        eventCount = findEventCount.getText().toString().isEmpty() ? 0 : Integer.parseInt(findEventCount.getText().toString());
+
+
         // form validation
         if (categoryName.isEmpty()){ // check that event category name is filled
             Toast.makeText(this, "Event category name required", Toast.LENGTH_SHORT).show();
@@ -70,13 +72,11 @@ public class EventCategoryActivity extends AppCompatActivity {
 
             findCategoryId.setText(categoryId);
         }
-
     }
 
     private String generateCategoryID(){
-        String id = "CME-1084";
-
-        return id;
+        // Call the helper class to generate Category ID
+        return String.format("C%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(4));
     }
 
     public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){

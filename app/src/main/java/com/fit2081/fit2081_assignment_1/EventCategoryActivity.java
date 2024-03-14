@@ -33,7 +33,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         findCategoryName = findViewById(R.id.et_eventCategoryId);
         findEventCount = findViewById(R.id.et_eventName);
         findCategoryIsActive = findViewById(R.id.switch_isCategoryActive);
-        findCategoryId = findViewById(R.id.tv_categoryId);
+        findCategoryId = findViewById(R.id.tv_eventIdValue);
 //        findIsCategoryActive.setChecked(false);
 
         // set category id field to default every time

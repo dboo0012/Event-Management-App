@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
 
     <TextView
-        android:id="@+id/tv_categoryId"
+        android:id="@+id/tv_eventIdValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
@@ -48,7 +48,7 @@
         android:text="Category ID:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_categoryId" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
 
     <EditText
         android:id="@+id/et_eventCategoryId"
@@ -79,7 +79,7 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:hint="Enter Event Name"
-        android:inputType="number"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventName" />
 
@@ -128,6 +128,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveEventButton"
+        android:onClick="saveEventButtonOnClick"
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="48dp"

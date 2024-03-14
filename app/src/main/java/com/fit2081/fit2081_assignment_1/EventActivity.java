@@ -25,7 +25,7 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
 
         // Assign the attributes to its respective views
-        findEventId = findViewById(R.id.tv_eventId);
+        findEventId = findViewById(R.id.tv_eventIdValue);
         findCategoryId = findViewById(R.id.et_eventCategoryId);
         findEventName = findViewById(R.id.et_eventName);
         findTicketsAvailable = findViewById(R.id.et_ticketsAvailable);
@@ -37,6 +37,7 @@ public class EventActivity extends AppCompatActivity {
         String eventName = findEventName.getText().toString();
         int ticketsAvailable;
         boolean isEventActive = findEventIsActive.isChecked();
+//        findEventIsActive.setChecked(isEventActive);
 
         try{
             ticketsAvailable = Integer.parseInt(findTicketsAvailable.getText().toString());
@@ -52,6 +53,16 @@ public class EventActivity extends AppCompatActivity {
         } else {
             String generatedEventId = generateEventId();
 
+            // save attributes to shared preferences
+            saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
+                    ticketsAvailable, isEventActive);
+
+            // toast
+            String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
+            Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+
+            // show the generated event ID
+            findEventId.setText(generatedEventId);
         }
 
     }
@@ -68,6 +79,10 @@ public class EventActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
+        editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
+        editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
+        editor.putInt(EventSharedPref.KEY_TICKETS_AVAILABLE, ticketsAvailable);
+        editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
 
         editor.apply();
     }

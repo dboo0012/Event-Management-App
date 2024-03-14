@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DashboardActivity">
+    tools:context=".DashboardActivity"
+    android:background="@drawable/android_background">
 
     <TextView
         android:id="@+id/tv_login"
@@ -14,6 +15,7 @@
         android:layout_marginTop="100dp"
         android:text="Dashboard"
         android:textSize="48sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

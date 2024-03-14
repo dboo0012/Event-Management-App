@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventCategoryActivity">
+    tools:context=".EventCategoryActivity"
+    android:background="@drawable/android_background">
 
     <TextView
         android:id="@+id/tv_eventCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
         android:text="New Event Category"
-        android:textSize="36sp"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,6 +26,7 @@
         android:layout_marginStart="51dp"
         android:layout_marginTop="62dp"
         android:text="Category ID:"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
@@ -35,6 +38,7 @@
         android:layout_marginStart="51dp"
         android:layout_marginTop="7dp"
         android:text="(auto generated upon creation)"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventId" />
@@ -46,6 +50,7 @@
         android:layout_marginStart="51dp"
         android:layout_marginTop="32dp"
         android:text="Name:"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
@@ -57,6 +62,8 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:hint="Enter Category name"
+        android:textColorHint="#BDB8B8"
+        android:textColor="#FFFFFF"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategoryId" />
@@ -68,6 +75,7 @@
         android:layout_marginStart="51dp"
         android:layout_marginTop="32dp"
         android:text="Event Count:"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
@@ -79,6 +87,8 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:hint="Enter Event Count"
+        android:textColorHint="#BDB8B8"
+        android:textColor="#FFFFFF"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventName" />
@@ -90,6 +100,7 @@
         android:layout_marginStart="51dp"
         android:layout_marginTop="32dp"
         android:text="Is Active?"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_eventName" />

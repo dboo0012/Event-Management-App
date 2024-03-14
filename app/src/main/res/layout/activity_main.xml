@@ -9,10 +9,10 @@
 
     <TextView
         android:id="@+id/tv_newAccount"
-        android:layout_width="211dp"
-        android:layout_height="131dp"
+        android:layout_width="228dp"
+        android:layout_height="76dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         android:text="Register"
         android:textColor="#FFFFFF"
         android:textSize="48sp"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:text="Username"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"

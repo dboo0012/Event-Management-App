@@ -1,15 +1,26 @@
 package com.fit2081.fit2081_assignment_1;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.fit2081.fit2081_assignment_1.MainActivity.LOG_KEY;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.StringTokenizer;
 
 public class EventActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -30,6 +41,21 @@ public class EventActivity extends AppCompatActivity {
         findEventName = findViewById(R.id.et_eventName);
         findTicketsAvailable = findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = findViewById(R.id.switch_isEventActive);
+
+        /* Request permissions to access SMS */
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
+        /* Create and instantiate the local broadcast receiver
+           This class listens to messages come from class SMSReceiver
+         */
+        eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
+
+        /*
+         * Register the broadcast handler with the intent filter that is declared in
+         * class SMSReceiver @line 11
+         * */
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER));
+        Log.d(LOG_KEY, "launched SMS Receiver");
     }
 
     public void saveEventButtonOnClick(View view){
@@ -82,5 +108,28 @@ public class EventActivity extends AppCompatActivity {
         editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
 
         editor.apply();
+    }
+
+    // Receive intercepted messages from SMSmessanger
+    class eventBroadcastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+
+            StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
+            String eventName = tokenizeMessage.nextToken();
+            String categoryId = tokenizeMessage.nextToken();
+            String ticketsAvailable = tokenizeMessage.nextToken();
+            boolean isActive = Boolean.parseBoolean(tokenizeMessage.nextToken());
+
+            // Verify incoming message format
+            // Update the event page with incoming message
+            findCategoryId.setText(categoryId);
+            findEventName.setText(eventName);
+            findTicketsAvailable.setText(ticketsAvailable);
+            findEventIsActive.setChecked(isActive);
+
+            Log.d(LOG_KEY, "launched Event Broadcast Receiver");
+        }
     }
 }

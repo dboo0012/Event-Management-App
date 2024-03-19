@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Debugging
         Log.d(LOG_KEY, "launched main activity");
+
     }
 
     public void signUpButtonOnClick(View view){

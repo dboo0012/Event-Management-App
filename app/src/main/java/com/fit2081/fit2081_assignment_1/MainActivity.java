@@ -1,6 +1,7 @@
 package com.fit2081.fit2081_assignment_1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
         findUsername = findViewById(R.id.signUpUsername);
         findPassword = findViewById(R.id.signUpPassword);
         findConfirmPassword = findViewById(R.id.signUpConfirmPassword);
+
+        ActivityCompat.requestPermissions(this, new String[]{
+                android.Manifest.permission.SEND_SMS,
+                android.Manifest.permission.RECEIVE_SMS,
+                android.Manifest.permission.READ_SMS
+        }, 0);
 
         // Debugging
         Log.d(LOG_KEY, "launched main activity");

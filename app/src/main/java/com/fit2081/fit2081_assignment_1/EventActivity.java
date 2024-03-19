@@ -43,8 +43,8 @@ public class EventActivity extends AppCompatActivity {
         findEventIsActive = findViewById(R.id.switch_isEventActive);
 
         /* Request permissions to access SMS */
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
+//        ActivityCompat.requestPermissions(this, new String[]{
+//                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
         /* Create and instantiate the local broadcast receiver
            This class listens to messages come from class SMSReceiver
          */
@@ -54,7 +54,7 @@ public class EventActivity extends AppCompatActivity {
          * Register the broadcast handler with the intent filter that is declared in
          * class SMSReceiver @line 11
          * */
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER));
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER), RECEIVER_EXPORTED);
         Log.d(LOG_KEY, "launched SMS Receiver");
     }
 
@@ -117,18 +117,22 @@ public class EventActivity extends AppCompatActivity {
             String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
             StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
-            String eventName = tokenizeMessage.nextToken();
-            String categoryId = tokenizeMessage.nextToken();
-            String ticketsAvailable = tokenizeMessage.nextToken();
-            boolean isActive = Boolean.parseBoolean(tokenizeMessage.nextToken());
 
-            // Verify incoming message format
-            // Update the event page with incoming message
-            findCategoryId.setText(categoryId);
-            findEventName.setText(eventName);
-            findTicketsAvailable.setText(ticketsAvailable);
-            findEventIsActive.setChecked(isActive);
+            if (tokenizeMessage.countTokens() == 4) {
+                String eventName = tokenizeMessage.nextToken();
+                String categoryId = tokenizeMessage.nextToken();
+                String ticketsAvailable = tokenizeMessage.nextToken();
+                boolean isActive = Boolean.parseBoolean(tokenizeMessage.nextToken());
 
+                // Verify incoming message format
+                // Update the event page with incoming message
+                findEventName.setText(eventName);
+                findCategoryId.setText(categoryId);
+                findTicketsAvailable.setText(ticketsAvailable);
+                findEventIsActive.setChecked(isActive);
+            } else {
+                Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
+            }
             Log.d(LOG_KEY, "launched Event Broadcast Receiver");
         }
     }

@@ -1,8 +1,16 @@
 package com.fit2081.fit2081_assignment_1;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.fit2081.fit2081_assignment_1.MainActivity.LOG_KEY;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
+import java.util.StringTokenizer;
 
 public class EventCategoryActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -35,8 +44,20 @@ public class EventCategoryActivity extends AppCompatActivity {
         findCategoryIsActive = findViewById(R.id.switch_isCategoryActive);
         findCategoryId = findViewById(R.id.tv_eventIdValue);
 
-        // set category id field to default every time
-//        findCategoryId.setText("(auto generated upon creation");
+        /* Request permissions to access SMS */
+//        ActivityCompat.requestPermissions(this, new String[]{
+//                android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
+        /* Create and instantiate the local broadcast receiver
+           This class listens to messages come from class SMSReceiver
+         */
+        categoryBroadcastReceiver myBroadCastReceiver = new categoryBroadcastReceiver();
+
+        /*
+         * Register the broadcast handler with the intent filter that is declared in
+         * class SMSReceiver @line 11
+         * */
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER), RECEIVER_EXPORTED);
+        Log.d(LOG_KEY, "launched category SMS Receiver");
 
         // Debugging
         Log.d(key, "launched event category activity");
@@ -92,5 +113,29 @@ public class EventCategoryActivity extends AppCompatActivity {
 
         // Apply the changes
         editor.apply();
+    }
+
+    class categoryBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+
+            StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
+
+            if (tokenizeMessage.countTokens() == 3) {
+                String categoryName = tokenizeMessage.nextToken();
+                String eventCount = tokenizeMessage.nextToken();
+                boolean isActive = Boolean.parseBoolean(tokenizeMessage.nextToken());
+
+                // Verify incoming message format
+                // Update the event page with incoming message
+                findCategoryName.setText(categoryName);
+                findEventCount.setText(eventCount);
+                findCategoryIsActive.setChecked(isActive);
+            } else {
+                Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
+            }
+            Log.d(LOG_KEY, "launched Event Broadcast Receiver");
+        }
     }
 }

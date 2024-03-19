@@ -10,6 +10,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class SMSReceiver extends BroadcastReceiver {
+
     public static final String SMS_FILTER = "SMS_FILTER";
     public static final String SMS_MSG_KEY = "SMS_MSG_KEY";
     @Override

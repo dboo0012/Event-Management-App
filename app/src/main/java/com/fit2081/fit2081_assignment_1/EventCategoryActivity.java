@@ -20,7 +20,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Random;
+import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
+
 import java.util.StringTokenizer;
 
 public class EventCategoryActivity extends AppCompatActivity {
@@ -122,20 +123,37 @@ public class EventCategoryActivity extends AppCompatActivity {
 
             StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
 
-            if (tokenizeMessage.countTokens() == 3) {
-                String categoryName = tokenizeMessage.nextToken();
-                String eventCount = tokenizeMessage.nextToken();
-                boolean isActive = Boolean.parseBoolean(tokenizeMessage.nextToken());
+            String categoryName = null;
+            int eventCount = 0;
+            boolean isActive = false;
+            boolean isMessageValid = false;
 
-                // Verify incoming message format
-                // Update the event page with incoming message
-                findCategoryName.setText(categoryName);
-                findEventCount.setText(eventCount);
-                findCategoryIsActive.setChecked(isActive);
+            if (tokenizeMessage.countTokens() == 3) {
+                try {
+                    categoryName = tokenizeMessage.nextToken();
+                    eventCount = Integer.parseInt(tokenizeMessage.nextToken());
+                    // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
+                    String isActiveString = tokenizeMessage.nextToken();
+                    if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
+                        throw new IllegalArgumentException("Invalid boolean value");
+                    }
+                    isActive = Boolean.parseBoolean(isActiveString);
+                    isMessageValid = true;
+                } catch (Exception e){
+                    Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Incorrect f", Toast.LENGTH_SHORT).show();
             }
-            Log.d(LOG_KEY, "launched Event Broadcast Receiver");
+
+            // Set the fields to respective values if the message is valid
+            if (isMessageValid){
+                findCategoryName.setText(ExtractStringAfterColon.extract(categoryName));
+                findEventCount.setText(String.valueOf(eventCount));
+                findCategoryIsActive.setChecked(isActive);
+            }
+
+            Log.d(LOG_KEY, "launched Category Broadcast Receiver");
         }
     }
 }

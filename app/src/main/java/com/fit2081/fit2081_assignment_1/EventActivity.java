@@ -119,6 +119,7 @@ public class EventActivity extends AppCompatActivity {
             String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
             StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
+
             String eventName = null;
             String categoryId = null;
             int ticketsAvailable = 0;
@@ -143,7 +144,7 @@ public class EventActivity extends AppCompatActivity {
                 Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
             }
 
-            // Set the fields if the message received is valid
+            // Set the fields to respective values if the message is valid
             if(isMessageValid){
                 findEventName.setText(ExtractStringAfterColon.extract(eventName));
                 findCategoryId.setText(categoryId);

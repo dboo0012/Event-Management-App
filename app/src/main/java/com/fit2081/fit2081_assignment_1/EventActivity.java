@@ -20,6 +20,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
+
 import java.util.StringTokenizer;
 
 public class EventActivity extends AppCompatActivity {
@@ -117,22 +119,38 @@ public class EventActivity extends AppCompatActivity {
             String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
             StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
+            String eventName = null;
+            String categoryId = null;
+            int ticketsAvailable = 0;
+            boolean isActive = false;
+            boolean isMessageValid = false;
 
             if (tokenizeMessage.countTokens() == 4) {
-                String eventName = tokenizeMessage.nextToken();
-                String categoryId = tokenizeMessage.nextToken();
-                String ticketsAvailable = tokenizeMessage.nextToken();
-                boolean isActive = Boolean.parseBoolean(tokenizeMessage.nextToken());
-
-                // Verify incoming message format
-                // Update the event page with incoming message
-                findEventName.setText(eventName);
-                findCategoryId.setText(categoryId);
-                findTicketsAvailable.setText(ticketsAvailable);
-                findEventIsActive.setChecked(isActive);
+                try {
+                    eventName = tokenizeMessage.nextToken();
+                    categoryId = tokenizeMessage.nextToken();
+                    ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
+                    String isActiveString = tokenizeMessage.nextToken();
+                    if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
+                        throw new IllegalArgumentException("Invalid boolean value");
+                    }
+                    isActive = Boolean.parseBoolean(isActiveString);
+                    isMessageValid = true;
+                } catch (Exception e){
+                    Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
             }
+
+            // Set the fields if the message received is valid
+            if(isMessageValid){
+                findEventName.setText(ExtractStringAfterColon.extract(eventName));
+                findCategoryId.setText(categoryId);
+                findTicketsAvailable.setText(String.valueOf(ticketsAvailable));
+                findEventIsActive.setChecked(isActive);
+            }
+
             Log.d(LOG_KEY, "launched Event Broadcast Receiver");
         }
     }

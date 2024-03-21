@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fit2081.fit2081_assignment_1.sharedPreferences.UserSharedPref;
+
 public class LoginActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
     EditText findUsername;

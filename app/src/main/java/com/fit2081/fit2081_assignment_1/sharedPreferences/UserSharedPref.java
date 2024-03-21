@@ -1,4 +1,4 @@
-package com.fit2081.fit2081_assignment_1;
+package com.fit2081.fit2081_assignment_1.sharedPreferences;
 
 public class UserSharedPref {
     public static final String FILE_NAME = "UserSharedPref.java";

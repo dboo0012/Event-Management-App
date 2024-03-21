@@ -1,7 +1,6 @@
 package com.fit2081.fit2081_assignment_1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.fit2081.fit2081_assignment_1.sharedPreferences.UserSharedPref;
 
 public class MainActivity extends AppCompatActivity {
     public static final String LOG_KEY = "Launched";
@@ -26,11 +27,11 @@ public class MainActivity extends AppCompatActivity {
         findPassword = findViewById(R.id.signUpPassword);
         findConfirmPassword = findViewById(R.id.signUpConfirmPassword);
 
-        ActivityCompat.requestPermissions(this, new String[]{
-                android.Manifest.permission.SEND_SMS,
-                android.Manifest.permission.RECEIVE_SMS,
-                android.Manifest.permission.READ_SMS
-        }, 0);
+//        ActivityCompat.requestPermissions(this, new String[]{
+//                android.Manifest.permission.SEND_SMS,
+//                android.Manifest.permission.RECEIVE_SMS,
+//                android.Manifest.permission.READ_SMS
+//        }, 0);
 
         // Debugging
         Log.d(LOG_KEY, "launched main activity");

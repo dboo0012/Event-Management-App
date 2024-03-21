@@ -20,6 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 
 import java.util.StringTokenizer;
@@ -45,8 +46,8 @@ public class EventActivity extends AppCompatActivity {
         findEventIsActive = findViewById(R.id.switch_isEventActive);
 
         /* Request permissions to access SMS */
-//        ActivityCompat.requestPermissions(this, new String[]{
-//                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
         /* Create and instantiate the local broadcast receiver
            This class listens to messages come from class SMSReceiver
          */
@@ -54,9 +55,8 @@ public class EventActivity extends AppCompatActivity {
 
         /*
          * Register the broadcast handler with the intent filter that is declared in
-         * class SMSReceiver @line 11
          * */
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER), RECEIVER_EXPORTED);
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER), RECEIVER_EXPORTED);
         Log.d(LOG_KEY, "launched SMS Receiver");
     }
 
@@ -117,6 +117,10 @@ public class EventActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+            // Preliminary check: if the SMS does not start with "event:", return immediately
+//            if (interceptedMessage==null || !interceptedMessage.startsWith("event:")) {
+//                return;
+//            }
 
             StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
 

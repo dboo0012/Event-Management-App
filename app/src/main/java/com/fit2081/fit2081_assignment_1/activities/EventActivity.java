@@ -59,7 +59,7 @@ public class EventActivity extends AppCompatActivity {
         /*
          * Register the broadcast handler with the intent filter that is declared in
          * */
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER), RECEIVER_EXPORTED);
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
         Log.d(LOG_KEY, "launched SMS Receiver");
     }
 

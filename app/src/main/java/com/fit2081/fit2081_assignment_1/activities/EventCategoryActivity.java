@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
-import com.fit2081.fit2081_assignment_1.sharedPreferences.CategorySharedPref;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
 
@@ -49,19 +49,12 @@ public class EventCategoryActivity extends AppCompatActivity {
         findCategoryIsActive = findViewById(R.id.switch_isCategoryActive);
         findCategoryId = findViewById(R.id.tv_eventIdValue);
 
-        /* Request permissions to access SMS */
         ActivityCompat.requestPermissions(this, new String[]{
                 android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
-        /* Create and instantiate the local broadcast receiver
-           This class listens to messages come from class SMSReceiver
-         */
+
         categoryBroadcastReceiver myBroadCastReceiver = new categoryBroadcastReceiver();
 
-        /*
-         * Register the broadcast handler with the intent filter that is declared in
-         * class SMSReceiver @line 11
-         * */
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER), RECEIVER_EXPORTED);
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
         Log.d(LOG_KEY, "launched category SMS Receiver");
 
         // Debugging
@@ -80,9 +73,6 @@ public class EventCategoryActivity extends AppCompatActivity {
         } catch (Exception e){
             eventCount = 0;
         }
-
-//        eventCount = findEventCount.getText().toString().isEmpty() ? 0 : Integer.parseInt(findEventCount.getText().toString());
-
 
         // form validation
         if (categoryName.isEmpty()){ // check that event category name is filled
@@ -107,14 +97,14 @@ public class EventCategoryActivity extends AppCompatActivity {
 
     public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
         // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences(CategorySharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
         // Add all attributes to SharedPreferences
-        editor.putString(CategorySharedPref.KEY_CATEGORY_ID, categoryId);
-        editor.putString(CategorySharedPref.KEY_CATEGORY_NAME, categoryName);
-        editor.putInt(CategorySharedPref.KEY_EVENT_COUNT, eventCount);
-        editor.putBoolean(CategorySharedPref.KEY_IS_CATEGORY_ACTIVE, isActive);
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_ID, categoryId);
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_NAME, categoryName);
+        editor.putInt(EventCategorySharedPref.KEY_EVENT_COUNT, eventCount);
+        editor.putBoolean(EventCategorySharedPref.KEY_IS_CATEGORY_ACTIVE, isActive);
 
         // Apply the changes
         editor.apply();

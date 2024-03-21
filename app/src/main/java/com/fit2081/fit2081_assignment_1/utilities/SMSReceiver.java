@@ -21,11 +21,9 @@ public class SMSReceiver extends BroadcastReceiver {
         for (int i = 0; i < incomingMessage.length; i++) {
             SmsMessage currentMessage = incomingMessage[i];
             String message = currentMessage.getDisplayMessageBody(); // Unpack the incoming message
-            /*
-             * Now, for each new message, send a broadcast contains the new message to MainActivity
-             * The MainActivity has to tokenize the new message and update the UI
-             * */
             Intent msgIntent = new Intent();
+
+            // Pass the sms to its corresponding context
             if (message.startsWith("category:")) {
                 destinationFilter = EVENT_CATEGORY_SMS_FILTER;
 

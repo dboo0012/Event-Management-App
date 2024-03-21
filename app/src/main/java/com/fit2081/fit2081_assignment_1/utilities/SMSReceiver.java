@@ -28,6 +28,7 @@ public class SMSReceiver extends BroadcastReceiver {
             Intent msgIntent = new Intent();
             if (message.startsWith("category:")) {
                 destinationFilter = EVENT_CATEGORY_SMS_FILTER;
+
             } else if (message.startsWith("event:")) {
                 destinationFilter = EVENT_SMS_FILTER;
             }

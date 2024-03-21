@@ -1,6 +1,6 @@
-package com.fit2081.fit2081_assignment_1;
+package com.fit2081.fit2081_assignment_1.activities;
 
-import static com.fit2081.fit2081_assignment_1.MainActivity.LOG_KEY;
+import static com.fit2081.fit2081_assignment_1.activities.MainActivity.LOG_KEY;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -20,8 +20,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
+import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
 
 import java.util.StringTokenizer;
 
@@ -117,10 +120,6 @@ public class EventActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
-            // Preliminary check: if the SMS does not start with "event:", return immediately
-//            if (interceptedMessage==null || !interceptedMessage.startsWith("event:")) {
-//                return;
-//            }
 
             StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
 

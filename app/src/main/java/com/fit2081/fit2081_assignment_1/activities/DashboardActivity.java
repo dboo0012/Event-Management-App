@@ -1,4 +1,4 @@
-package com.fit2081.fit2081_assignment_1;
+package com.fit2081.fit2081_assignment_1.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.fit2081.fit2081_assignment_1.R;
 
 public class DashboardActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;

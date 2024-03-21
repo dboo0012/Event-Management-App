@@ -21,7 +21,7 @@
         android:theme="@style/Theme.FIT2081_Assignment_1"
         tools:targetApi="33" >
         <receiver
-            android:name=".SMSReceiver"
+            android:name=".utilities.SMSReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">
@@ -31,19 +31,19 @@
         </receiver>
 
         <activity
-            android:name=".EventCategoryActivity"
+            android:name=".activities.EventCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".EventActivity"
+            android:name=".activities.EventActivity"
             android:exported="false" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".activities.DashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

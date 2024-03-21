@@ -1,4 +1,4 @@
-package com.fit2081.fit2081_assignment_1;
+package com.fit2081.fit2081_assignment_1.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.activities.LoginActivity;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.UserSharedPref;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.fit2081.fit2081_assignment_1;
+package com.fit2081.fit2081_assignment_1.utilities;
 
 import java.util.Random;
 
@@ -23,7 +23,7 @@ public class GenerateRandomId {
         Random random = new Random();
 
         for (int i=0; i < intLength; i++){
-            // Choose a random letter between 0-9
+            // Choose a random digit between 0-9
             int randomInt = random.nextInt(10);
             res.append(randomInt);
         }

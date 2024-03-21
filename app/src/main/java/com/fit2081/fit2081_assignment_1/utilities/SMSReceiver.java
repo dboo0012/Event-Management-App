@@ -1,6 +1,6 @@
-package com.fit2081.fit2081_assignment_1;
+package com.fit2081.fit2081_assignment_1.utilities;
 
-import static com.fit2081.fit2081_assignment_1.MainActivity.LOG_KEY;
+import static com.fit2081.fit2081_assignment_1.activities.MainActivity.LOG_KEY;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver {
 

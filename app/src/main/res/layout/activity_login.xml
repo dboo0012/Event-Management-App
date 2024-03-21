@@ -14,19 +14,18 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="100dp"
         android:text="Login"
-        android:textColor="#FFFFFF"
         android:textSize="48sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/CustomTextView"
         android:id="@+id/tv_loginPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="20dp"
         android:text="Password"
-        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginUsername" />
 
@@ -43,13 +42,13 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_loginPassword" />
 
     <TextView
+        style="@style/CustomTextView"
         android:id="@+id/tv_loginUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="54dp"
         android:text="Username"
-        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login" />
 

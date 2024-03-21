@@ -11,22 +11,21 @@
         android:id="@+id/tv_eventCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="52dp"
         android:text="New Event Category"
-        android:textColor="#FFFFFF"
-        android:textSize="40sp"
+        android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/CustomTextView"
         android:id="@+id/tv_eventId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
         android:layout_marginTop="62dp"
         android:text="Category ID:"
-        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
@@ -44,13 +43,13 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_eventId" />
 
     <TextView
+        style="@style/CustomTextView"
         android:id="@+id/tv_eventCategoryId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
         android:layout_marginTop="32dp"
         android:text="Name:"
-        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
@@ -68,13 +67,13 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_eventCategoryId" />
 
     <TextView
+        style="@style/CustomTextView"
         android:id="@+id/tv_eventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
         android:layout_marginTop="32dp"
         android:text="Event Count:"
-        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
@@ -92,13 +91,13 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_eventName" />
 
     <TextView
+        style="@style/CustomTextView"
         android:id="@+id/tv_isActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
         android:layout_marginTop="32dp"
         android:text="Is Active?"
-        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_eventName" />

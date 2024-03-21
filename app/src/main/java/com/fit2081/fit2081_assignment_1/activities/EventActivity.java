@@ -165,7 +165,7 @@ public class EventActivity extends AppCompatActivity {
                     Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(context, "Incorrect format (event)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
             }
 
             // Set the fields to respective values if the message is valid

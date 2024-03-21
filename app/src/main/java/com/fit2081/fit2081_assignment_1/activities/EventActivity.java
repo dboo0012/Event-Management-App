@@ -82,23 +82,23 @@ public class EventActivity extends AppCompatActivity {
         } else if (eventName.isEmpty()) {
             Toast.makeText(this, "Event name is required", Toast.LENGTH_SHORT).show();
         } else {
-            String generatedEventId = generateEventId();
+            String generatedEventId;
 
             // Verify categoryId format
             if (validateCategoryId(categoryId)) {
+                generatedEventId = generateEventId();
                 // save attributes to shared preferences
                 saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
                         ticketsAvailable, isEventActive);
 
                 // Successful
+                // show the generated event ID
+                findEventId.setText(generatedEventId);
                 String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
                 Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Category ID does not match format.", Toast.LENGTH_SHORT).show();
             }
-
-            // show the generated event ID
-            findEventId.setText(generatedEventId);
         }
     }
 

@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent dashboardIntent = new Intent(this, DashboardActivity.class); // Points to the dahsboard activity
                 startActivity(dashboardIntent);
             } else {
-                Toast.makeText(this, "Oops! Username or Password incorrect.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Authentication failure: Username or Password incorrect", Toast.LENGTH_SHORT).show();
                 // Reset the username and password fields
                 findPassword.setText("");
             }

@@ -84,13 +84,18 @@ public class EventActivity extends AppCompatActivity {
         } else {
             String generatedEventId = generateEventId();
 
-            // save attributes to shared preferences
-            saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
-                    ticketsAvailable, isEventActive);
+            // Verify categoryId format
+            if (validateCategoryId(categoryId)) {
+                // save attributes to shared preferences
+                saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
+                        ticketsAvailable, isEventActive);
 
-            // toast
-            String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
-            Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+                // Successful
+                String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
+                Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Category ID does not match format.", Toast.LENGTH_SHORT).show();
+            }
 
             // show the generated event ID
             findEventId.setText(generatedEventId);
@@ -115,6 +120,15 @@ public class EventActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    private boolean validateCategoryId(String categoryId){
+        boolean valid = false;
+
+        String pattern = "C[A-Z]{2}-\\d{4}";
+        return categoryId.matches(pattern);
+
+//        return valid;
+    }
+
     // Receive intercepted messages from SMSmessanger
     class eventBroadcastReceiver extends BroadcastReceiver{
         @Override
@@ -135,6 +149,13 @@ public class EventActivity extends AppCompatActivity {
                     categoryId = tokenizeMessage.nextToken();
                     ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
                     String isActiveString = tokenizeMessage.nextToken();
+                    // SMS Category ID validation
+                    if (!validateCategoryId(categoryId)){
+                        String errorMsg = "Invalid Category ID format";
+                        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+                        throw new IllegalArgumentException(errorMsg);
+                    }
+                    // SMS Boolean validation
                     if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
                         throw new IllegalArgumentException("Invalid boolean value");
                     }
@@ -144,7 +165,7 @@ public class EventActivity extends AppCompatActivity {
                     Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Incorrect format (event)", Toast.LENGTH_SHORT).show();
             }
 
             // Set the fields to respective values if the message is valid

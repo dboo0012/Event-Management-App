@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.utilities.ActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
@@ -59,6 +60,18 @@ public class EventCategoryActivity extends AppCompatActivity {
 
         // Debugging
         Log.d(key, "launched event category activity");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ActivityTracker.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityTracker.activityPaused();
     }
 
     public void createEventCategoryButtonOnClick(View view){
@@ -113,41 +126,47 @@ public class EventCategoryActivity extends AppCompatActivity {
     class categoryBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+            // Only run the SMS receiver if the user is on this activity
+            if (ActivityTracker.isActivityVisible()) {
+                String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
-            StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
+                StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
 
-            String categoryName = null;
-            int eventCount = 0;
-            boolean isActive = false;
-            boolean isMessageValid = false;
+                String categoryName = null;
+                int eventCount = 0;
+                boolean isActive = false;
+                boolean isMessageValid = false;
 
-            if (tokenizeMessage.countTokens() == 3) {
-                try {
-                    categoryName = tokenizeMessage.nextToken();
-                    eventCount = Integer.parseInt(tokenizeMessage.nextToken());
-                    // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
-                    String isActiveString = tokenizeMessage.nextToken();
-                    if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
-                        throw new IllegalArgumentException("Invalid boolean value");
+                if (tokenizeMessage.countTokens() == 3) {
+                    try {
+                        categoryName = tokenizeMessage.nextToken();
+                        if (!categoryName.startsWith("category:")) {
+                            return;
+                        }
+                        eventCount = Integer.parseInt(tokenizeMessage.nextToken());
+                        // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
+                        String isActiveString = tokenizeMessage.nextToken();
+                        if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
+                            throw new IllegalArgumentException("Invalid boolean value");
+                        }
+                        isActive = Boolean.parseBoolean(isActiveString);
+                        isMessageValid = true;
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                     }
-                    isActive = Boolean.parseBoolean(isActiveString);
-                    isMessageValid = true;
-                } catch (Exception e){
-                    Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
-            }
 
-            // Set the fields to respective values if the message is valid
-            if (isMessageValid){
-                findCategoryName.setText(ExtractStringAfterColon.extract(categoryName));
-                findEventCount.setText(String.valueOf(eventCount));
-                findCategoryIsActive.setChecked(isActive);
-            }
+                // Set the fields to respective values if the message is valid
+                if (isMessageValid) {
+                    findCategoryName.setText(ExtractStringAfterColon.extract(categoryName));
+                    findEventCount.setText(String.valueOf(eventCount));
+                    findCategoryIsActive.setChecked(isActive);
+                }
 
-            Log.d(LOG_KEY, "launched Category Broadcast Receiver");
+                Log.d(LOG_KEY, "launched Category Broadcast Receiver" + context.getClass());
+            }
         }
     }
 }

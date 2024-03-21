@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.utilities.ActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
@@ -61,6 +62,18 @@ public class EventActivity extends AppCompatActivity {
          * */
         registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
         Log.d(LOG_KEY, "launched SMS Receiver");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ActivityTracker.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityTracker.activityPaused();
     }
 
     public void saveEventButtonOnClick(View view){
@@ -133,50 +146,56 @@ public class EventActivity extends AppCompatActivity {
     class eventBroadcastReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-            String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+            // Only run the SMS receiver if the user is on this activity
+            if (ActivityTracker.isActivityVisible()) {
+                String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
-            StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
+                StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
 
-            String eventName = null;
-            String categoryId = null;
-            int ticketsAvailable = 0;
-            boolean isActive = false;
-            boolean isMessageValid = false;
+                String eventName = null;
+                String categoryId = null;
+                int ticketsAvailable = 0;
+                boolean isActive = false;
+                boolean isMessageValid = false;
 
-            if (tokenizeMessage.countTokens() == 4) {
-                try {
-                    eventName = tokenizeMessage.nextToken();
-                    categoryId = tokenizeMessage.nextToken();
-                    ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
-                    String isActiveString = tokenizeMessage.nextToken();
-                    // SMS Category ID validation
-                    if (!validateCategoryId(categoryId)){
-                        String errorMsg = "Invalid Category ID format";
-                        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
-                        throw new IllegalArgumentException(errorMsg);
+                if (tokenizeMessage.countTokens() == 4) {
+                    try {
+                        eventName = tokenizeMessage.nextToken();
+                        if (!eventName.startsWith("event:")) {
+                            return;
+                        }
+                        categoryId = tokenizeMessage.nextToken();
+                        ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
+                        String isActiveString = tokenizeMessage.nextToken();
+                        // SMS Category ID validation
+                        if (!validateCategoryId(categoryId)) {
+                            String errorMsg = "Invalid Category ID format";
+                            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+                            throw new IllegalArgumentException(errorMsg);
+                        }
+                        // SMS Boolean validation
+                        if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
+                            throw new IllegalArgumentException("Invalid boolean value");
+                        }
+                        isActive = Boolean.parseBoolean(isActiveString);
+                        isMessageValid = true;
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                     }
-                    // SMS Boolean validation
-                    if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
-                        throw new IllegalArgumentException("Invalid boolean value");
-                    }
-                    isActive = Boolean.parseBoolean(isActiveString);
-                    isMessageValid = true;
-                } catch (Exception e){
-                    Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
-            }
 
-            // Set the fields to respective values if the message is valid
-            if(isMessageValid){
-                findEventName.setText(ExtractStringAfterColon.extract(eventName));
-                findCategoryId.setText(categoryId);
-                findTicketsAvailable.setText(String.valueOf(ticketsAvailable));
-                findEventIsActive.setChecked(isActive);
-            }
+                // Set the fields to respective values if the message is valid
+                if (isMessageValid) {
+                    findEventName.setText(ExtractStringAfterColon.extract(eventName));
+                    findCategoryId.setText(categoryId);
+                    findTicketsAvailable.setText(String.valueOf(ticketsAvailable));
+                    findEventIsActive.setChecked(isActive);
+                }
 
-            Log.d(LOG_KEY, "launched Event Broadcast Receiver");
+                Log.d(LOG_KEY, "launched Event Broadcast Receiver");
+            }
         }
     }
 }

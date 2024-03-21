@@ -54,7 +54,6 @@
         android:inputType="text"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textColorHint="#BDB8B8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_loginPassword" />
 
@@ -80,7 +79,6 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="#FFFFFF"
-        android:textColorHint="#BDB8B8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirmPassword" />
 
@@ -106,7 +104,6 @@
         android:hint="Confirm Password"
         android:inputType="textPassword"
         android:textColor="#FFFFFF"
-        android:textColorHint="#BDB8B8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 

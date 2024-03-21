@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.utilities.ActivityTracker;
+import com.fit2081.fit2081_assignment_1.utilities.EventActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
@@ -36,6 +36,8 @@ public class EventActivity extends AppCompatActivity {
     EditText findEventName;
     EditText findTicketsAvailable;
     Switch findEventIsActive;
+    private boolean isSMSBroadcastReceiverActive = false;
+    private eventBroadcastReceiver myBroadCastReceiver;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +51,30 @@ public class EventActivity extends AppCompatActivity {
         findTicketsAvailable = findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = findViewById(R.id.switch_isEventActive);
 
-        /* Request permissions to access SMS */
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
-        /* Create and instantiate the local broadcast receiver
-           This class listens to messages come from class SMSReceiver
-         */
-        eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
+        if (!isSMSBroadcastReceiverActive) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
-        /*
-         * Register the broadcast handler with the intent filter that is declared in
-         * */
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
-        Log.d(LOG_KEY, "launched SMS Receiver");
+            eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
+
+            registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
+            isSMSBroadcastReceiverActive = true;
+            Log.d(LOG_KEY, "launched SMS Receiver");
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ActivityTracker.activityResumed();
+        EventActivityTracker.activityResumed();
+        Log.d(LOG_KEY, "Event Activity Resumed");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        ActivityTracker.activityPaused();
+        EventActivityTracker.activityPaused();
+        Log.d(LOG_KEY, "Event Activity Paused");
     }
 
     public void saveEventButtonOnClick(View view){
@@ -147,7 +148,7 @@ public class EventActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Only run the SMS receiver if the user is on this activity
-            if (ActivityTracker.isActivityVisible()) {
+            if (EventActivityTracker.isActivityVisible()) {
                 String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
                 StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
@@ -160,30 +161,44 @@ public class EventActivity extends AppCompatActivity {
 
                 if (tokenizeMessage.countTokens() == 4) {
                     try {
+                        // Validate SMS to only accept "event:"
                         eventName = tokenizeMessage.nextToken();
                         if (!eventName.startsWith("event:")) {
+//                            throw new IllegalArgumentException("Invalid");
                             return;
                         }
+
                         categoryId = tokenizeMessage.nextToken();
+
+                        // Validate event count to be positive integer
                         ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
+                        if (ticketsAvailable<=0){
+                            throw new IllegalArgumentException("Invalid");
+//                            return;
+                        }
+
                         String isActiveString = tokenizeMessage.nextToken();
                         // SMS Category ID validation
                         if (!validateCategoryId(categoryId)) {
                             String errorMsg = "Invalid Category ID format";
-                            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
                             throw new IllegalArgumentException(errorMsg);
+//                            return;
                         }
+
                         // SMS Boolean validation
                         if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
                             throw new IllegalArgumentException("Invalid boolean value");
+//                            return;
                         }
+
                         isActive = Boolean.parseBoolean(isActiveString);
                         isMessageValid = true;
                     } catch (Exception e) {
                         Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Incorrect format (event)", Toast.LENGTH_SHORT).show();
                 }
 
                 // Set the fields to respective values if the message is valid
@@ -194,7 +209,7 @@ public class EventActivity extends AppCompatActivity {
                     findEventIsActive.setChecked(isActive);
                 }
 
-                Log.d(LOG_KEY, "launched Event Broadcast Receiver");
+                Log.d(LOG_KEY, "launched Event Broadcast Receiver " + EventActivityTracker.isActivityVisible());
             }
         }
     }

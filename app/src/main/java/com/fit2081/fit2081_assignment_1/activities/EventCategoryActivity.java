@@ -21,7 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.utilities.ActivityTracker;
+import com.fit2081.fit2081_assignment_1.utilities.EventActivityTracker;
+import com.fit2081.fit2081_assignment_1.utilities.EventCategoryActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
@@ -65,13 +66,15 @@ public class EventCategoryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ActivityTracker.activityResumed();
+        EventCategoryActivityTracker.activityResumed();
+        Log.d(LOG_KEY, "Event Category Activity Resumed");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        ActivityTracker.activityPaused();
+        EventCategoryActivityTracker.activityPaused();
+        Log.d(LOG_KEY, "Event Category Activity Paused");
     }
 
     public void createEventCategoryButtonOnClick(View view){
@@ -127,7 +130,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Only run the SMS receiver if the user is on this activity
-            if (ActivityTracker.isActivityVisible()) {
+            if (EventCategoryActivityTracker.isActivityVisible()) {
                 String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
                 StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
@@ -139,15 +142,25 @@ public class EventCategoryActivity extends AppCompatActivity {
 
                 if (tokenizeMessage.countTokens() == 3) {
                     try {
+                        // Validate SMS to only accept "category:"
                         categoryName = tokenizeMessage.nextToken();
                         if (!categoryName.startsWith("category:")) {
+//                            throw new IllegalArgumentException("Invalid");
                             return;
                         }
+
+                        // Validate event count to be positive integer
                         eventCount = Integer.parseInt(tokenizeMessage.nextToken());
+                        if (eventCount<=0){
+                            throw new IllegalArgumentException("Invalid");
+//                            return;
+                        }
+
                         // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
                         String isActiveString = tokenizeMessage.nextToken();
                         if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
                             throw new IllegalArgumentException("Invalid boolean value");
+//                            return;
                         }
                         isActive = Boolean.parseBoolean(isActiveString);
                         isMessageValid = true;
@@ -155,7 +168,7 @@ public class EventCategoryActivity extends AppCompatActivity {
                         Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(context, "Incorrect format", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Incorrect format (category)", Toast.LENGTH_SHORT).show();
                 }
 
                 // Set the fields to respective values if the message is valid
@@ -165,7 +178,7 @@ public class EventCategoryActivity extends AppCompatActivity {
                     findCategoryIsActive.setChecked(isActive);
                 }
 
-                Log.d(LOG_KEY, "launched Category Broadcast Receiver" + context.getClass());
+                Log.d(LOG_KEY, "launched Category Broadcast Receiver " + EventActivityTracker.isActivityVisible());
             }
         }
     }

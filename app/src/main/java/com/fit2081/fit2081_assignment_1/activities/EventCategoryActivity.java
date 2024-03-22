@@ -55,11 +55,13 @@ public class EventCategoryActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{
                 android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
-        categoryBroadcastReceiver myBroadCastReceiver = new categoryBroadcastReceiver();
-
+        Log.d(LOG_KEY, "category broadcast receiver registered? " + BroadcastTracker.isBroadcastActive(this.getClass()));
+        // Only instantiate a new broadcast receiver if there is none registered
         if (!BroadcastTracker.isBroadcastActive(this.getClass())){
+            categoryBroadcastReceiver myBroadCastReceiver = new categoryBroadcastReceiver();
             registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
             BroadcastTracker.createBroadcastReceiver(this.getClass());
+            Log.d(LOG_KEY, "new category broadcast receiver registered");
         }
 
         Log.d(LOG_KEY, "launched category SMS Receiver");

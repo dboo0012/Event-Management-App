@@ -37,8 +37,6 @@ public class EventActivity extends AppCompatActivity {
     EditText findEventName;
     EditText findTicketsAvailable;
     Switch findEventIsActive;
-    private boolean isSMSBroadcastReceiverActive = false;
-    private eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +52,15 @@ public class EventActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
-        Log.d(LOG_KEY, "new receiver registered" + isSMSBroadcastReceiverActive);
+        Log.d(LOG_KEY, "event broadcast receiver registered? " + BroadcastTracker.isBroadcastActive(this.getClass()));
+        // Only instantiate a new broadcast receiver if there is none registered
         if (!BroadcastTracker.isBroadcastActive(this.getClass())) {
-//            eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
+            eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
             registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
             BroadcastTracker.createBroadcastReceiver(this.getClass());
+            Log.d(LOG_KEY, "new event broadcast receiver registered");
         }
-        Log.d(LOG_KEY, "launched SMS Receiver");
-
-
+        Log.d(LOG_KEY, "launched Event Activity");
     }
 
     @Override

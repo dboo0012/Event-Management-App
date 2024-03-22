@@ -21,9 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.utilities.BroadcastTracker;
-import com.fit2081.fit2081_assignment_1.utilities.EventActivityTracker;
-import com.fit2081.fit2081_assignment_1.utilities.EventCategoryActivityTracker;
+import com.fit2081.fit2081_assignment_1.Trackers.BroadcastTracker;
+import com.fit2081.fit2081_assignment_1.Trackers.EventActivityTracker;
+import com.fit2081.fit2081_assignment_1.Trackers.EventCategoryActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;

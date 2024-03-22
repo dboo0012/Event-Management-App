@@ -1,4 +1,4 @@
-package com.fit2081.fit2081_assignment_1.utilities;
+package com.fit2081.fit2081_assignment_1.Trackers;
 
 public class EventActivityTracker{
     private static boolean activityVisible;

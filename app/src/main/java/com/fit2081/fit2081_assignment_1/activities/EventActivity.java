@@ -161,21 +161,21 @@ public class EventActivity extends AppCompatActivity {
 
                 if (tokenizeMessage.countTokens() == 4) {
                     try {
-                        // Validate SMS to only accept "event:"
                         eventName = tokenizeMessage.nextToken();
+                        categoryId = tokenizeMessage.nextToken();
+                        ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
+                        String isActiveString = tokenizeMessage.nextToken();
+                        isActive = Boolean.parseBoolean(isActiveString);
+                        // Validate SMS to only accept "event:"
                         if (!eventName.startsWith("event:")) {
                             return;
                         }
 
-                        categoryId = tokenizeMessage.nextToken();
-
                         // Validate event count to be positive integer
-                        ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
                         if (ticketsAvailable<=0){
                             throw new IllegalArgumentException("Invalid");
                         }
 
-                        String isActiveString = tokenizeMessage.nextToken();
                         // SMS Category ID validation
                         if (!validateCategoryId(categoryId)) {
                             throw new IllegalArgumentException("Invalid Category ID format");
@@ -186,7 +186,7 @@ public class EventActivity extends AppCompatActivity {
                             throw new IllegalArgumentException("Invalid boolean value");
                         }
 
-                        isActive = Boolean.parseBoolean(isActiveString);
+                        // Valid token inputs
                         isMessageValid = true;
                     } catch (Exception e) {
                         Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();

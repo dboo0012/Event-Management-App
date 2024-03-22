@@ -149,24 +149,27 @@ public class EventCategoryActivity extends AppCompatActivity {
 
                 if (tokenizeMessage.countTokens() == 3) {
                     try {
-                        // Validate SMS to only accept "category:"
                         categoryName = tokenizeMessage.nextToken();
+                        eventCount = Integer.parseInt(tokenizeMessage.nextToken());
+                        String isActiveString = tokenizeMessage.nextToken();
+                        isActive = Boolean.parseBoolean(isActiveString);
+
+                        // Validate SMS to only accept "category:"
                         if (!categoryName.startsWith("category:")) {
                             return;
                         }
 
                         // Validate event count to be positive integer
-                        eventCount = Integer.parseInt(tokenizeMessage.nextToken());
                         if (eventCount<=0){
                             throw new IllegalArgumentException("Invalid");
                         }
 
                         // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
-                        String isActiveString = tokenizeMessage.nextToken();
                         if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
                             throw new IllegalArgumentException("Invalid boolean value");
                         }
-                        isActive = Boolean.parseBoolean(isActiveString);
+
+                        // Valid token inputs
                         isMessageValid = true;
                     } catch (Exception e) {
                         Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();

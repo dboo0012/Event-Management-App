@@ -164,7 +164,6 @@ public class EventActivity extends AppCompatActivity {
                         // Validate SMS to only accept "event:"
                         eventName = tokenizeMessage.nextToken();
                         if (!eventName.startsWith("event:")) {
-//                            throw new IllegalArgumentException("Invalid");
                             return;
                         }
 
@@ -174,22 +173,17 @@ public class EventActivity extends AppCompatActivity {
                         ticketsAvailable = Integer.parseInt(tokenizeMessage.nextToken());
                         if (ticketsAvailable<=0){
                             throw new IllegalArgumentException("Invalid");
-//                            return;
                         }
 
                         String isActiveString = tokenizeMessage.nextToken();
                         // SMS Category ID validation
                         if (!validateCategoryId(categoryId)) {
-                            String errorMsg = "Invalid Category ID format";
-//                            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
-                            throw new IllegalArgumentException(errorMsg);
-//                            return;
+                            throw new IllegalArgumentException("Invalid Category ID format");
                         }
 
                         // SMS Boolean validation
                         if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
                             throw new IllegalArgumentException("Invalid boolean value");
-//                            return;
                         }
 
                         isActive = Boolean.parseBoolean(isActiveString);
@@ -198,7 +192,7 @@ public class EventActivity extends AppCompatActivity {
                         Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(context, "Incorrect format (event)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Incorrect message format", Toast.LENGTH_SHORT).show();
                 }
 
                 // Set the fields to respective values if the message is valid
@@ -207,6 +201,7 @@ public class EventActivity extends AppCompatActivity {
                     findCategoryId.setText(categoryId);
                     findTicketsAvailable.setText(String.valueOf(ticketsAvailable));
                     findEventIsActive.setChecked(isActive);
+                    Log.d(LOG_KEY, "Event message valid");
                 }
 
                 Log.d(LOG_KEY, "launched Event Broadcast Receiver " + EventActivityTracker.isActivityVisible());

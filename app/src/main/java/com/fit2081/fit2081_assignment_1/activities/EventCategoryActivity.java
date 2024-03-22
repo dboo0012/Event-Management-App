@@ -152,7 +152,6 @@ public class EventCategoryActivity extends AppCompatActivity {
                         // Validate SMS to only accept "category:"
                         categoryName = tokenizeMessage.nextToken();
                         if (!categoryName.startsWith("category:")) {
-//                            throw new IllegalArgumentException("Invalid");
                             return;
                         }
 
@@ -160,14 +159,12 @@ public class EventCategoryActivity extends AppCompatActivity {
                         eventCount = Integer.parseInt(tokenizeMessage.nextToken());
                         if (eventCount<=0){
                             throw new IllegalArgumentException("Invalid");
-//                            return;
                         }
 
                         // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
                         String isActiveString = tokenizeMessage.nextToken();
                         if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
                             throw new IllegalArgumentException("Invalid boolean value");
-//                            return;
                         }
                         isActive = Boolean.parseBoolean(isActiveString);
                         isMessageValid = true;
@@ -175,7 +172,7 @@ public class EventCategoryActivity extends AppCompatActivity {
                         Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(context, "Incorrect format (category)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Incorrect message format", Toast.LENGTH_SHORT).show();
                 }
 
                 // Set the fields to respective values if the message is valid
@@ -183,6 +180,7 @@ public class EventCategoryActivity extends AppCompatActivity {
                     findCategoryName.setText(ExtractStringAfterColon.extract(categoryName));
                     findEventCount.setText(String.valueOf(eventCount));
                     findCategoryIsActive.setChecked(isActive);
+                    Log.d(LOG_KEY, "Category message valid");
                 }
 
                 Log.d(LOG_KEY, "launched Category Broadcast Receiver " + EventActivityTracker.isActivityVisible());

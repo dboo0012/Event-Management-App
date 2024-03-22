@@ -33,7 +33,7 @@ public class SMSReceiver extends BroadcastReceiver {
             }
             msgIntent.setAction(destinationFilter); // destination
             msgIntent.putExtra(SMS_MSG_KEY, message); // packaged message
-            context.sendBroadcast(msgIntent);
+            context.sendBroadcast(msgIntent); // Send broadcast
             Log.d(LOG_KEY, "launched SMS Broadcast");
         }
     }

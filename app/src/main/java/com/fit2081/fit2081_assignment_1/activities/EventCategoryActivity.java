@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.utilities.BroadcastTracker;
 import com.fit2081.fit2081_assignment_1.utilities.EventActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.EventCategoryActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
@@ -56,7 +57,11 @@ public class EventCategoryActivity extends AppCompatActivity {
 
         categoryBroadcastReceiver myBroadCastReceiver = new categoryBroadcastReceiver();
 
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
+        if (!BroadcastTracker.isBroadcastActive(this.getClass())){
+            registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
+            BroadcastTracker.createBroadcastReceiver(this.getClass());
+        }
+
         Log.d(LOG_KEY, "launched category SMS Receiver");
 
         // Debugging

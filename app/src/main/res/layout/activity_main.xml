@@ -1,135 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.MainActivity"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
     android:background="@drawable/android_background">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_newAccount"
-        android:layout_width="228dp"
-        android:layout_height="76dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="100dp"
-        android:text="Register"
-        android:textSize="48sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signUpButton"
-        android:layout_width="307dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="452dp"
-        android:background="@drawable/custom_button"
-        android:onClick="signUpButtonOnClick"
-        android:text="Sign up"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_newAccount"
+            android:layout_width="228dp"
+            android:layout_height="76dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="100dp"
+            android:text="Register"
+            android:textSize="48sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_loginPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="15dp"
-        android:text="Username"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_newAccount" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/signUpButton"
+            android:layout_width="307dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="452dp"
+            android:background="@drawable/custom_button"
+            android:onClick="signUpButtonOnClick"
+            android:text="Sign up"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/signUpUsername"
-        android:layout_width="307dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="48dp"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="text"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_loginPassword" />
+        <TextView
+            style="@style/CustomTextView"
+            android:id="@+id/tv_loginPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="15dp"
+            android:text="Username"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_newAccount" />
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="9dp"
-        android:text="Confirm Password"
-        app:layout_constraintBottom_toTopOf="@+id/signUpConfirmPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
+        <EditText
+            android:id="@+id/signUpUsername"
+            android:layout_width="307dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="48dp"
+            android:ems="10"
+            android:hint="Username"
+            android:inputType="text"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_loginPassword" />
 
-    <EditText
-        android:id="@+id/signUpPassword"
-        android:layout_width="307dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="1dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_confirmPassword" />
+        <TextView
+            style="@style/CustomTextView"
+            android:id="@+id/tv_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="9dp"
+            android:text="Confirm Password"
+            app:layout_constraintBottom_toTopOf="@+id/signUpConfirmPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_confirmPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="8dp"
-        android:text="Password"
-        app:layout_constraintBottom_toTopOf="@+id/signUpPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
+        <EditText
+            android:id="@+id/signUpPassword"
+            android:layout_width="307dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="1dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_confirmPassword" />
 
-    <EditText
-        android:id="@+id/signUpConfirmPassword"
-        android:layout_width="307dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:hint="Confirm Password"
-        android:inputType="textPassword"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
+        <TextView
+            style="@style/CustomTextView"
+            android:id="@+id/tv_confirmPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="8dp"
+            android:text="Password"
+            app:layout_constraintBottom_toTopOf="@+id/signUpPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="60dp"
-        android:text="Already registered?"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+        <EditText
+            android:id="@+id/signUpConfirmPassword"
+            android:layout_width="307dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/createCategoryButton"
-        android:layout_width="307dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/custom_button"
-        android:onClick="launchLogin"
-        android:text="Login"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        <TextView
+            style="@style/CustomTextView"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="60dp"
+            android:text="Already registered?"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/createCategoryButton"
+            android:layout_width="307dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/custom_button"
+            android:onClick="launchLogin"
+            android:text="Login"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

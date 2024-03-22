@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.utilities.BroadcastTracker;
 import com.fit2081.fit2081_assignment_1.utilities.EventActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
@@ -37,7 +38,7 @@ public class EventActivity extends AppCompatActivity {
     EditText findTicketsAvailable;
     Switch findEventIsActive;
     private boolean isSMSBroadcastReceiverActive = false;
-    private eventBroadcastReceiver myBroadCastReceiver;
+    private eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +51,18 @@ public class EventActivity extends AppCompatActivity {
         findEventName = findViewById(R.id.et_eventName);
         findTicketsAvailable = findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = findViewById(R.id.switch_isEventActive);
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
-        if (!isSMSBroadcastReceiverActive) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
-
-            eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
-
+        Log.d(LOG_KEY, "new receiver registered" + isSMSBroadcastReceiverActive);
+        if (!BroadcastTracker.isBroadcastActive(this.getClass())) {
+//            eventBroadcastReceiver myBroadCastReceiver = new eventBroadcastReceiver();
             registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
-            isSMSBroadcastReceiverActive = true;
-            Log.d(LOG_KEY, "launched SMS Receiver");
+            BroadcastTracker.createBroadcastReceiver(this.getClass());
         }
+        Log.d(LOG_KEY, "launched SMS Receiver");
+
+
     }
 
     @Override

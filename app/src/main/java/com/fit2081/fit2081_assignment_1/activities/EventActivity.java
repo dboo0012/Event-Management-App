@@ -29,7 +29,6 @@ import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
 import java.util.StringTokenizer;
 
 public class EventActivity extends AppCompatActivity {
-    String key = MainActivity.LOG_KEY;
     TextView findEventId;
     EditText findCategoryId;
     EditText findEventName;

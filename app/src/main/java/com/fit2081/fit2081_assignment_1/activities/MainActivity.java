@@ -30,13 +30,6 @@ public class MainActivity extends AppCompatActivity {
         findPassword = findViewById(R.id.signUpPassword);
         findConfirmPassword = findViewById(R.id.signUpConfirmPassword);
 
-        // Request permission for SMS Broadcast
-//        ActivityCompat.requestPermissions(this, new String[]{
-//                android.Manifest.permission.SEND_SMS,
-//                android.Manifest.permission.RECEIVE_SMS,
-//                android.Manifest.permission.READ_SMS
-//        }, 0);
-
         // Debugging
         Log.d(LOG_KEY, "launched main activity");
 
@@ -78,7 +71,5 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(UserSharedPref.KEY_USERNAME, username);
         editor.putString(UserSharedPref.KEY_PASSWORD, password);
         editor.apply();
-
-//        findUsername.setText(username);
     }
 }

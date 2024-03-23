@@ -29,7 +29,6 @@ import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
 import java.util.StringTokenizer;
 
 public class EventCategoryActivity extends AppCompatActivity {
-    String key = MainActivity.LOG_KEY;
     TextView findCategoryId;
     EditText findCategoryName;
     EditText findEventCount;
@@ -58,7 +57,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         Log.d(LOG_KEY, "launched category SMS Receiver");
 
         // Debugging
-        Log.d(key, "launched event category activity");
+        Log.d(LOG_KEY, "launched event category activity");
     }
 
     @Override
@@ -84,7 +83,6 @@ public class EventCategoryActivity extends AppCompatActivity {
         // form validation
         if (categoryName.isEmpty()){ // check that event category name is filled
             Toast.makeText(this, "Event category name required", Toast.LENGTH_SHORT).show();
-            Log.d(key, "name not entered");
         } else {
             String categoryId = generateCategoryID();
             saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive);

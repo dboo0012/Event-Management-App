@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         findConfirmPassword = findViewById(R.id.signUpConfirmPassword);
 
         // Request permission for SMS Broadcast
-        ActivityCompat.requestPermissions(this, new String[]{
-                android.Manifest.permission.SEND_SMS,
-                android.Manifest.permission.RECEIVE_SMS,
-                android.Manifest.permission.READ_SMS
-        }, 0);
+//        ActivityCompat.requestPermissions(this, new String[]{
+//                android.Manifest.permission.SEND_SMS,
+//                android.Manifest.permission.RECEIVE_SMS,
+//                android.Manifest.permission.READ_SMS
+//        }, 0);
 
         // Debugging
         Log.d(LOG_KEY, "launched main activity");

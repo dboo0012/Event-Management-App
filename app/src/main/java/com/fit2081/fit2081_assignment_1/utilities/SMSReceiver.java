@@ -13,7 +13,6 @@ public class SMSReceiver extends BroadcastReceiver {
 
     public static final String EVENT_SMS_FILTER = "EVENT_SMS_FILTER";
     public static final String EVENT_CATEGORY_SMS_FILTER = "EVENT_CATEGORY_SMS_FILTER";
-    public static final String SMS_FILTER = "SMS_FILTER";
     public static final String SMS_MSG_KEY = "SMS_MSG_KEY";
     @Override
     public void onReceive(Context context, Intent intent) {

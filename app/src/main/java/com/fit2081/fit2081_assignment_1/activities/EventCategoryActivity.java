@@ -21,9 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.Trackers.BroadcastTracker;
-import com.fit2081.fit2081_assignment_1.Trackers.EventActivityTracker;
-import com.fit2081.fit2081_assignment_1.Trackers.EventCategoryActivityTracker;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
@@ -37,14 +34,13 @@ public class EventCategoryActivity extends AppCompatActivity {
     EditText findCategoryName;
     EditText findEventCount;
     Switch findCategoryIsActive;
+    categoryBroadcastReceiver myBroadCastReceiver;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_category);
-
-        // Generate category ID (with method)
 
         // Assign the attributes
         findCategoryName = findViewById(R.id.et_eventCategoryId);
@@ -55,14 +51,9 @@ public class EventCategoryActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{
                 android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
-        Log.d(LOG_KEY, "category broadcast receiver registered? " + BroadcastTracker.isBroadcastActive(this.getClass()));
-        // Only instantiate a new broadcast receiver if there is none registered
-        if (!BroadcastTracker.isBroadcastActive(this.getClass())){
-            categoryBroadcastReceiver myBroadCastReceiver = new categoryBroadcastReceiver();
-            registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
-            BroadcastTracker.createBroadcastReceiver(this.getClass());
-            Log.d(LOG_KEY, "new category broadcast receiver registered");
-        }
+        // Register a BroadCastReceiver to listen for incoming SMS
+        myBroadCastReceiver = new categoryBroadcastReceiver();
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
 
         Log.d(LOG_KEY, "launched category SMS Receiver");
 
@@ -71,17 +62,10 @@ public class EventCategoryActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        EventCategoryActivityTracker.activityResumed();
-        Log.d(LOG_KEY, "Event Category Activity Resumed");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        EventCategoryActivityTracker.activityPaused();
-        Log.d(LOG_KEY, "Event Category Activity Paused");
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myBroadCastReceiver); // Kill the receiver when the activity is closed
+        Log.d(LOG_KEY, "Broadcast receiver unregistered (category)");
     }
 
     public void createEventCategoryButtonOnClick(View view){
@@ -90,7 +74,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         boolean isCategoryActive = findCategoryIsActive.isChecked();
         int eventCount;
 
-        // TO BE VERIFIED if it can be used
+        // Default value for event count
         try{
             eventCount = Integer.parseInt(findEventCount.getText().toString());
         } catch (Exception e){
@@ -103,13 +87,11 @@ public class EventCategoryActivity extends AppCompatActivity {
             Log.d(key, "name not entered");
         } else {
             String categoryId = generateCategoryID();
-
             saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive);
+            findCategoryId.setText(categoryId);
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
-
-            findCategoryId.setText(categoryId);
         }
     }
 
@@ -136,57 +118,54 @@ public class EventCategoryActivity extends AppCompatActivity {
     class categoryBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Only run the SMS receiver if the user is on this activity
-            if (EventCategoryActivityTracker.isActivityVisible()) {
-                String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+            Log.d(LOG_KEY, "launched Category Broadcast Receiver");
+            String interceptedMessage = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
 
-                StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
+            StringTokenizer tokenizeMessage = new StringTokenizer(interceptedMessage, ";");
 
-                String categoryName = null;
-                int eventCount = 0;
-                boolean isActive = false;
-                boolean isMessageValid = false;
+            String categoryName = null;
+            int eventCount = 0;
+            boolean isActive = false;
+            boolean isMessageValid = false;
 
-                if (tokenizeMessage.countTokens() == 3) {
-                    try {
-                        categoryName = tokenizeMessage.nextToken();
-                        eventCount = Integer.parseInt(tokenizeMessage.nextToken());
-                        String isActiveString = tokenizeMessage.nextToken();
-                        isActive = Boolean.parseBoolean(isActiveString);
+            if (tokenizeMessage.countTokens() == 3) {
+                try {
+                    categoryName = tokenizeMessage.nextToken();
+                    eventCount = Integer.parseInt(tokenizeMessage.nextToken());
+                    String isActiveString = tokenizeMessage.nextToken();
+                    isActive = Boolean.parseBoolean(isActiveString);
 
-                        // Validate SMS to only accept "category:"
-                        if (!categoryName.startsWith("category:")) {
-                            return;
-                        }
-
-                        // Validate event count to be positive integer
-                        if (eventCount<=0){
-                            throw new IllegalArgumentException("Invalid");
-                        }
-
-                        // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
-                        if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
-                            throw new IllegalArgumentException("Invalid boolean value");
-                        }
-
-                        // Valid token inputs
-                        isMessageValid = true;
-                    } catch (Exception e) {
-                        Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
+                    // Validate SMS to only accept "category:"
+                    if (!categoryName.startsWith("category:")) {
+                        throw new IllegalArgumentException("Invalid");
                     }
-                } else {
-                    Toast.makeText(context, "Incorrect message format", Toast.LENGTH_SHORT).show();
-                }
 
-                // Set the fields to respective values if the message is valid
-                if (isMessageValid) {
-                    findCategoryName.setText(ExtractStringAfterColon.extract(categoryName));
-                    findEventCount.setText(String.valueOf(eventCount));
-                    findCategoryIsActive.setChecked(isActive);
-                    Log.d(LOG_KEY, "Category message valid");
-                }
+                    // Validate event count to be positive integer
+                    if (eventCount<0){
+                        throw new IllegalArgumentException("Invalid");
+                    }
 
-                Log.d(LOG_KEY, "launched Category Broadcast Receiver " + EventActivityTracker.isActivityVisible());
+                    // Checks that the value tokenized is only "TRUE" or "FALSE" not including casing
+                    if (!isActiveString.equalsIgnoreCase("TRUE") && !isActiveString.equalsIgnoreCase("FALSE")) {
+                        throw new IllegalArgumentException("Invalid boolean value");
+                    }
+
+                    // Valid token inputs
+                    isMessageValid = true;
+                } catch (Exception e) {
+                    Toast.makeText(context, "Invalid message format", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(context, "Incorrect message format", Toast.LENGTH_SHORT).show();
+                Log.d(LOG_KEY, "Category message INVALID");
+            }
+
+            // Set the fields to respective values if the message is valid
+            if (isMessageValid) {
+                findCategoryName.setText(ExtractStringAfterColon.extract(categoryName));
+                findEventCount.setText(String.valueOf(eventCount));
+                findCategoryIsActive.setChecked(isActive);
+                Log.d(LOG_KEY, "Category message VALID");
             }
         }
     }

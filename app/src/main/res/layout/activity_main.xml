@@ -22,6 +22,7 @@
             android:layout_marginTop="100dp"
             android:text="Register"
             android:textSize="48sp"
+            android:textColor="@color/goldYellow"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

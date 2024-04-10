@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -23,7 +24,7 @@ public class DashboardActivity extends AppCompatActivity {
     Toolbar toolbar;
     NavigationView navView;
     DrawerLayout drawerLayout;
-
+    FloatingActionButton fab_save;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +46,19 @@ public class DashboardActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Flaoting action button
+        fab_save = findViewById(R.id.fab_save);
+        fab_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSnackbarMessage(view, "Saved Event");
+            }
+        });
+
         // Debugging
         Log.d(key, "launched dashboard activity");
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,6 +112,16 @@ public class DashboardActivity extends AppCompatActivity {
             }
             return true;
         }
+    }
+    private void showSnackbarMessage(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        snackbar.setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DashboardActivity.this, "undo clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        snackbar.show();
     }
 
 }

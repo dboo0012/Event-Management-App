@@ -59,6 +59,19 @@ public class DashboardActivity extends AppCompatActivity {
         Log.d(key, "launched dashboard activity");
     }
 
+    private void launchIntent(Class<?> targetClass){
+        // Creates a new intent instance to the target activity class and launch it
+        Intent newIntent = new Intent(this, targetClass);
+        startActivity(newIntent);
+    }
+
+    public void eventCategoryButtonOnClick(View view){
+        launchIntent(EventCategoryActivity.class);
+    }
+
+    public void addEventButtonOnClick(View view){
+        launchIntent(EventActivity.class);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,20 +96,6 @@ public class DashboardActivity extends AppCompatActivity {
         return true;
     }
 
-    private void launchIntent(Class<?> targetClass){
-        // Creates a new intent instance to the target activity class and launch it
-        Intent newIntent = new Intent(this, targetClass);
-        startActivity(newIntent);
-    }
-
-    public void eventCategoryButtonOnClick(View view){
-        launchIntent(EventCategoryActivity.class);
-    }
-
-    public void addEventButtonOnClick(View view){
-        launchIntent(EventActivity.class);
-    }
-
     class NavigationHandler implements NavigationView.OnNavigationItemSelectedListener{
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -104,6 +103,7 @@ public class DashboardActivity extends AppCompatActivity {
             if (itemId == R.id.drawer_view_category) {
                 Snackbar.make(navView, "View Category", Snackbar.LENGTH_SHORT).show();
             } else if (itemId == R.id.drawer_add) {
+                launchIntent(EventCategoryActivity.class);
                 Snackbar.make(navView, "Add category", Snackbar.LENGTH_SHORT).show();
             } else if (itemId == R.id.drawer_view_events) {
                 Snackbar.make(navView, "View All Events", Snackbar.LENGTH_SHORT).show();

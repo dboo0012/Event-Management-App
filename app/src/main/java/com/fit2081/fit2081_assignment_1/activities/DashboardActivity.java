@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
+import com.fit2081.fit2081_assignment_1.fragments.FragmentEvent;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
@@ -82,6 +83,8 @@ public class DashboardActivity extends AppCompatActivity {
         fragment.setAdapter(adapter);
         getSupportFragmentManager().beginTransaction().replace(R.id.categoryListFragment, fragment).commit(); // Set the adapter to the fragment
 
+        FragmentEvent fragmentEvent = new FragmentEvent();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_event, fragmentEvent).commit(); // Set the adapter to the fragment
 
         // Debugging
         Log.d(key, "launched dashboard activity");

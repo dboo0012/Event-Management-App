@@ -11,9 +11,9 @@
         android:id="@+id/categoryListFragment"
         android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory"
         android:layout_width="match_parent"
-        android:layout_height="152dp"
+        android:layout_height="160dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,40 +24,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="8dp"
         android:text="Dashboard"
         android:textColor="@color/goldYellow"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/eventCategoryButton"
-        android:layout_width="307dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="576dp"
-        android:background="@drawable/custom_button"
-        android:onClick="eventCategoryButtonOnClick"
-        android:text="Create event category"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/eventCategoryButton"-->
+<!--        android:layout_width="307dp"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:layout_marginStart="52dp"-->
+<!--        android:layout_marginTop="576dp"-->
+<!--        android:background="@drawable/custom_button"-->
+<!--        android:onClick="eventCategoryButtonOnClick"-->
+<!--        android:text="Create event category"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/addEventButton"
-        android:layout_width="307dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/custom_button"
-        android:onClick="addEventButtonOnClick"
-        android:text="Add event"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventCategoryButton" />
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/addEventButton"-->
+<!--        android:layout_width="307dp"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:layout_marginStart="52dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:background="@drawable/custom_button"-->
+<!--        android:onClick="addEventButtonOnClick"-->
+<!--        android:text="Add event"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/eventCategoryButton" />-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -65,6 +65,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.35" />
+
+    <TextView
+        android:id="@+id/tv_eventCategoryList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
+        android:text="Event Category List"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_event"
+        android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryListFragment" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

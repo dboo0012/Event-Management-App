@@ -24,7 +24,7 @@ public class ListViewRecyclerAdapter extends RecyclerView.Adapter<ListViewRecycl
     @NonNull
     @Override
     public ListViewRecyclerAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_card_layout, parent, false);
         return new CustomViewHolder(view);
     }
 

@@ -90,6 +90,10 @@ public class EventCategoryActivity extends AppCompatActivity {
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+
+            // Return to dashboard activity
+            Intent newIntent = new Intent(this, DashboardActivity.class);
+            startActivity(newIntent);
         }
     }
 

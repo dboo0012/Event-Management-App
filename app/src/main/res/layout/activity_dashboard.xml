@@ -7,6 +7,15 @@
     tools:context=".activities.DashboardActivity"
     android:background="@drawable/android_background">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_category"
+        android:layout_width="365dp"
+        android:layout_height="329dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="34dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login" />
+
     <TextView
         android:id="@+id/tv_login"
         android:layout_width="wrap_content"

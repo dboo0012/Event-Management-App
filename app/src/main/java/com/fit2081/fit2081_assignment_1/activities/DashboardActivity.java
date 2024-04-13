@@ -46,12 +46,12 @@ public class DashboardActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Flaoting action button
+        // Floating action button
         fab_save = findViewById(R.id.fab_save);
         fab_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSnackbarMessage(view, "Saved Event");
+                showSnackbarMessageAction(view, "Saved Event");
             }
         });
 
@@ -113,7 +113,7 @@ public class DashboardActivity extends AppCompatActivity {
             return true;
         }
     }
-    private void showSnackbarMessage(View view, String message) {
+    private void showSnackbarMessageAction(View view, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         snackbar.setAction("Undo", new View.OnClickListener() {
             @Override

@@ -71,15 +71,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Initialize the category list at launch
         Log.d("restore", String.format("at onCreate: %s",categoryList));
-        if (categoryList == null) {
-            categoryList = new ArrayList<EventCategory>();
-            // Convert the empty list to string and store in shared preferences
-            String categoryListString = gson.toJson(categoryList);
-            SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, categoryListString);
-            editor.apply();
-        }
+        restoreListData();
         Log.d("restore", String.format("after at onCreate: %s",categoryList));
 
         // Create the adapter with the shared pref list data
@@ -89,6 +81,7 @@ public class DashboardActivity extends AppCompatActivity {
         FragmentListAllCategory fragment = new FragmentListAllCategory();
         fragment.setAdapter(adapter);
         getSupportFragmentManager().beginTransaction().replace(R.id.categoryListFragment, fragment).commit(); // Set the adapter to the fragment
+
 
         // Debugging
         Log.d(key, "launched dashboard activity");
@@ -138,7 +131,6 @@ public class DashboardActivity extends AppCompatActivity {
         return true;
     }
 
-
     public void notifyAdapter() {
         if (adapter != null) {
             restoreListData();
@@ -150,10 +142,21 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void restoreListData(){
+        // Grab the array list stored as String in SharedPreferences
         String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
         // Convert the restored string back to ArrayList
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
         categoryList = gson.fromJson(arrayListStringRestored,type);
+
+        // Initialize and save the list if it has not been
+        if (categoryList == null) {
+            categoryList = new ArrayList<EventCategory>();
+            String categoryListString = gson.toJson(categoryList);
+            SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, categoryListString);
+            editor.apply();
+        }
 
         // Initializes a category list if it has not been
         Log.d("restore", String.format("%s",categoryList));
@@ -180,6 +183,7 @@ public class DashboardActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.drawer_view_category) {
                 Snackbar.make(navView, "View Category", Snackbar.LENGTH_SHORT).show();
+                launchIntent(ViewAllCategoryActivity.class);
             } else if (itemId == R.id.drawer_add) {
                 Snackbar.make(navView, "Add category", Snackbar.LENGTH_SHORT).show();
                 launchIntent(EventCategoryActivity.class);

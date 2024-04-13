@@ -37,7 +37,7 @@ public class DashboardActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     FloatingActionButton fab_save;
     ListViewRecyclerAdapter adapter;
-    ArrayList<EventCategory> data = new ArrayList<>();
+    ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity {
         restoreListData();
 
         // Create the adapter with the shared pref list data
-        adapter = new ListViewRecyclerAdapter(data);
+        adapter = new ListViewRecyclerAdapter(categoryList);
 
         // Create the fragment
         FragmentListAllCategory fragment = new FragmentListAllCategory();
@@ -112,7 +112,7 @@ public class DashboardActivity extends AppCompatActivity {
             // notify adapter of changes here
             notifyAdapter();
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
-            Log.d("list", String.format("Size: %d, dashboard Array: %s", data.size() ,data.toString()));
+            Log.d("list", String.format("Size: %d, dashboard Array: %s", categoryList.size() , categoryList.toString()));
         } else if (itemId == R.id.option_clear) {
             // clear fields here
             Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
@@ -133,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity {
         if (adapter != null) {
             restoreListData();
             // Update the data in the adapter
-            adapter.updateData(data);
+            adapter.updateData(categoryList);
             adapter.notifyDataSetChanged();
             Log.d("adapter", "Adapter notified");
         }
@@ -143,17 +143,22 @@ public class DashboardActivity extends AppCompatActivity {
         String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
         // Convert the restored string back to ArrayList
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        data = gson.fromJson(arrayListStringRestored,type);
+        categoryList = gson.fromJson(arrayListStringRestored,type);
+
+        // Check if categoryList is null and initialize it if it is
+        if (categoryList == null) {
+            categoryList = new ArrayList<>();
+        }
     }
 
     private void deleteListData(){
         // Clear the list of categories
-        data.clear();
+        categoryList.clear();
 
         // Save the empty list to SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        String emptyListJson = gson.toJson(data);
+        String emptyListJson = gson.toJson(categoryList);
         editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
         editor.apply();
 

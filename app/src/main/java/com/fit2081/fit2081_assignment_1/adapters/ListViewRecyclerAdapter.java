@@ -47,8 +47,12 @@ public class ListViewRecyclerAdapter extends RecyclerView.Adapter<ListViewRecycl
     }
 
     public void updateData(ArrayList<EventCategory> newData) {
-        this.data.clear();
+        clearData();
         this.data.addAll(newData);
+    }
+
+    public void clearData() {
+        this.data.clear();
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{

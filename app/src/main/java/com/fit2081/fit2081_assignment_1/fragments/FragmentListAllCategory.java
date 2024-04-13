@@ -79,8 +79,6 @@ public class FragmentListAllCategory extends Fragment {
         // Set the layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // Set the data
-
         // Set the adapter to the RecyclerView
         recyclerView.setAdapter(adapter);
 

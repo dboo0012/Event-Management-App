@@ -20,6 +20,7 @@ import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -68,12 +69,8 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        // restore data from SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-        String arrayListStringRestored = sharedPreferences.getString(EventCategorySharedPref.KEY_CATEGORY_LIST, "[]");
-        // Convert the restored string back to ArrayList
-        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        data = gson.fromJson(arrayListStringRestored,type);
+        // restore list data from SharedPreferences
+        restoreListData();
 
         // Create the adapter with the shared pref list data
         adapter = new ListViewRecyclerAdapter(data);
@@ -114,14 +111,15 @@ public class DashboardActivity extends AppCompatActivity {
         if (itemId == R.id.option_refresh) {
             // notify adapter of changes here
             notifyAdapter();
-            Log.d("list", String.format("Size: %d, dashboard Array: %s", data.size() ,data.toString()));
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+            Log.d("list", String.format("Size: %d, dashboard Array: %s", data.size() ,data.toString()));
         } else if (itemId == R.id.option_clear) {
             // clear fields here
             Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_categories) {
             // clear categories shared pref list here
-            Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
+            deleteListData();
+            Toast.makeText(this, "All Event Categories Wiped.", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_events) {
             // clear events shared pref list here
             Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
@@ -130,19 +128,37 @@ public class DashboardActivity extends AppCompatActivity {
         return true;
     }
 
+
     public void notifyAdapter() {
         if (adapter != null) {
-            // Retrieve the updated list from SharedPreferences
-            SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-            String arrayListStringRestored = sharedPreferences.getString(EventCategorySharedPref.KEY_CATEGORY_LIST, "[]");
-            Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-            ArrayList<EventCategory> updatedData = gson.fromJson(arrayListStringRestored,type);
-
+            restoreListData();
             // Update the data in the adapter
-            adapter.updateData(updatedData);
+            adapter.updateData(data);
             adapter.notifyDataSetChanged();
             Log.d("adapter", "Adapter notified");
         }
+    }
+
+    private void restoreListData(){
+        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        // Convert the restored string back to ArrayList
+        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        data = gson.fromJson(arrayListStringRestored,type);
+    }
+
+    private void deleteListData(){
+        // Clear the list of categories
+        data.clear();
+
+        // Save the empty list to SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String emptyListJson = gson.toJson(data);
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
+        editor.apply();
+
+        // Update the adapter with the new empty list
+        notifyAdapter();
     }
 
     class NavigationHandler implements NavigationView.OnNavigationItemSelectedListener{

@@ -12,5 +12,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/rv_categoryId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView 1"
+            app:layout_constraintEnd_toStartOf="@+id/rv_categoryName"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/rv_categoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView 2"
+            app:layout_constraintEnd_toStartOf="@+id/rv_eventCount"
+            app:layout_constraintStart_toEndOf="@+id/rv_categoryId"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/rv_eventCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView 3"
+            app:layout_constraintEnd_toStartOf="@+id/rv_categoryIsActive"
+            app:layout_constraintStart_toEndOf="@+id/rv_categoryName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/rv_categoryIsActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView 4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rv_eventCount"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,9 +16,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
+import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
+import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -25,6 +35,9 @@ public class DashboardActivity extends AppCompatActivity {
     NavigationView navView;
     DrawerLayout drawerLayout;
     FloatingActionButton fab_save;
+    ListViewRecyclerAdapter adapter;
+    ArrayList<EventCategory> data = new ArrayList<>();
+    Gson gson = new Gson();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +64,24 @@ public class DashboardActivity extends AppCompatActivity {
         fab_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSnackbarMessageAction(view, "Saved Event");
+                showFABSnackbarMessageAction(view, "Saved Event");
             }
         });
+
+        // restore data from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+        String arrayListStringRestored = sharedPreferences.getString(EventCategorySharedPref.KEY_CATEGORY_LIST, "[]");
+        // Convert the restored string back to ArrayList
+        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        data = gson.fromJson(arrayListStringRestored,type);
+
+        // Create the adapter with the shared pref list data
+        adapter = new ListViewRecyclerAdapter(data);
+
+        // Create the fragment
+        FragmentListAllCategory fragment = new FragmentListAllCategory();
+        fragment.setAdapter(adapter);
+        getSupportFragmentManager().beginTransaction().replace(R.id.categoryListFragment, fragment).commit(); // Set the adapter to the fragment
 
         // Debugging
         Log.d(key, "launched dashboard activity");
@@ -84,16 +112,37 @@ public class DashboardActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.option_refresh) {
-            Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
+            // notify adapter of changes here
+            notifyAdapter();
+            Log.d("list", String.format("Size: %d, dashboard Array: %s", data.size() ,data.toString()));
+            Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_clear) {
+            // clear fields here
             Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_categories) {
+            // clear categories shared pref list here
             Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_events) {
+            // clear events shared pref list here
             Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
         }
         // tell the OS
         return true;
+    }
+
+    public void notifyAdapter() {
+        if (adapter != null) {
+            // Retrieve the updated list from SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+            String arrayListStringRestored = sharedPreferences.getString(EventCategorySharedPref.KEY_CATEGORY_LIST, "[]");
+            Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+            ArrayList<EventCategory> updatedData = gson.fromJson(arrayListStringRestored,type);
+
+            // Update the data in the adapter
+            adapter.updateData(updatedData);
+            adapter.notifyDataSetChanged();
+            Log.d("adapter", "Adapter notified");
+        }
     }
 
     class NavigationHandler implements NavigationView.OnNavigationItemSelectedListener{
@@ -103,8 +152,8 @@ public class DashboardActivity extends AppCompatActivity {
             if (itemId == R.id.drawer_view_category) {
                 Snackbar.make(navView, "View Category", Snackbar.LENGTH_SHORT).show();
             } else if (itemId == R.id.drawer_add) {
-                launchIntent(EventCategoryActivity.class);
                 Snackbar.make(navView, "Add category", Snackbar.LENGTH_SHORT).show();
+                launchIntent(EventCategoryActivity.class);
             } else if (itemId == R.id.drawer_view_events) {
                 Snackbar.make(navView, "View All Events", Snackbar.LENGTH_SHORT).show();
             } else if (itemId == R.id.drawer_logout) {
@@ -113,7 +162,7 @@ public class DashboardActivity extends AppCompatActivity {
             return true;
         }
     }
-    private void showSnackbarMessageAction(View view, String message) {
+    private void showFABSnackbarMessageAction(View view, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         snackbar.setAction("Undo", new View.OnClickListener() {
             @Override

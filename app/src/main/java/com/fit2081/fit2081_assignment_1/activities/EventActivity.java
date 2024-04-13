@@ -101,8 +101,7 @@ public class EventActivity extends AppCompatActivity {
                 Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
 
                 // Return to dashboard activity
-                Intent newIntent = new Intent(this, DashboardActivity.class);
-                startActivity(newIntent);
+                finish();
             } else {
                 Toast.makeText(this, "Category ID does not match format.", Toast.LENGTH_SHORT).show();
             }

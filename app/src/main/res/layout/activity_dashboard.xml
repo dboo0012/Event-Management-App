@@ -7,15 +7,6 @@
     tools:context=".activities.DashboardActivity"
     android:background="@drawable/android_background">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_category"
-        android:layout_width="365dp"
-        android:layout_height="329dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="34dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login" />
-
     <TextView
         android:id="@+id/tv_login"
         android:layout_width="wrap_content"
@@ -55,6 +46,16 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventCategoryButton" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/categoryListFragment"
+        android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory"
+        android:layout_width="316dp"
+        android:layout_height="322dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

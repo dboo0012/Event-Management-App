@@ -190,6 +190,8 @@ public class DashboardActivity extends AppCompatActivity {
             } else if (itemId == R.id.drawer_view_events) {
                 Snackbar.make(navView, "View All Events", Snackbar.LENGTH_SHORT).show();
             } else if (itemId == R.id.drawer_logout) {
+                finish();
+                launchIntent(MainActivity.class);
                 Snackbar.make(navView, "Logout", Snackbar.LENGTH_SHORT).show();
             }
             return true;

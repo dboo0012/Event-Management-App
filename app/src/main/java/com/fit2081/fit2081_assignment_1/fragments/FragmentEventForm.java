@@ -2,12 +2,9 @@ package com.fit2081.fit2081_assignment_1.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.Manifest;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -20,23 +17,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.activities.EventActivity;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
-import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
+import com.google.gson.Gson;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentEvent#newInstance} factory method to
+ * Use the {@link FragmentEventForm#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentEvent extends Fragment {
+public class FragmentEventForm extends Fragment {
     TextView findEventId;
     EditText findCategoryId;
     EditText findEventName;
     EditText findTicketsAvailable;
     Switch findEventIsActive;
-
+    Gson gson = new Gson();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,7 +42,7 @@ public class FragmentEvent extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentEvent() {
+    public FragmentEventForm() {
         // Required empty public constructor
     }
 
@@ -59,8 +55,8 @@ public class FragmentEvent extends Fragment {
      * @return A new instance of fragment FragmentEvent.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentEvent newInstance(String param1, String param2) {
-        FragmentEvent fragment = new FragmentEvent();
+    public static FragmentEventForm newInstance(String param1, String param2) {
+        FragmentEventForm fragment = new FragmentEventForm();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -92,8 +88,9 @@ public class FragmentEvent extends Fragment {
         return view;
     }
 
-    public void saveEventButtonOnClick(){
+    public boolean saveEventButtonOnClick(){
         Log.d("boom", "boom");
+        boolean saveEvent = false;
         String categoryId = findCategoryId.getText().toString();
         String eventName = findEventName.getText().toString();
         int ticketsAvailable;
@@ -126,11 +123,12 @@ public class FragmentEvent extends Fragment {
                 findEventId.setText(generatedEventId);
                 String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
                 Toast.makeText(getActivity(), out, Toast.LENGTH_SHORT).show();
-
+                saveEvent = true;
             } else {
                 Toast.makeText(getActivity(), "Category ID does not match format.", Toast.LENGTH_SHORT).show();
             }
         }
+        return saveEvent;
     }
 
     private String generateEventId(){

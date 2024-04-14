@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
-import com.fit2081.fit2081_assignment_1.fragments.FragmentEvent;
+import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
@@ -37,9 +37,11 @@ public class DashboardActivity extends AppCompatActivity {
     NavigationView navView;
     DrawerLayout drawerLayout;
     FloatingActionButton fab_save;
-    ListViewRecyclerAdapter adapter;
-    ArrayList<EventCategory> categoryList;
-    Gson gson = new Gson();
+//    ListViewRecyclerAdapter adapter;
+//    ArrayList<EventCategory> categoryList;
+//    Gson gson = new Gson();
+    FragmentListAllCategory fragmentListAllCategory;
+    FragmentEventForm fragmentEventForm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,25 +68,19 @@ public class DashboardActivity extends AppCompatActivity {
         fab_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showFABSnackbarMessageAction(view, "Saved Event");
+                boolean isEventSaved = fragmentEventForm.saveEventButtonOnClick();
+                if (isEventSaved) {
+                    showFABSnackbarMessageAction(view, "Saved Event");
+                }
             }
         });
 
-        // Initialize the category list at launch
-        Log.d("restore", String.format("at onCreate: %s",categoryList));
-        restoreListData();
-        Log.d("restore", String.format("after at onCreate: %s",categoryList));
+        // Create the fragmentS
+        fragmentListAllCategory = new FragmentListAllCategory();
+        getSupportFragmentManager().beginTransaction().replace(R.id.categoryListFragment, fragmentListAllCategory).commit(); // Set the adapter to the fragment
 
-        // Create the adapter with the shared pref list data
-        adapter = new ListViewRecyclerAdapter(categoryList);
-
-        // Create the fragment
-        FragmentListAllCategory fragment = new FragmentListAllCategory();
-        fragment.setAdapter(adapter);
-        getSupportFragmentManager().beginTransaction().replace(R.id.categoryListFragment, fragment).commit(); // Set the adapter to the fragment
-
-        FragmentEvent fragmentEvent = new FragmentEvent();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_event, fragmentEvent).commit(); // Set the adapter to the fragment
+        fragmentEventForm = new FragmentEventForm();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_event, fragmentEventForm).commit(); // Set the adapter to the fragment
 
         // Debugging
         Log.d(key, "launched dashboard activity");
@@ -116,15 +112,15 @@ public class DashboardActivity extends AppCompatActivity {
 
         if (itemId == R.id.option_refresh) {
             // notify adapter of changes here
-            notifyAdapter();
+            fragmentListAllCategory.notifyAdapter();
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
-            Log.d("list", String.format("Size: %d, dashboard Array: %s", categoryList.size() , categoryList.toString()));
+//            Log.d("list", String.format("Size: %d, dashboard Array: %s", categoryList.size() , categoryList.toString()));
         } else if (itemId == R.id.option_clear) {
             // clear fields here
-            Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
+            fragmentEventForm.clearFields();
         } else if (itemId == R.id.option_delete_categories) {
             // clear categories shared pref list here
-            deleteListData();
+            fragmentListAllCategory.deleteListData();
             Toast.makeText(this, "All Event Categories Wiped.", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_events) {
             // clear events shared pref list here
@@ -132,52 +128,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
         // tell the OS
         return true;
-    }
-
-    public void notifyAdapter() {
-        if (adapter != null) {
-            restoreListData();
-            // Update the data in the adapter
-            adapter.updateData(categoryList);
-            adapter.notifyDataSetChanged();
-            Log.d("adapter", "Adapter notified");
-        }
-    }
-
-    private void restoreListData(){
-        // Grab the array list stored as String in SharedPreferences
-        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
-        // Convert the restored string back to ArrayList
-        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        categoryList = gson.fromJson(arrayListStringRestored,type);
-
-        // Initialize and save the list if it has not been
-        if (categoryList == null) {
-            categoryList = new ArrayList<EventCategory>();
-            String categoryListString = gson.toJson(categoryList);
-            SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, categoryListString);
-            editor.apply();
-        }
-
-        // Initializes a category list if it has not been
-        Log.d("restore", String.format("%s",categoryList));
-    }
-
-    private void deleteListData(){
-        // Clear the list of categories
-        categoryList.clear();
-
-        // Save the empty list to SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String emptyListJson = gson.toJson(categoryList);
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
-        editor.apply();
-
-        // Update the adapter with the new empty list
-        notifyAdapter();
     }
 
     class NavigationHandler implements NavigationView.OnNavigationItemSelectedListener{
@@ -205,6 +155,7 @@ public class DashboardActivity extends AppCompatActivity {
         snackbar.setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Undo the last added event (removing from -1 in list? or backstack method)
                 Toast.makeText(DashboardActivity.this, "undo clicked", Toast.LENGTH_SHORT).show();
             }
         });

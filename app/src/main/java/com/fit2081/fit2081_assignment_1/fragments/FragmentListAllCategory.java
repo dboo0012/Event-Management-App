@@ -1,17 +1,29 @@
 package com.fit2081.fit2081_assignment_1.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
+import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,17 +40,18 @@ public class FragmentListAllCategory extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private RecyclerView recyclerView;
-    private ListViewRecyclerAdapter adapter;
+    ListViewRecyclerAdapter adapter;
+    ArrayList<EventCategory> categoryList;
+    Gson gson = new Gson();
 
     public FragmentListAllCategory() {
         // Required empty public constructor
     }
 
-    public void setAdapter(ListViewRecyclerAdapter adapter) {
-        this.adapter = adapter;
-    }
+//    public void setAdapter(ListViewRecyclerAdapter adapter) {
+//        this.adapter = adapter;
+//    }
 
     /**
      * Use this factory method to create a new instance of
@@ -79,9 +92,69 @@ public class FragmentListAllCategory extends Fragment {
         // Set the layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        restoreListData();
+        // Create the adapter with the shared pref list data
+        adapter = new ListViewRecyclerAdapter(categoryList);
         // Set the adapter to the RecyclerView
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+//    @Override
+//    public void onResume() {
+//        // Initialize the category list at launch
+//        Log.d("fragrestore", String.format("at onCreateView: %s",categoryList));
+//        restoreListData();
+//        Log.d("fragrestore", String.format("after at onCreateView: %s",categoryList));
+//        super.onResume();
+//    }
+
+    private void restoreListData(){
+        // Grab the array list stored as String in SharedPreferences
+        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        // Convert the restored string back to ArrayList
+        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        categoryList = gson.fromJson(arrayListStringRestored,type);
+
+        // Initialize and save the list if it has not been
+        if (categoryList == null) {
+            categoryList = new ArrayList<EventCategory>();
+            String categoryListString = gson.toJson(categoryList);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, categoryListString);
+            editor.apply();
+            Log.d("list", String.format("new list created at fragment: %s",categoryList));
+        }
+
+        // Initializes a category list if it has not been
+        Log.d("restore", String.format("list restored at fragment: %s",categoryList));
+    }
+
+    public void notifyAdapter() {
+        if (adapter != null) {
+            restoreListData();
+            // Update the data in the adapter
+            adapter.updateData(categoryList);
+            adapter.notifyDataSetChanged();
+            Log.d("adapter", "Adapter notified");
+        }
+    }
+
+    public void deleteListData(){
+        // Clear the list of categories
+        categoryList.clear();
+
+        // Save the empty list to SharedPreferences
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String emptyListJson = gson.toJson(categoryList);
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
+        editor.apply();
+        Log.d("list", String.format("list data cleared"));
+
+        // Update the adapter with the new empty list
+        notifyAdapter();
     }
 }

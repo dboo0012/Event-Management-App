@@ -105,6 +105,7 @@ public class EventCategoryActivity extends AppCompatActivity {
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
 
             // Return to dashboard activity
+            // or create intent to dash?
             finish();
         }
     }
@@ -131,7 +132,7 @@ public class EventCategoryActivity extends AppCompatActivity {
 
     public void addItemToCategoryList(EventCategory newEventCategory){
         categoryList.add(newEventCategory);
-        Log.d("list", String.format("Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
+        Log.d("list", String.format("Added item to category list, Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
     }
 
     private String generateCategoryID(){

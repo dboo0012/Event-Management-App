@@ -10,7 +10,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentEventView"
-        android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentEvent"
+        android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm"
         android:layout_width="315dp"
         android:layout_height="474dp"
         android:layout_marginStart="32dp"

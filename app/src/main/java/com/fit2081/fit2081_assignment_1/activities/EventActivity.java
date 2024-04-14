@@ -4,8 +4,6 @@ import static com.fit2081.fit2081_assignment_1.activities.MainActivity.LOG_KEY;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -22,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.fragments.FragmentEvent;
+import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 
@@ -35,7 +33,7 @@ public class EventActivity extends AppCompatActivity {
     EditText findTicketsAvailable;
     Switch findEventIsActive;
     eventBroadcastReceiver myBroadCastReceiver;
-    FragmentEvent fragmentEvent;
+    FragmentEventForm fragmentEventForm;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +55,8 @@ public class EventActivity extends AppCompatActivity {
         registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
 
         // Event fragment
-        fragmentEvent = new FragmentEvent();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentEventView, fragmentEvent).commit();
+        fragmentEventForm = new FragmentEventForm();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentEventView, fragmentEventForm).commit();
 
         Log.d(LOG_KEY, "launched Event Activity");
     }
@@ -73,7 +71,7 @@ public class EventActivity extends AppCompatActivity {
 
     public void saveEventButtonOnClick(View view){
         Log.d("boom", "boom");
-        fragmentEvent.saveEventButtonOnClick();
+        fragmentEventForm.saveEventButtonOnClick();
     }
 
 //    public void saveEventButtonOnClick(View view){

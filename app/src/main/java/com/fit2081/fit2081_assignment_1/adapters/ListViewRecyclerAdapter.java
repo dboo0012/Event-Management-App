@@ -1,5 +1,6 @@
 package com.fit2081.fit2081_assignment_1.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class ListViewRecyclerAdapter extends RecyclerView.Adapter<ListViewRecycl
         holder.rvCategoryName.setText(eventCategory.getCategoryName());
         holder.rvEventCount.setText(String.valueOf(eventCategory.getEventCount()));
         holder.rvCategoryIsActive.setText(eventCategory.isCategoryActive() ? "Active" : "Inactive");
+        Log.d("adapter", "new card created");
     }
 
     @Override

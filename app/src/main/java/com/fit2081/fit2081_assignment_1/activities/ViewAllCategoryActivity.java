@@ -32,16 +32,16 @@ public class ViewAllCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_all_category);
 
         // Grab the array list stored as String in SharedPreferences
-        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
-        // Convert the restored string back to ArrayList
-        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        categoryList = gson.fromJson(arrayListStringRestored,type);
-
-        adapter = new ListViewRecyclerAdapter(categoryList);
+//        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+//        // Convert the restored string back to ArrayList
+//        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+//        categoryList = gson.fromJson(arrayListStringRestored,type);
+//
+//        adapter = new ListViewRecyclerAdapter(categoryList);
 
         // Display the list of categories using a fragment
         FragmentListAllCategory fragment = new FragmentListAllCategory();
-        fragment.setAdapter(adapter);
+//        fragment.setAdapter(adapter);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewAllCategory, fragment).commit(); // Set the adapter to the fragment
         Log.d("viewAllCategory", "launched view all category activity");
     }

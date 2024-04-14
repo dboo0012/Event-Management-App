@@ -3,12 +3,19 @@ package com.fit2081.fit2081_assignment_1.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
+import com.fit2081.fit2081_assignment_1.objects.Event;
+import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +32,10 @@ public class FragmentListAllEvent extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView recyclerView;
+    ListViewRecyclerAdapter adapter;
+    ArrayList<Event> categoryList;
+    Gson gson = new Gson();
 
     public FragmentListAllEvent() {
         // Required empty public constructor
@@ -61,6 +72,8 @@ public class FragmentListAllEvent extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_all_event, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_all_event, container, false);
+
+        return view;
     }
 }

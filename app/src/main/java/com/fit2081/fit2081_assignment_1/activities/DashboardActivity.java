@@ -37,9 +37,6 @@ public class DashboardActivity extends AppCompatActivity {
     NavigationView navView;
     DrawerLayout drawerLayout;
     FloatingActionButton fab_save;
-//    ListViewRecyclerAdapter adapter;
-//    ArrayList<EventCategory> categoryList;
-//    Gson gson = new Gson();
     FragmentListAllCategory fragmentListAllCategory;
     FragmentEventForm fragmentEventForm;
     @Override

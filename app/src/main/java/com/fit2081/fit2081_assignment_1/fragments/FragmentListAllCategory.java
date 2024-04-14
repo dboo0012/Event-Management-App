@@ -101,15 +101,6 @@ public class FragmentListAllCategory extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onResume() {
-//        // Initialize the category list at launch
-//        Log.d("fragrestore", String.format("at onCreateView: %s",categoryList));
-//        restoreListData();
-//        Log.d("fragrestore", String.format("after at onCreateView: %s",categoryList));
-//        super.onResume();
-//    }
-
     private void restoreListData(){
         // Grab the array list stored as String in SharedPreferences
         String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);

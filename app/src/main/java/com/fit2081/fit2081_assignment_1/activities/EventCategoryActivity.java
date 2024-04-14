@@ -116,7 +116,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
-        // Temporary adding to list
+        // Adding to list
         addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive));
 
         // Add all attributes to SharedPreferences
@@ -132,7 +132,7 @@ public class EventCategoryActivity extends AppCompatActivity {
 
     public void addItemToCategoryList(EventCategory newEventCategory){
         categoryList.add(newEventCategory);
-        Log.d("list", String.format("Added item to category list, Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
+        Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
     }
 
     private String generateCategoryID(){

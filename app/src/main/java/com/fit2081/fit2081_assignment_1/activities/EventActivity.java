@@ -21,9 +21,17 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
+import com.fit2081.fit2081_assignment_1.objects.Event;
+import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class EventActivity extends AppCompatActivity {
@@ -33,6 +41,8 @@ public class EventActivity extends AppCompatActivity {
     EditText findTicketsAvailable;
     Switch findEventIsActive;
     eventBroadcastReceiver myBroadCastReceiver;
+    ArrayList<Event> eventList;
+    Gson gson = new Gson();
     FragmentEventForm fragmentEventForm;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,10 +59,6 @@ public class EventActivity extends AppCompatActivity {
         findEventIsActive = findViewById(R.id.switch_isEventActive);
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
-
-        // Register a BroadCastReceiver to listen for incoming SMS
-        myBroadCastReceiver = new eventBroadcastReceiver();
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
 
         // Event fragment
         fragmentEventForm = new FragmentEventForm();

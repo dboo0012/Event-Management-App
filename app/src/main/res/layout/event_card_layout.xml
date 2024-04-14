@@ -60,35 +60,35 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/attribute1"
+                android:id="@+id/rv_eventId"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Attribute 1" />
 
             <TextView
-                android:id="@+id/attribute2"
+                android:id="@+id/rv_eventCategoryId"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Attribute 2" />
 
             <TextView
-                android:id="@+id/attribute3"
+                android:id="@+id/rv_eventName"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Attribute 3" />
 
             <TextView
-                android:id="@+id/attribute4"
+                android:id="@+id/rv_ticketsAvailable"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Attribute 4" />
 
             <TextView
-                android:id="@+id/attribute5"
+                android:id="@+id/rv_eventIsActive"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"

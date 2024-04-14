@@ -2,6 +2,7 @@ package com.fit2081.fit2081_assignment_1.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -17,9 +18,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.activities.EventActivity;
+import com.fit2081.fit2081_assignment_1.objects.Event;
+import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
+import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +43,7 @@ public class FragmentEventForm extends Fragment {
     EditText findEventName;
     EditText findTicketsAvailable;
     Switch findEventIsActive;
+    ArrayList<Event> eventList;
     Gson gson = new Gson();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,6 +96,12 @@ public class FragmentEventForm extends Fragment {
         findEventName = view.findViewById(R.id.et_eventName);
         findTicketsAvailable = view.findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = view.findViewById(R.id.switch_isEventActive);
+
+        // restore list data from SharedPreferences
+        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        // Convert the restored string back to ArrayList
+        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        eventList = gson.fromJson(arrayListStringRestored,type);
 
         return view;
     }
@@ -140,6 +158,9 @@ public class FragmentEventForm extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        // Add to shared pref list of events
+        addItemToEventList(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
+
         editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
         editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
         editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
@@ -147,6 +168,12 @@ public class FragmentEventForm extends Fragment {
         editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
 
         editor.apply();
+    }
+
+    private void addItemToEventList(Event newEvent){
+        // Add the new event to the list
+        eventList.add(newEvent);
+        Log.d("list", String.format("Added item to event list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
     }
 
     private boolean validateCategoryId(String categoryId){

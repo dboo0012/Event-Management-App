@@ -3,6 +3,7 @@ package com.fit2081.fit2081_assignment_1.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.adapters.EventListRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.objects.Event;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
@@ -33,8 +35,8 @@ public class FragmentListAllEvent extends Fragment {
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
-    ListViewRecyclerAdapter adapter;
-    ArrayList<Event> categoryList;
+    EventListRecyclerAdapter adapter;
+    ArrayList<Event> eventList;
     Gson gson = new Gson();
 
     public FragmentListAllEvent() {
@@ -73,6 +75,18 @@ public class FragmentListAllEvent extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_all_event, container, false);
+
+        // Initialize the RecyclerView
+        recyclerView = view.findViewById(R.id.recyclerViewEvent);
+
+        // Set the layout manager
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        restoreListData();
+        // Create the adapter with the shared pref list data
+        adapter = new EventListRecyclerAdapter(eventList);
+        // Set the adapter to the RecyclerView
+        recyclerView.setAdapter(adapter);
 
         return view;
     }

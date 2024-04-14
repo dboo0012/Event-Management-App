@@ -100,14 +100,24 @@ public class FragmentEventForm extends Fragment {
         // restore list data from SharedPreferences
         String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
         // Convert the restored string back to ArrayList
-        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
         eventList = gson.fromJson(arrayListStringRestored,type);
+
+        if (eventList == null) {
+            eventList = new ArrayList<Event>();
+            String eventListString = gson.toJson(eventList);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EventSharedPref.KEY_EVENT_LIST, eventListString);
+            editor.apply();
+            Log.d("list", String.format("new list created at fragment: %s",eventList));
+        }
 
         return view;
     }
 
     public boolean saveEventButtonOnClick(){
-        Log.d("boom", "boom");
+        Log.d("fab", "event fab clicked");
         boolean saveEvent = false;
         String categoryId = findCategoryId.getText().toString();
         String eventName = findEventName.getText().toString();
@@ -161,6 +171,7 @@ public class FragmentEventForm extends Fragment {
         // Add to shared pref list of events
         addItemToEventList(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
 
+        editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
         editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
         editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
         editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);

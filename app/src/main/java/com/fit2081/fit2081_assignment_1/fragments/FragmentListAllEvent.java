@@ -16,13 +16,15 @@ import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.EventListRecyclerAdapter;
-import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.objects.Event;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -95,6 +97,31 @@ public class FragmentListAllEvent extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    private void restoreListData(){
+        // Grab the array list stored as String in SharedPreferences
+        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        // Convert the restored string back to ArrayList
+        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+        eventList = gson.fromJson(arrayListStringRestored,type);
+
+//        Log.d("fragment_event", String.format("list restored at event fragment, size: %d, %s",eventList.size(),eventList));
+
+        // Initialize and save the list if user enter view all events before creating any events
+        if (eventList == null) {
+            eventList = new ArrayList<Event>();
+            String eventListString = gson.toJson(eventList);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EventSharedPref.KEY_EVENT_LIST, eventListString);
+            editor.apply();
+            Log.d("list", String.format("new list created at fragment: %s",eventList));
+        }
+        notifyAdapter();
+
+        // Initializes a category list if it has not been
+        Log.d("fragment_event", String.format("list restored at event fragment: %s",eventList));
     }
 
     public void notifyAdapter() {

@@ -7,7 +7,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
+import com.fit2081.fit2081_assignment_1.adapters.CategoryListRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.google.gson.Gson;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ViewAllCategoryActivity extends AppCompatActivity {
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
-    ListViewRecyclerAdapter adapter;
+    CategoryListRecyclerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

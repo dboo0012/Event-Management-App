@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
+import com.fit2081.fit2081_assignment_1.adapters.CategoryListRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
@@ -41,7 +41,7 @@ public class FragmentListAllCategory extends Fragment {
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
-    ListViewRecyclerAdapter adapter;
+    CategoryListRecyclerAdapter adapter;
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
 
@@ -94,7 +94,7 @@ public class FragmentListAllCategory extends Fragment {
 
         restoreListData();
         // Create the adapter with the shared pref list data
-        adapter = new ListViewRecyclerAdapter(categoryList);
+        adapter = new CategoryListRecyclerAdapter(categoryList);
         // Set the adapter to the RecyclerView
         recyclerView.setAdapter(adapter);
 

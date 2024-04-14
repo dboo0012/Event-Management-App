@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,20 +15,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
-import com.fit2081.fit2081_assignment_1.objects.EventCategory;
-import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
-import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -139,6 +129,7 @@ public class DashboardActivity extends AppCompatActivity {
                 launchIntent(EventCategoryActivity.class);
             } else if (itemId == R.id.drawer_view_events) {
                 Snackbar.make(navView, "View All Events", Snackbar.LENGTH_SHORT).show();
+                launchIntent(ViewAllEventActivity.class);
             } else if (itemId == R.id.drawer_logout) {
                 finish();
                 launchIntent(MainActivity.class);

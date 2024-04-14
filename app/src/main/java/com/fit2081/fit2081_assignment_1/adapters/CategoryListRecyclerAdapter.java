@@ -14,23 +14,23 @@ import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 
 import java.util.ArrayList;
 
-public class ListViewRecyclerAdapter extends RecyclerView.Adapter<ListViewRecyclerAdapter.CustomViewHolder>{
+public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryListRecyclerAdapter.CustomViewHolder>{
     ArrayList<EventCategory> data;
 
-    public ListViewRecyclerAdapter(ArrayList<EventCategory> data) {
+    public CategoryListRecyclerAdapter(ArrayList<EventCategory> data) {
         this.data = data;
     }
 
 
     @NonNull
     @Override
-    public ListViewRecyclerAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CategoryListRecyclerAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_card_layout, parent, false);
         return new CustomViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewRecyclerAdapter.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryListRecyclerAdapter.CustomViewHolder holder, int position) {
         // Update card view with data
         // get the object at the position
         EventCategory eventCategory = this.data.get(position);
@@ -40,7 +40,6 @@ public class ListViewRecyclerAdapter extends RecyclerView.Adapter<ListViewRecycl
         holder.rvCategoryName.setText(eventCategory.getCategoryName());
         holder.rvEventCount.setText(String.valueOf(eventCategory.getEventCount()));
         holder.rvCategoryIsActive.setText(eventCategory.isCategoryActive() ? "Active" : "Inactive");
-        Log.d("adapter", "new card created");
     }
 
     @Override

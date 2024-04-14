@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/viewAllCategory"
+        android:id="@+id/fragmentViewAllCategory"
         android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

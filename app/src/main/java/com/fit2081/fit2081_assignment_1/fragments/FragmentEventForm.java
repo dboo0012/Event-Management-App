@@ -98,7 +98,7 @@ public class FragmentEventForm extends Fragment {
         findEventIsActive = view.findViewById(R.id.switch_isEventActive);
 
         // restore list data from SharedPreferences
-        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
         // Convert the restored string back to ArrayList
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
         eventList = gson.fromJson(arrayListStringRestored,type);

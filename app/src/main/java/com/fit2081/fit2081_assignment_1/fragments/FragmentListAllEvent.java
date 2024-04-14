@@ -1,11 +1,15 @@
 package com.fit2081.fit2081_assignment_1.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,8 @@ import com.fit2081.fit2081_assignment_1.adapters.EventListRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.objects.Event;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -89,5 +95,31 @@ public class FragmentListAllEvent extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    public void notifyAdapter() {
+        if (adapter != null) {
+            restoreListData();
+            // Update the data in the adapter
+            adapter.updateData(eventList);
+            adapter.notifyDataSetChanged();
+            Log.d("adapter", "Adapter notified");
+        }
+    }
+
+    public void deleteListData(){
+        // Clear the list of categories
+        eventList.clear();
+
+        // Save the empty list to SharedPreferences
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String emptyListJson = gson.toJson(eventList);
+        editor.putString(EventSharedPref.KEY_EVENT_LIST, emptyListJson);
+        editor.apply();
+        Log.d("list", String.format("list data cleared"));
+
+        // Update the adapter with the new empty list
+        notifyAdapter();
     }
 }

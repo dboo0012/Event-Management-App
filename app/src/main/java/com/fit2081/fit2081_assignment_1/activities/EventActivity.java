@@ -22,13 +22,9 @@ import android.widget.Toast;
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
 import com.fit2081.fit2081_assignment_1.objects.Event;
-import com.fit2081.fit2081_assignment_1.objects.EventCategory;
-import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
-import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

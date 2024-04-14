@@ -5,20 +5,13 @@ import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.ListViewRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
-import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
-import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ViewAllCategoryActivity extends AppCompatActivity {
@@ -42,7 +35,7 @@ public class ViewAllCategoryActivity extends AppCompatActivity {
         // Display the list of categories using a fragment
         FragmentListAllCategory fragment = new FragmentListAllCategory();
 //        fragment.setAdapter(adapter);
-        getSupportFragmentManager().beginTransaction().replace(R.id.viewAllCategory, fragment).commit(); // Set the adapter to the fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentViewAllCategory, fragment).commit(); // Set the adapter to the fragment
         Log.d("viewAllCategory", "launched view all category activity");
     }
 }

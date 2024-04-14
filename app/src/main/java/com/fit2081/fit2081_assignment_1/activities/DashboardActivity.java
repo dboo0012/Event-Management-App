@@ -68,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean isEventSaved = fragmentEventForm.saveEventButtonOnClick();
                 if (isEventSaved) {
-                    showFABSnackbarMessageAction(view, "Saved Event");
+//                    showFABSnackbarMessageAction(view, "Saved Event");
                 }
             }
         });
@@ -173,8 +173,25 @@ public class DashboardActivity extends AppCompatActivity {
         snackbar.setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Undo the last added event (removing from -1 in list? or backstack method)
-                Toast.makeText(DashboardActivity.this, "undo clicked", Toast.LENGTH_SHORT).show();
+                // Restore the list of events from SharedPreferences
+                String eventListString = new SharedPrefRestore(DashboardActivity.this).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+                Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+                ArrayList<Event> eventList = gson.fromJson(eventListString, type);
+
+                if (eventList != null && !eventList.isEmpty()) {
+                    // Remove the last event from the list
+                    eventList.remove(eventList.size() - 1);
+
+                    // Save the updated list back to SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
+                    editor.apply();
+
+                    Toast.makeText(DashboardActivity.this, "Last event removed", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DashboardActivity.this, "No events to remove", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         snackbar.show();

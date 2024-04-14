@@ -7,12 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".activities.ViewAllEventActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/event_back_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentViewAllEvent"
         android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentListAllEvent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="667dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/event_back_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

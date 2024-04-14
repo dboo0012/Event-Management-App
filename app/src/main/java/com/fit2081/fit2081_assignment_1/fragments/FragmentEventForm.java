@@ -102,6 +102,7 @@ public class FragmentEventForm extends Fragment {
         // Convert the restored string back to ArrayList
         Type type = new TypeToken<ArrayList<Event>>() {}.getType();
         eventList = gson.fromJson(arrayListStringRestored,type);
+        Log.d("fragment_event form", String.format("event fragment %s",arrayListStringRestored));
 
         if (eventList == null) {
             eventList = new ArrayList<Event>();

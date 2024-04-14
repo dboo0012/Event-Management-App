@@ -89,7 +89,6 @@ public class FragmentListAllEvent extends Fragment {
 
         // Set the layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         restoreListData();
         // Create the adapter with the shared pref list data
         adapter = new EventListRecyclerAdapter(eventList);
@@ -100,13 +99,14 @@ public class FragmentListAllEvent extends Fragment {
     }
 
     private void restoreListData(){
-        // Grab the array list stored as String in SharedPreferences
-        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        // restore list data from SharedPreferences
+        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
         // Convert the restored string back to ArrayList
         Type type = new TypeToken<ArrayList<Event>>() {}.getType();
         eventList = gson.fromJson(arrayListStringRestored,type);
 
-//        Log.d("fragment_event", String.format("list restored at event fragment, size: %d, %s",eventList.size(),eventList));
+        Log.d("fragment_event", String.format("event fragment %s",arrayListStringRestored));
+
 
         // Initialize and save the list if user enter view all events before creating any events
         if (eventList == null) {
@@ -121,7 +121,8 @@ public class FragmentListAllEvent extends Fragment {
         notifyAdapter();
 
         // Initializes a category list if it has not been
-        Log.d("fragment_event", String.format("list restored at event fragment: %s",eventList));
+        Log.d("fragment_event", String.format("list restored at event fragment, size: %d, %s",eventList.size(),eventList));
+//        Log.d("fragment_event", String.format("list restored at event fragment: %s",eventList));
     }
 
     public void notifyAdapter() {

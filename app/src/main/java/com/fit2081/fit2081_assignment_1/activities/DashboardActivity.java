@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,9 +18,18 @@ import android.widget.Toast;
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
+import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllEvent;
+import com.fit2081.fit2081_assignment_1.objects.Event;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -29,6 +39,7 @@ public class DashboardActivity extends AppCompatActivity {
     FloatingActionButton fab_save;
     FragmentListAllCategory fragmentListAllCategory;
     FragmentEventForm fragmentEventForm;
+    Gson gson = new Gson();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,15 +119,35 @@ public class DashboardActivity extends AppCompatActivity {
         } else if (itemId == R.id.option_delete_categories) {
             // clear categories shared pref list here
             fragmentListAllCategory.deleteListData();
-            Toast.makeText(this, "All Event Categories Wiped.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "All Event Categories Deleted.", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_events) {
             // clear events shared pref list here
-            Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
+            clearEventList();
+
+            Toast.makeText(this, "All Events Deleted.", Toast.LENGTH_SHORT).show();
         }
         // tell the OS
         return true;
     }
 
+    private void clearEventList(){
+        // restore list data from SharedPreferences
+        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+        // Convert the restored string back to ArrayList
+        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+        ArrayList<Event> eventList = gson.fromJson(arrayListStringRestored,type);
+
+        if (eventList != null) {
+            // Save the empty list to SharedPreferences
+            eventList.clear();
+            SharedPreferences sharedPreferences = getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            String emptyListJson = gson.toJson(new ArrayList<Event>());
+            editor.putString(EventSharedPref.KEY_EVENT_LIST, emptyListJson);
+            editor.apply();
+            Log.d("list", String.format("list data cleared, new list: %s", eventList));
+        }
+    }
     class NavigationHandler implements NavigationView.OnNavigationItemSelectedListener{
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -21,7 +21,4 @@ public class ViewAllEventActivity extends AppCompatActivity {
         fragment = new FragmentListAllEvent();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentViewAllEvent, fragment).commit();
     }
-    public static void deleteEventList() {
-        fragment.deleteListData();
-    }
 }

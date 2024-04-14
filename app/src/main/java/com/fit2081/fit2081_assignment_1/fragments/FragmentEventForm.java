@@ -146,6 +146,8 @@ public class FragmentEventForm extends Fragment {
                 // save attributes to shared preferences
                 saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
                         ticketsAvailable, isEventActive);
+                // update the event count in the category
+                updateEventCount(categoryId);
 
                 // Successful
                 // show the generated event ID
@@ -158,6 +160,30 @@ public class FragmentEventForm extends Fragment {
             }
         }
         return saveEvent;
+    }
+
+    private void updateEventCount(String categoryId) {
+        // Restore the list of event categories from SharedPreferences
+        String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        ArrayList<EventCategory> categoryList = gson.fromJson(categoryListString, type);
+
+        if (categoryList != null) {
+            // Iterate over the list to find the matching category
+            for (EventCategory category : categoryList) {
+                if (category.getCategoryId().equals(categoryId)) {
+                    // Increment the event count by 1
+                    category.setEventCount(category.getEventCount() + 1);
+                    break;
+                }
+            }
+
+            // Save the updated list back to SharedPreferences
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
+            editor.apply();
+        }
     }
 
     private String generateEventId(){

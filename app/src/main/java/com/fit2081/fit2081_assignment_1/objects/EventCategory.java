@@ -12,6 +12,10 @@ public class EventCategory {
         this.isCategoryActive = isCategoryActive;
     }
 
+    public void setEventCount(int eventCount) {
+        this.eventCount = eventCount;
+    }
+
     public String getCategoryId() {
         return categoryId;
     }

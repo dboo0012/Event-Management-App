@@ -123,7 +123,6 @@ public class DashboardActivity extends AppCompatActivity {
         } else if (itemId == R.id.option_delete_events) {
             // clear events shared pref list here
             clearEventList();
-
             Toast.makeText(this, "All Events Deleted.", Toast.LENGTH_SHORT).show();
         }
         // tell the OS

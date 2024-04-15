@@ -258,8 +258,10 @@ public class FragmentEventForm extends Fragment {
     }
 
     public void deleteListData(){
+        loadCategoryList(); // Refresh the category list to the newest version
         // iterate through list of events and update the event count in the category list
-        if (eventList != null) {
+        if (eventList != null && categoryList != null){
+            Log.d("delete", "category list not empty, proceed to reduce event count in each category");
             for (Event event : eventList) {
                 for (EventCategory category : categoryList) {
                     if (category.getCategoryId().equals(event.getCategoryId())) {
@@ -273,7 +275,9 @@ public class FragmentEventForm extends Fragment {
             DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
         // Clear the list of events
-        eventList.clear();
+        if (eventList != null) {
+            eventList.clear();
+        }
         updateEventListSharedPref();
         Toast.makeText(getActivity(), "All events deleted", Toast.LENGTH_SHORT).show();
         Log.d("list", String.format("list data cleared, current event list: %s", eventList));

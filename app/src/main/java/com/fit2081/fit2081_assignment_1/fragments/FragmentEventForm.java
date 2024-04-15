@@ -232,8 +232,23 @@ public class FragmentEventForm extends Fragment {
     }
 
     public void removeLastAddedItem(){
-        if (eventList != null && !eventList.isEmpty()) {
-            eventList.remove(eventList.size() - 1);
+        int eventPos = eventList.size() - 1;
+        if (!eventList.isEmpty()) {
+            // reduce event category by 1
+            Log.d("remove", String.format("removing event from category %s", eventList.get(eventPos).getCategoryId()));
+            for (EventCategory category : categoryList) {
+                if (category.getCategoryId().equals(eventList.get(eventPos).getCategoryId())) {
+                    category.setEventCount(category.getEventCount() - 1);
+                    Log.d("remove", String.format("removed the event %s from category %s", eventList.get(eventList.size() - 1).getEventName(), category.getCategoryName()));
+                    updateCategoryListSharedPref();
+                    break;
+                }
+            }
+            // notify event category fragment
+            DashboardActivity.fragmentListAllCategory.notifyAdapter();
+
+            // remove the item from the eventlist
+            eventList.remove(eventPos);
             updateEventListSharedPref();
             Toast.makeText(getActivity(), "Last event removed", Toast.LENGTH_SHORT).show();
             Log.d("list", String.format("Removed last item from event, list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
@@ -243,11 +258,25 @@ public class FragmentEventForm extends Fragment {
     }
 
     public void deleteListData(){
+        // iterate through list of events and update the event count in the category list
+        if (eventList != null) {
+            for (Event event : eventList) {
+                for (EventCategory category : categoryList) {
+                    if (category.getCategoryId().equals(event.getCategoryId())) {
+                        category.setEventCount(category.getEventCount() - 1);
+                        break;
+                    }
+                }
+            }
+            updateCategoryListSharedPref();
+            // notify event category fragment
+            DashboardActivity.fragmentListAllCategory.notifyAdapter();
+        }
         // Clear the list of events
         eventList.clear();
         updateEventListSharedPref();
         Toast.makeText(getActivity(), "All events deleted", Toast.LENGTH_SHORT).show();
-        Log.d("list", String.format("list data cleared"));
+        Log.d("list", String.format("list data cleared, current event list: %s", eventList));
     }
 
     private void updateEventListSharedPref(){
@@ -255,6 +284,14 @@ public class FragmentEventForm extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
+        editor.apply();
+    }
+
+    private void updateCategoryListSharedPref(){
+        // Get the destination to save the event attributes
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
         editor.apply();
     }
 

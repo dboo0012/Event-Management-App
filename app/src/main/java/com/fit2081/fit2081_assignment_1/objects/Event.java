@@ -6,7 +6,7 @@ public class Event {
     private String categoryId;
     private int ticketsAvailable;
     private boolean isEventActive;
-    public Event(String eventId, String eventName, String categoryId, int ticketsAvailable,boolean isEventActive) {
+    public Event(String eventId, String categoryId, String eventName, int ticketsAvailable,boolean isEventActive) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.categoryId = categoryId;

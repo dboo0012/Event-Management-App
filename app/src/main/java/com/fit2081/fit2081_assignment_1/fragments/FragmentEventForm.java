@@ -323,6 +323,7 @@ public class FragmentEventForm extends Fragment {
 
 
     public void clearFields(){
+        findEventId.setText("(auto generated upon creation)");
         findCategoryId.setText("");
         findEventName.setText("");
         findTicketsAvailable.setText("");

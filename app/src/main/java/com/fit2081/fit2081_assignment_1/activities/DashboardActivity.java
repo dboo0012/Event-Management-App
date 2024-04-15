@@ -28,7 +28,7 @@ public class DashboardActivity extends AppCompatActivity {
     NavigationView navView;
     DrawerLayout drawerLayout;
     FloatingActionButton fab_save;
-    FragmentListAllCategory fragmentListAllCategory;
+    public static FragmentListAllCategory fragmentListAllCategory;
     FragmentEventForm fragmentEventForm;
     Gson gson = new Gson();
     @Override

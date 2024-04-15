@@ -1,17 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.FIT2081_Assignment_1" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.FIT2081_Assignment" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="android:textColorHint">@color/slate</item>
         <item name="android:textColor">@color/black</item>
 <!--        <item name="android:colorBackground">@color/slate</item>-->
         <item name="android:windowBackground">@drawable/android_background</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="CustomTextView" parent="android:Widget.TextView">
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="Theme.FIT2081_Assignment_1" parent="Base.Theme.FIT2081_Assignment_1" />
+    <style name="Theme.FIT2081_Assignment_1" parent="Base.Theme.FIT2081_Assignment" />
 </resources>

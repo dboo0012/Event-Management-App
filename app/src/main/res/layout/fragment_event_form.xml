@@ -5,12 +5,11 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_dark_background"
+    android:background="#80FFFFFF"
     tools:context=".fragments.FragmentEventForm">
 
     <TextView
         android:id="@+id/tv_eventId"
-        style="@style/CustomTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -27,14 +26,12 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="12dp"
         android:text="(auto generated upon creation)"
-        android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_eventId"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_eventCategoryId"
-        style="@style/CustomTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -53,14 +50,12 @@
         android:ems="10"
         android:hint="Enter Category ID"
         android:inputType="text"
-        android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_eventCategoryId"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
 
     <TextView
         android:id="@+id/tv_eventName"
-        style="@style/CustomTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -80,14 +75,12 @@
         android:ems="10"
         android:hint="Enter Event Name"
         android:inputType="text"
-        android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_eventName"
         app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
 
     <TextView
         android:id="@+id/tv_ticketsAvailable"
-        style="@style/CustomTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -106,14 +99,12 @@
         android:ems="10"
         android:hint="Enter Available Tickets"
         android:inputType="number"
-        android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tv_ticketsAvailable"
         app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
 
     <TextView
         android:id="@+id/tv_isActive"
-        style="@style/CustomTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

@@ -44,6 +44,7 @@ public class FragmentEventForm extends Fragment {
     EditText findTicketsAvailable;
     Switch findEventIsActive;
     ArrayList<Event> eventList;
+    ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -119,6 +120,7 @@ public class FragmentEventForm extends Fragment {
 
     public boolean saveEventButtonOnClick(){
         Log.d("fab", "event fab clicked");
+        loadCategoryList();
         boolean saveEvent = false;
         String categoryId = findCategoryId.getText().toString();
         String eventName = findEventName.getText().toString();
@@ -137,11 +139,17 @@ public class FragmentEventForm extends Fragment {
             Toast.makeText(getActivity(), "Category ID required", Toast.LENGTH_SHORT).show();
         } else if (eventName.isEmpty()) {
             Toast.makeText(getActivity(), "Event name is required", Toast.LENGTH_SHORT).show();
+        }else if(!validateEventName(eventName)){
+            Toast.makeText(getActivity(), "Invalid Event Name", Toast.LENGTH_SHORT).show();
         } else {
             String generatedEventId;
 
             // Verify categoryId format
-            if (validateCategoryId(categoryId)) {
+            if (!validateCategoryId(categoryId)) {
+                Toast.makeText(getActivity(), "Category ID does not match format.", Toast.LENGTH_SHORT).show();
+            } else if (!validateCategoryIdInList(categoryId)) {
+                Toast.makeText(getActivity(), "Category ID does not exist.", Toast.LENGTH_SHORT).show();
+            } else if (validateCategoryId(categoryId) && validateCategoryIdInList(categoryId)) {
                 generatedEventId = generateEventId();
                 // save attributes to shared preferences
                 saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
@@ -155,19 +163,19 @@ public class FragmentEventForm extends Fragment {
                 String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
                 Toast.makeText(getActivity(), out, Toast.LENGTH_SHORT).show();
                 saveEvent = true;
-            } else {
-                Toast.makeText(getActivity(), "Category ID does not match format.", Toast.LENGTH_SHORT).show();
             }
         }
         return saveEvent;
     }
 
-    private void updateEventCount(String categoryId) {
+    private void loadCategoryList(){
         // Restore the list of event categories from SharedPreferences
         String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        ArrayList<EventCategory> categoryList = gson.fromJson(categoryListString, type);
+        categoryList = gson.fromJson(categoryListString, type);
+    }
 
+    private void updateEventCount(String categoryId) {
         if (categoryList != null) {
             // Iterate over the list to find the matching category
             for (EventCategory category : categoryList) {
@@ -217,6 +225,23 @@ public class FragmentEventForm extends Fragment {
     private boolean validateCategoryId(String categoryId){
         String pattern = "C[A-Z]{2}-\\d{4}";
         return categoryId.matches(pattern);
+    }
+
+    private boolean validateCategoryIdInList(String categoryId){
+        // Check if the categoryId exists in the categoryList
+        if (categoryList != null) {
+            for (EventCategory category : categoryList) {
+                if (category.getCategoryId().equals(categoryId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean validateEventName(String eventName){
+        String pattern = "^[a-zA-Z0-9]*$"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
+        return eventName.matches(pattern);
     }
 
     public void clearFields(){

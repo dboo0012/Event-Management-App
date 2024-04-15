@@ -263,6 +263,11 @@ public class FragmentEventForm extends Fragment {
         return categoryId.matches(pattern);
     }
 
+    private boolean validateEventName(String eventName){
+        String pattern = "[a-zA-Z][a-zA-Z0-9]"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
+        return eventName.matches(pattern);
+    }
+
     private boolean validateCategoryIdInList(String categoryId){
         // Check if the categoryId exists in the categoryList
         if (categoryList != null) {
@@ -275,10 +280,6 @@ public class FragmentEventForm extends Fragment {
         return false;
     }
 
-    private boolean validateEventName(String eventName){
-        String pattern = "^[a-zA-Z0-9]*$"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
-        return eventName.matches(pattern);
-    }
 
     public void clearFields(){
         findCategoryId.setText("");

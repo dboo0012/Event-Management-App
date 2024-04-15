@@ -148,9 +148,11 @@ public class FragmentEventForm extends Fragment {
                 Toast.makeText(getActivity(), "Category ID does not exist.", Toast.LENGTH_SHORT).show();
             } else if (validateCategoryId(categoryId) && validateCategoryIdInList(categoryId)) {
                 generatedEventId = generateEventId();
+
                 // save attributes to shared preferences
                 saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
                         ticketsAvailable, isEventActive);
+
                 // update the event count in the category
                 updateEventCount(categoryId);
 
@@ -215,6 +217,11 @@ public class FragmentEventForm extends Fragment {
     }
 
     private void addItemToEventList(Event newEvent){
+        // Instantiate the list if it is null
+        if (eventList == null) {
+            eventList = new ArrayList<>();
+            updateEventListSharedPref();
+        }
         // Add the new event to the list
         eventList.add(newEvent);
         Log.d("list", String.format("Added item to event list Size: %d, event Array: %s", eventList.size(), eventList.toString()));

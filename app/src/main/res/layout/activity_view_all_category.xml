@@ -17,27 +17,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_viewAllCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginEnd="58dp"
-        android:text="View All Category"
-        android:textSize="38sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category_back_bar" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentViewAllCategory"
         android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory"
         android:layout_width="370dp"
-        android:layout_height="616dp"
+        android:layout_height="655dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_viewAllCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/category_back_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

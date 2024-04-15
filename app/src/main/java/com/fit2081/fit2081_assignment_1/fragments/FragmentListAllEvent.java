@@ -133,20 +133,4 @@ public class FragmentListAllEvent extends Fragment {
             Log.d("adapter", "Adapter notified");
         }
     }
-
-    public void deleteListData(){
-        // Clear the list of categories
-        eventList.clear();
-
-        // Save the empty list to SharedPreferences
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String emptyListJson = gson.toJson(eventList);
-        editor.putString(EventSharedPref.KEY_EVENT_LIST, emptyListJson);
-        editor.apply();
-        Log.d("list", String.format("list data cleared"));
-
-        // Update the adapter with the new empty list
-        notifyAdapter();
-    }
 }

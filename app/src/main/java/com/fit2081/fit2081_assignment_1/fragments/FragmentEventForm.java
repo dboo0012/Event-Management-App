@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.activities.DashboardActivity;
 import com.fit2081.fit2081_assignment_1.objects.Event;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
@@ -191,6 +192,9 @@ public class FragmentEventForm extends Fragment {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
             editor.apply();
+
+            // notify event category fragment
+            DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
     }
 

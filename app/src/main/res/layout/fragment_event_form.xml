@@ -123,4 +123,3 @@
         app:layout_constraintStart_toEndOf="@+id/tv_isActive"
         app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-

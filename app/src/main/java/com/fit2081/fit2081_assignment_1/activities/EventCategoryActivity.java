@@ -138,7 +138,7 @@ public class EventCategoryActivity extends AppCompatActivity {
     }
 
     private boolean validateCategoryName(String categoryName){
-        String pattern = "[a-zA-Z][a-zA-Z0-9]+"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
+        String pattern = "[a-zA-Z][a-zA-Z0-9 ]+"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
         return categoryName.matches(pattern);
     }
 

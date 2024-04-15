@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80FFFFFF"
+    tools:context=".fragments.FragmentEventForm">
+
+    <TextView
+        android:id="@+id/tv_eventId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:text="Event ID:"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_eventIdValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="12dp"
+        android:text="(auto generated upon creation)"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_eventId"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_eventCategoryId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="Category ID:"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
+
+    <EditText
+        android:id="@+id/et_eventCategoryId"
+        android:layout_width="180dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Enter Category ID"
+        android:inputType="text"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_eventCategoryId"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
+
+    <TextView
+        android:id="@+id/tv_eventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="Name:"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
+
+
+    <EditText
+        android:id="@+id/et_eventName"
+        android:layout_width="180dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Enter Event Name"
+        android:inputType="text"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_eventName"
+        app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
+
+    <TextView
+        android:id="@+id/tv_ticketsAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="Tickets available:"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
+
+    <EditText
+        android:id="@+id/et_ticketsAvailable"
+        android:layout_width="180dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Enter Available Tickets"
+        android:inputType="number"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_ticketsAvailable"
+        app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
+
+    <TextView
+        android:id="@+id/tv_isActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:text="Is Active?"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
+
+    <Switch
+        android:id="@+id/switch_isEventActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_isActive"
+        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+

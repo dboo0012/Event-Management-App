@@ -15,6 +15,7 @@
         android:layout_marginTop="52dp"
         android:text="New Event Category"
         android:textSize="36sp"
+        android:textColor="@color/goldYellow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

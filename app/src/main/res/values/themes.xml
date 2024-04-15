@@ -2,8 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.FIT2081_Assignment_1" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:textColorHint">@color/gray</item>
-        <item name="android:textColor">@color/goldYellow</item>
+        <item name="android:textColorHint">@color/slate</item>
+        <item name="android:textColor">@color/black</item>
+<!--        <item name="android:colorBackground">@color/slate</item>-->
+        <item name="android:windowBackground">@drawable/android_background</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="CustomTextView" parent="android:Widget.TextView">

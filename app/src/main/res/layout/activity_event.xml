@@ -4,8 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EventActivity"
-    android:background="@drawable/android_background">
+    android:background="@drawable/android_background"
+    android:onClick="saveEventButtonOnClick"
+    tools:context=".activities.EventActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentEventView"
+        android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm"
+        android:layout_width="315dp"
+        android:layout_height="474dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
 
     <TextView
         android:id="@+id/tv_eventCategory"
@@ -14,131 +27,131 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="50dp"
         android:text="New Event"
+        android:textColor="@color/goldYellow"
         android:textSize="48sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_eventId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="32dp"
-        android:text="Event ID:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
+    <!--    <TextView-->
+    <!--        style="@style/CustomTextView"-->
+    <!--        android:id="@+id/tv_eventId"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="51dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:text="Event ID:"-->
+    <!--        android:textSize="20sp"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />-->
 
-    <TextView
-        android:id="@+id/tv_eventIdValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="7dp"
-        android:text="(auto generated upon creation)"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventId" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_eventIdValue"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="51dp"-->
+    <!--        android:layout_marginTop="7dp"-->
+    <!--        android:text="(auto generated upon creation)"-->
+    <!--        android:textColor="#FFFFFF"-->
+    <!--        android:textSize="20sp"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_eventId" />-->
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_eventCategoryId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="32dp"
-        android:text="Category ID:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />
+    <!--    <TextView-->
+    <!--        style="@style/CustomTextView"-->
+    <!--        android:id="@+id/tv_eventCategoryId"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="51dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:text="Category ID:"-->
+    <!--        android:textSize="20sp"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_eventIdValue" />-->
 
-    <EditText
-        android:id="@+id/et_eventCategoryId"
-        android:layout_width="241dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="48dp"
-        android:ems="10"
-        android:hint="Enter Category ID"
-        android:textColor="#FFFFFF"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategoryId" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/et_eventCategoryId"-->
+    <!--        android:layout_width="241dp"-->
+    <!--        android:layout_height="47dp"-->
+    <!--        android:layout_marginStart="48dp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="Enter Category ID"-->
+    <!--        android:textColor="#FFFFFF"-->
+    <!--        android:inputType="text"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategoryId" />-->
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_eventName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="32dp"
-        android:text="Name:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />
+    <!--    <TextView-->
+    <!--        style="@style/CustomTextView"-->
+    <!--        android:id="@+id/tv_eventName"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="51dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:text="Name:"-->
+    <!--        android:textSize="20sp"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/et_eventCategoryId" />-->
 
-    <EditText
-        android:id="@+id/et_eventName"
-        android:layout_width="240dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="48dp"
-        android:ems="10"
-        android:hint="Enter Event Name"
-        android:textColor="#FFFFFF"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventName" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/et_eventName"-->
+    <!--        android:layout_width="240dp"-->
+    <!--        android:layout_height="44dp"-->
+    <!--        android:layout_marginStart="48dp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="Enter Event Name"-->
+    <!--        android:textColor="#FFFFFF"-->
+    <!--        android:inputType="text"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_eventName" />-->
 
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_ticketsAvailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="32dp"
-        android:text="Tickets available:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_eventName" />
+    <!--    <TextView-->
+    <!--        style="@style/CustomTextView"-->
+    <!--        android:id="@+id/tv_ticketsAvailable"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="48dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:text="Tickets available:"-->
+    <!--        android:textSize="20sp"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/et_eventName" />-->
 
-    <EditText
-        android:id="@+id/et_ticketsAvailable"
-        android:layout_width="240dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="48dp"
-        android:ems="10"
-        android:hint="Enter Available Tickets"
-        android:inputType="number"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ticketsAvailable" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/et_ticketsAvailable"-->
+    <!--        android:layout_width="240dp"-->
+    <!--        android:layout_height="44dp"-->
+    <!--        android:layout_marginStart="48dp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="Enter Available Tickets"-->
+    <!--        android:inputType="number"-->
+    <!--        android:textColor="#FFFFFF"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_ticketsAvailable" />-->
 
-    <TextView
-        style="@style/CustomTextView"
-        android:id="@+id/tv_isActive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="32dp"
-        android:text="Is Active?"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
+    <!--    <TextView-->
+    <!--        style="@style/CustomTextView"-->
+    <!--        android:id="@+id/tv_isActive"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="51dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:text="Is Active?"-->
+    <!--        android:textSize="20sp"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />-->
 
-    <Switch
-        android:id="@+id/switch_isEventActive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toEndOf="@+id/tv_isActive"
-        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />
+    <!--    <Switch-->
+    <!--        android:id="@+id/switch_isEventActive"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="20dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/tv_isActive"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/et_ticketsAvailable" />-->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveEventButton"
-        android:onClick="saveEventButtonOnClick"
         android:layout_width="307dp"
         android:layout_height="58dp"
         android:layout_marginStart="48dp"
@@ -148,6 +161,7 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_eventCategory"
+        android:onClick="saveEventButtonOnClick"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

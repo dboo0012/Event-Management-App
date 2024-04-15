@@ -11,7 +11,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,11 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
+import com.fit2081.fit2081_assignment_1.objects.Event;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
-import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
-import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
+import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class EventActivity extends AppCompatActivity {
@@ -35,6 +37,9 @@ public class EventActivity extends AppCompatActivity {
     EditText findTicketsAvailable;
     Switch findEventIsActive;
     eventBroadcastReceiver myBroadCastReceiver;
+    ArrayList<Event> eventList;
+    Gson gson = new Gson();
+    FragmentEventForm fragmentEventForm;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +56,9 @@ public class EventActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
-        // Register a BroadCastReceiver to listen for incoming SMS
-        myBroadCastReceiver = new eventBroadcastReceiver();
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_SMS_FILTER));
+        // Event fragment
+        fragmentEventForm = new FragmentEventForm();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentEventView, fragmentEventForm).commit();
 
         Log.d(LOG_KEY, "launched Event Activity");
     }
@@ -67,61 +72,69 @@ public class EventActivity extends AppCompatActivity {
     }
 
     public void saveEventButtonOnClick(View view){
-        String categoryId = findCategoryId.getText().toString();
-        String eventName = findEventName.getText().toString();
-        int ticketsAvailable;
-        boolean isEventActive = findEventIsActive.isChecked();
-
-        // Default value for available tickets
-        try{
-            ticketsAvailable = Integer.parseInt(findTicketsAvailable.getText().toString());
-        } catch (Exception e){
-            ticketsAvailable = 0;
-        }
-
-        // form validation
-        if (categoryId.isEmpty()){
-            Toast.makeText(this, "Category ID required", Toast.LENGTH_SHORT).show();
-        } else if (eventName.isEmpty()) {
-            Toast.makeText(this, "Event name is required", Toast.LENGTH_SHORT).show();
-        } else {
-            String generatedEventId;
-
-            // Verify categoryId format
-            if (validateCategoryId(categoryId)) {
-                generatedEventId = generateEventId();
-                // save attributes to shared preferences
-                saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
-                        ticketsAvailable, isEventActive);
-
-                // Successful
-                // show the generated event ID
-                findEventId.setText(generatedEventId);
-                String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
-                Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Category ID does not match format.", Toast.LENGTH_SHORT).show();
-            }
-        }
+        Log.d("boom", "boom");
+        fragmentEventForm.saveEventButtonOnClick();
     }
 
-    private String generateEventId(){
-        return String.format("E%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(5));
-    }
-
-    private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
-        // Get the destination to save the event attributes
-        SharedPreferences sharedPreferences = getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
-        editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
-        editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
-        editor.putInt(EventSharedPref.KEY_TICKETS_AVAILABLE, ticketsAvailable);
-        editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
-
-        editor.apply();
-    }
+//    public void saveEventButtonOnClick(View view){
+//        String categoryId = findCategoryId.getText().toString();
+//        String eventName = findEventName.getText().toString();
+//        int ticketsAvailable;
+//        boolean isEventActive = findEventIsActive.isChecked();
+//
+//        // Default value for available tickets
+//        try{
+//            ticketsAvailable = Integer.parseInt(findTicketsAvailable.getText().toString());
+//        } catch (Exception e){
+//            ticketsAvailable = 0;
+//        }
+//
+//        // form validation
+//        if (categoryId.isEmpty()){
+//            Toast.makeText(this, "Category ID required", Toast.LENGTH_SHORT).show();
+//        } else if (eventName.isEmpty()) {
+//            Toast.makeText(this, "Event name is required", Toast.LENGTH_SHORT).show();
+//        } else {
+//            String generatedEventId;
+//
+//            // Verify categoryId format
+//            if (validateCategoryId(categoryId)) {
+//                generatedEventId = generateEventId();
+//                // save attributes to shared preferences
+//                saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
+//                        ticketsAvailable, isEventActive);
+//
+//                // Successful
+//                // show the generated event ID
+//                findEventId.setText(generatedEventId);
+//                String out = String.format("Event saved: %s to %s", generatedEventId, categoryId);
+//                Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+//
+//                // Return to dashboard activity
+//                finish();
+//            } else {
+//                Toast.makeText(this, "Category ID does not match format.", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+//
+//    private String generateEventId(){
+//        return String.format("E%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(5));
+//    }
+//
+//    private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
+//        // Get the destination to save the event attributes
+//        SharedPreferences sharedPreferences = getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
+//        editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
+//        editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
+//        editor.putInt(EventSharedPref.KEY_TICKETS_AVAILABLE, ticketsAvailable);
+//        editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
+//
+//        editor.apply();
+//    }
 
     private boolean validateCategoryId(String categoryId){
         String pattern = "C[A-Z]{2}-\\d{4}";

@@ -21,11 +21,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class EventCategoryActivity extends AppCompatActivity {
@@ -34,6 +40,8 @@ public class EventCategoryActivity extends AppCompatActivity {
     EditText findEventCount;
     Switch findCategoryIsActive;
     categoryBroadcastReceiver myBroadCastReceiver;
+    ArrayList<EventCategory> categoryList;
+    Gson gson = new Gson();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -54,9 +62,14 @@ public class EventCategoryActivity extends AppCompatActivity {
         myBroadCastReceiver = new categoryBroadcastReceiver();
         registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
 
-        Log.d(LOG_KEY, "launched category SMS Receiver");
+        // restore list data from SharedPreferences
+        String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        // Convert the restored string back to ArrayList
+        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        categoryList = gson.fromJson(arrayListStringRestored,type);
 
         // Debugging
+        Log.d(LOG_KEY, "launched category SMS Receiver");
         Log.d(LOG_KEY, "launched event category activity");
     }
 
@@ -90,20 +103,24 @@ public class EventCategoryActivity extends AppCompatActivity {
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+
+            // Return to dashboard activity
+            // or create intent to dash?
+            finish();
         }
     }
 
-    private String generateCategoryID(){
-        // Call the helper class to generate Category ID
-        return String.format("C%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(4));
-    }
 
     public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
         // Initialise shared preference class variable to access persistent storage
         SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
+        // Adding to list
+        addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive));
+
         // Add all attributes to SharedPreferences
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
         editor.putString(EventCategorySharedPref.KEY_CATEGORY_ID, categoryId);
         editor.putString(EventCategorySharedPref.KEY_CATEGORY_NAME, categoryName);
         editor.putInt(EventCategorySharedPref.KEY_EVENT_COUNT, eventCount);
@@ -111,6 +128,16 @@ public class EventCategoryActivity extends AppCompatActivity {
 
         // Apply the changes
         editor.apply();
+    }
+
+    public void addItemToCategoryList(EventCategory newEventCategory){
+        categoryList.add(newEventCategory);
+        Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
+    }
+
+    private String generateCategoryID(){
+        // Call the helper class to generate Category ID
+        return String.format("C%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(4));
     }
 
     class categoryBroadcastReceiver extends BroadcastReceiver {

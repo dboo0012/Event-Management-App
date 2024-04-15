@@ -2,7 +2,6 @@ package com.fit2081.fit2081_assignment_1.fragments;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -18,13 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.activities.EventActivity;
 import com.fit2081.fit2081_assignment_1.objects.Event;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
-import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -182,6 +179,7 @@ public class FragmentEventForm extends Fragment {
                 if (category.getCategoryId().equals(categoryId)) {
                     // Increment the event count by 1
                     category.setEventCount(category.getEventCount() + 1);
+                    Log.d("count", "Event count updated by 1");
                     break;
                 }
             }
@@ -220,6 +218,33 @@ public class FragmentEventForm extends Fragment {
         // Add the new event to the list
         eventList.add(newEvent);
         Log.d("list", String.format("Added item to event list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
+    }
+
+    public void removeLastAddedItem(){
+        if (eventList != null && !eventList.isEmpty()) {
+            eventList.remove(eventList.size() - 1);
+            updateEventListSharedPref();
+            Toast.makeText(getActivity(), "Last event removed", Toast.LENGTH_SHORT).show();
+            Log.d("list", String.format("Removed last item from event, list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
+        } else {
+            Toast.makeText(getActivity(), "No events to remove", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deleteListData(){
+        // Clear the list of events
+        eventList.clear();
+        updateEventListSharedPref();
+        Toast.makeText(getActivity(), "All events deleted", Toast.LENGTH_SHORT).show();
+        Log.d("list", String.format("list data cleared"));
+    }
+
+    private void updateEventListSharedPref(){
+        // Get the destination to save the event attributes
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
+        editor.apply();
     }
 
     private boolean validateCategoryId(String categoryId){

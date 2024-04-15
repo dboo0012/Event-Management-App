@@ -16,7 +16,7 @@ import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllEvent;
 
 public class ViewAllEventActivity extends AppCompatActivity {
-    public static FragmentListAllEvent fragment;
+    FragmentListAllEvent fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

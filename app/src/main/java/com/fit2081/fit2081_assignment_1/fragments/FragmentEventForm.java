@@ -264,7 +264,7 @@ public class FragmentEventForm extends Fragment {
     }
 
     private boolean validateEventName(String eventName){
-        String pattern = "[a-zA-Z][a-zA-Z0-9]"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
+        String pattern = "[a-zA-Z][a-zA-Z0-9]+"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
         return eventName.matches(pattern);
     }
 

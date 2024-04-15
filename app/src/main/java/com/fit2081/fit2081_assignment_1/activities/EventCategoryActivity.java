@@ -96,6 +96,8 @@ public class EventCategoryActivity extends AppCompatActivity {
         // form validation
         if (categoryName.isEmpty()){ // check that event category name is filled
             Toast.makeText(this, "Event category name required", Toast.LENGTH_SHORT).show();
+        } else if (!validateCategoryName(categoryName)){
+            Toast.makeText(this, "Invalid Event Category Name", Toast.LENGTH_SHORT).show();
         } else {
             String categoryId = generateCategoryID();
             saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive);
@@ -133,6 +135,11 @@ public class EventCategoryActivity extends AppCompatActivity {
     public void addItemToCategoryList(EventCategory newEventCategory){
         categoryList.add(newEventCategory);
         Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
+    }
+
+    private boolean validateCategoryName(String categoryName){
+        String pattern = "[a-zA-Z][a-zA-Z0-9]+"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
+        return categoryName.matches(pattern);
     }
 
     private String generateCategoryID(){

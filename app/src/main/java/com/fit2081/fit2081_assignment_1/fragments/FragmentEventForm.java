@@ -231,9 +231,9 @@ public class FragmentEventForm extends Fragment {
             DashboardActivity.fragmentListAllCategory.notifyAdapter();
 
             // remove the item from the eventlist
+            Toast.makeText(getActivity(), String.format("Last event (Name: %s) removed", eventList.get(eventPos).getEventName()), Toast.LENGTH_SHORT).show();
             eventList.remove(eventPos);
             updateEventListSharedPref();
-            Toast.makeText(getActivity(), "Last event removed", Toast.LENGTH_SHORT).show();
             Log.d("list", String.format("Removed last item from event, list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
         } else {
             Toast.makeText(getActivity(), "No events to remove", Toast.LENGTH_SHORT).show();

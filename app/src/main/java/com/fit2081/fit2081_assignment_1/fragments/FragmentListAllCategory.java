@@ -108,17 +108,6 @@ public class FragmentListAllCategory extends Fragment {
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
         categoryList = gson.fromJson(arrayListStringRestored,type);
 
-        // Initialize and save the list if it has not been
-        if (categoryList == null) {
-            categoryList = new ArrayList<EventCategory>();
-            String categoryListString = gson.toJson(categoryList);
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, categoryListString);
-            editor.apply();
-            Log.d("list", String.format("new list created at fragment: %s",categoryList));
-        }
-
         // Initializes a category list if it has not been
         Log.d("restore", String.format("list restored at fragment: %s",categoryList));
     }

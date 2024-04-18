@@ -22,11 +22,13 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -105,9 +107,9 @@ public class EventCategoryActivity extends AppCompatActivity {
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
             Toast.makeText(this, out, Toast.LENGTH_SHORT).show();
+            showFABSnackbarMessageAction(view, out);
 
-            // Return to dashboard activity
-            // or create intent to dash?
+            // delay the finish?
             finish();
         }
     }
@@ -137,6 +139,24 @@ public class EventCategoryActivity extends AppCompatActivity {
         Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
     }
 
+    public void removeLastAddedItem(){
+        int categoryPos = categoryList.size() - 1;
+        if (!categoryList.isEmpty()){
+            Log.d("remove", String.format("removing category %s", categoryList.get(categoryPos).getCategoryId()));
+            categoryList.remove(categoryPos);
+            updateCategoryListSharedPref();
+            Toast.makeText(this, String.format("Category: %s removed", categoryList.get(categoryPos).getCategoryId()), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateCategoryListSharedPref(){
+        // Get the destination to save the event attributes
+        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
+        editor.apply();
+    }
+
     private boolean validateCategoryName(String categoryName){
         String pattern = "[a-zA-Z][a-zA-Z0-9 ]+"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
         return categoryName.matches(pattern);
@@ -145,6 +165,18 @@ public class EventCategoryActivity extends AppCompatActivity {
     private String generateCategoryID(){
         // Call the helper class to generate Category ID
         return String.format("C%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(4));
+    }
+
+    private void showFABSnackbarMessageAction(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        snackbar.setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // undo the action
+                removeLastAddedItem();
+            }
+        });
+        snackbar.show();
     }
 
     class categoryBroadcastReceiver extends BroadcastReceiver {

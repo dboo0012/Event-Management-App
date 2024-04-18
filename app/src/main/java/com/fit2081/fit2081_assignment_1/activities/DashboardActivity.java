@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,10 +18,19 @@ import android.widget.Toast;
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
+import com.fit2081.fit2081_assignment_1.objects.Event;
+import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
+import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
+import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
     String key = MainActivity.LOG_KEY;
@@ -64,15 +74,54 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        // Create the fragmentS
+        // Create the fragments
         fragmentListAllCategory = new FragmentListAllCategory();
         getSupportFragmentManager().beginTransaction().replace(R.id.categoryListFragment, fragmentListAllCategory).commit(); // Set the adapter to the fragment
 
         fragmentEventForm = new FragmentEventForm();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_event, fragmentEventForm).commit(); // Set the adapter to the fragment
 
+        // Initialise the shared preference lists at launch
+        initialiseSharedPrefLists();
+
         // Debugging
         Log.d(key, "launched dashboard activity");
+    }
+
+    public void initialiseSharedPrefLists(){
+        // Event Category List
+        // Grab the array list stored as String in SharedPreferences
+        String categoryArrayListString = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+        // Convert the restored string back to ArrayList
+        Type categoryType = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+        ArrayList<EventCategory> categoryList = gson.fromJson(categoryArrayListString,categoryType);
+
+        // Initialize and save the list if it has not been
+        if (categoryList == null) {
+            categoryList = new ArrayList<EventCategory>();
+            SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
+            editor.apply();
+            Log.d("list", String.format("new list created at fragment: %s",categoryList));
+        }
+
+        // Event List
+        // restore list data from SharedPreferences
+        String eventListString = new SharedPrefRestore(this).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+        // Convert the restored string back to ArrayList
+        Type eventType = new TypeToken<ArrayList<Event>>() {}.getType();
+        ArrayList<Event> eventList = gson.fromJson(eventListString,eventType);
+        Log.d("fragment_event form", String.format("event fragment %s",eventListString));
+
+        if (eventList == null) {
+            eventList = new ArrayList<Event>();
+            SharedPreferences sharedPreferences = getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
+            editor.apply();
+            Log.d("list", String.format("new list created at fragment: %s",eventList));
+        }
     }
 
     private void launchIntent(Class<?> targetClass){

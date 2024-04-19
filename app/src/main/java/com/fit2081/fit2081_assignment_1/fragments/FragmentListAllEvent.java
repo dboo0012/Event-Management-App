@@ -107,17 +107,6 @@ public class FragmentListAllEvent extends Fragment {
 
         Log.d("fragment_event", String.format("event fragment %s",arrayListStringRestored));
 
-        if (eventList == null) {
-            eventList = new ArrayList<Event>();
-            String eventListString = gson.toJson(eventList);
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventSharedPref.KEY_EVENT_LIST, eventListString);
-            editor.apply();
-            Log.d("list", String.format("new list created at fragment: %s",eventList));
-        }
-
-
         // Initializes a category list if it has not been
         Log.d("fragment_event", String.format("list restored at event fragment, size: %d, %s",eventList.size(),eventList));
 //        Log.d("fragment_event", String.format("list restored at event fragment: %s",eventList));

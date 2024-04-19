@@ -169,6 +169,7 @@ public class FragmentEventForm extends Fragment {
         String eventListString = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
         Type type = new TypeToken<ArrayList<Event>>() {}.getType();
         eventList = gson.fromJson(eventListString, type);
+        Log.d("list", String.format("event list loaded at fragment, current event list: %s", eventList));
     }
 
     private void updateEventCount(String categoryId) {
@@ -270,8 +271,6 @@ public class FragmentEventForm extends Fragment {
             // notify event category fragment
             DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
-
-        Log.d("delete", String.format("%s", eventList==null));
 
         // Clear the list of events
         if (eventList!=null && !eventList.isEmpty()) {

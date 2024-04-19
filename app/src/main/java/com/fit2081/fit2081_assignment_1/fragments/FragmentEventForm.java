@@ -96,23 +96,6 @@ public class FragmentEventForm extends Fragment {
         findTicketsAvailable = view.findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = view.findViewById(R.id.switch_isEventActive);
 
-        // restore list data from SharedPreferences
-        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
-        // Convert the restored string back to ArrayList
-        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
-        eventList = gson.fromJson(arrayListStringRestored,type);
-        Log.d("fragment_event form", String.format("event fragment %s",arrayListStringRestored));
-
-        if (eventList == null) {
-            eventList = new ArrayList<Event>();
-            String eventListString = gson.toJson(eventList);
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventSharedPref.KEY_EVENT_LIST, eventListString);
-            editor.apply();
-            Log.d("list", String.format("new list created at fragment: %s",eventList));
-        }
-
         return view;
     }
 
@@ -128,6 +111,9 @@ public class FragmentEventForm extends Fragment {
         // Default value for available tickets
         try{
             ticketsAvailable = Integer.parseInt(findTicketsAvailable.getText().toString());
+            if (ticketsAvailable < 0) {
+                ticketsAvailable = 0;
+            }
         } catch (Exception e){
             ticketsAvailable = 0;
         }
@@ -248,9 +234,9 @@ public class FragmentEventForm extends Fragment {
             DashboardActivity.fragmentListAllCategory.notifyAdapter();
 
             // remove the item from the eventlist
+            Toast.makeText(getActivity(), String.format("Last event (Name: %s) removed", eventList.get(eventPos).getEventName()), Toast.LENGTH_SHORT).show();
             eventList.remove(eventPos);
             updateEventListSharedPref();
-            Toast.makeText(getActivity(), "Last event removed", Toast.LENGTH_SHORT).show();
             Log.d("list", String.format("Removed last item from event, list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
         } else {
             Toast.makeText(getActivity(), "No events to remove", Toast.LENGTH_SHORT).show();
@@ -279,7 +265,6 @@ public class FragmentEventForm extends Fragment {
             eventList.clear();
         }
         updateEventListSharedPref();
-        Toast.makeText(getActivity(), "All events deleted", Toast.LENGTH_SHORT).show();
         Log.d("list", String.format("list data cleared, current event list: %s", eventList));
     }
 

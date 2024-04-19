@@ -96,11 +96,14 @@ public class FragmentEventForm extends Fragment {
         findTicketsAvailable = view.findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = view.findViewById(R.id.switch_isEventActive);
 
+        loadEventList();
+
         return view;
     }
 
     public boolean saveEventButtonOnClick(){
         Log.d("fab", "event fab clicked");
+        loadEventList();
         loadCategoryList();
         boolean saveEvent = false;
         String categoryId = findCategoryId.getText().toString();
@@ -159,6 +162,13 @@ public class FragmentEventForm extends Fragment {
         String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
         categoryList = gson.fromJson(categoryListString, type);
+    }
+
+    private void loadEventList(){
+        // Restore the list of event categories from SharedPreferences
+        String eventListString = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+        eventList = gson.fromJson(eventListString, type);
     }
 
     private void updateEventCount(String categoryId) {
@@ -252,7 +262,6 @@ public class FragmentEventForm extends Fragment {
                 for (EventCategory category : categoryList) {
                     if (category.getCategoryId().equals(event.getCategoryId())) {
                         category.setEventCount(category.getEventCount() - 1);
-                        eventList.remove(event);
                         break;
                     }
                 }
@@ -261,6 +270,9 @@ public class FragmentEventForm extends Fragment {
             // notify event category fragment
             DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
+
+        Log.d("delete", String.format("%s", eventList==null));
+
         // Clear the list of events
         if (eventList!=null && !eventList.isEmpty()) {
             eventList.clear();

@@ -111,6 +111,9 @@ public class FragmentEventForm extends Fragment {
         // Default value for available tickets
         try{
             ticketsAvailable = Integer.parseInt(findTicketsAvailable.getText().toString());
+            if (ticketsAvailable < 0) {
+                ticketsAvailable = 0;
+            }
         } catch (Exception e){
             ticketsAvailable = 0;
         }

@@ -184,7 +184,7 @@ public class DashboardActivity extends AppCompatActivity {
                 launchIntent(ViewAllEventActivity.class);
             } else if (itemId == R.id.drawer_logout) {
                 finish();
-                launchIntent(MainActivity.class);
+                launchIntent(LoginActivity.class);
                 Snackbar.make(navView, "Logout", Snackbar.LENGTH_SHORT).show();
             }
             return true;

@@ -91,6 +91,9 @@ public class EventCategoryActivity extends AppCompatActivity {
         // Default value for event count
         try{
             eventCount = Integer.parseInt(findEventCount.getText().toString());
+            if (eventCount < 0){
+                eventCount = 0;
+            }
         } catch (Exception e){
             eventCount = 0;
         }

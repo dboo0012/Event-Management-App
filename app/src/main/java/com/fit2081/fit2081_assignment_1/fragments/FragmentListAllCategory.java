@@ -132,7 +132,7 @@ public class FragmentListAllCategory extends Fragment {
         String emptyListJson = gson.toJson(categoryList);
         editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
         editor.apply();
-        Log.d("list", String.format("list data cleared"));
+        Log.d("list", String.format("category list data cleared, current list: %s",categoryList));
 
         // Update the adapter with the new empty list
         notifyAdapter();

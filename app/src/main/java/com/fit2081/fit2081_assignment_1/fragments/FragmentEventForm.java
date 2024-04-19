@@ -252,6 +252,7 @@ public class FragmentEventForm extends Fragment {
                 for (EventCategory category : categoryList) {
                     if (category.getCategoryId().equals(event.getCategoryId())) {
                         category.setEventCount(category.getEventCount() - 1);
+                        eventList.remove(event);
                         break;
                     }
                 }
@@ -261,8 +262,9 @@ public class FragmentEventForm extends Fragment {
             DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
         // Clear the list of events
-        if (eventList != null) {
+        if (eventList!=null && !eventList.isEmpty()) {
             eventList.clear();
+            Log.d("list", String.format("clear method called on: %s", eventList));
         }
         updateEventListSharedPref();
         Log.d("list", String.format("list data cleared, current event list: %s", eventList));

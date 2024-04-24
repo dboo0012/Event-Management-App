@@ -1,4 +1,4 @@
-package com.fit2081.fit2081_assignment_1.objects;
+package com.fit2081.fit2081_assignment_1.models;
 
 public class EventCategory {
     private String categoryId;

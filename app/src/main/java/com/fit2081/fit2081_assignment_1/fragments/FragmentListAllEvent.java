@@ -1,8 +1,5 @@
 package com.fit2081.fit2081_assignment_1.fragments;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,9 +13,7 @@ import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.EventListRecyclerAdapter;
-import com.fit2081.fit2081_assignment_1.objects.Event;
-import com.fit2081.fit2081_assignment_1.objects.EventCategory;
-import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
+import com.fit2081.fit2081_assignment_1.models.Event;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;

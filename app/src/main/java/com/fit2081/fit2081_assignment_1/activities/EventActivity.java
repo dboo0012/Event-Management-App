@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,12 +20,11 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
-import com.fit2081.fit2081_assignment_1.objects.Event;
+import com.fit2081.fit2081_assignment_1.models.Event;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 

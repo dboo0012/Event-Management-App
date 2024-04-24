@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.CategoryListRecyclerAdapter;
-import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.models.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;

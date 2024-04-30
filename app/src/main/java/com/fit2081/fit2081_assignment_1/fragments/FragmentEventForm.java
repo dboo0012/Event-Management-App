@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.activities.DashboardActivity;
-import com.fit2081.fit2081_assignment_1.objects.Event;
-import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.models.Event;
+import com.fit2081.fit2081_assignment_1.models.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
@@ -96,11 +96,14 @@ public class FragmentEventForm extends Fragment {
         findTicketsAvailable = view.findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = view.findViewById(R.id.switch_isEventActive);
 
+        loadEventList();
+
         return view;
     }
 
     public boolean saveEventButtonOnClick(){
         Log.d("fab", "event fab clicked");
+        loadEventList();
         loadCategoryList();
         boolean saveEvent = false;
         String categoryId = findCategoryId.getText().toString();
@@ -159,6 +162,14 @@ public class FragmentEventForm extends Fragment {
         String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
         categoryList = gson.fromJson(categoryListString, type);
+    }
+
+    private void loadEventList(){
+        // Restore the list of event categories from SharedPreferences
+        String eventListString = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+        eventList = gson.fromJson(eventListString, type);
+        Log.d("list", String.format("event list loaded at fragment, current event list: %s", eventList));
     }
 
     private void updateEventCount(String categoryId) {
@@ -260,9 +271,11 @@ public class FragmentEventForm extends Fragment {
             // notify event category fragment
             DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
+
         // Clear the list of events
-        if (eventList != null) {
+        if (eventList!=null && !eventList.isEmpty()) {
             eventList.clear();
+            Log.d("list", String.format("clear method called on: %s", eventList));
         }
         updateEventListSharedPref();
         Log.d("list", String.format("list data cleared, current event list: %s", eventList));

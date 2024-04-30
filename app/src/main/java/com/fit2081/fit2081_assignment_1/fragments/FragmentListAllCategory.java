@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.CategoryListRecyclerAdapter;
-import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.models.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
@@ -132,7 +132,7 @@ public class FragmentListAllCategory extends Fragment {
         String emptyListJson = gson.toJson(categoryList);
         editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
         editor.apply();
-        Log.d("list", String.format("list data cleared"));
+        Log.d("list", String.format("category list data cleared, current list: %s",categoryList));
 
         // Update the adapter with the new empty list
         notifyAdapter();

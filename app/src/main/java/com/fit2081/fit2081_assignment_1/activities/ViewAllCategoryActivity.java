@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.CategoryListRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
-import com.fit2081.fit2081_assignment_1.objects.EventCategory;
+import com.fit2081.fit2081_assignment_1.models.EventCategory;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

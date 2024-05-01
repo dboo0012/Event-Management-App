@@ -1,12 +1,32 @@
 package com.fit2081.fit2081_assignment_1.providers;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "events")
 public class Event {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
+
+    @ColumnInfo(name = "eventId")
     private  String eventId;
+
+    @ColumnInfo(name = "eventName")
     private String eventName;
+
+    @ColumnInfo(name = "categoryId")
     private String categoryId;
+
+    @ColumnInfo(name = "ticketsAvailable")
     private int ticketsAvailable;
+
+    @ColumnInfo(name = "isEventActive")
     private boolean isEventActive;
-    public Event(String eventId, String categoryId, String eventName, int ticketsAvailable,boolean isEventActive) {
+
+    public Event(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.categoryId = categoryId;
@@ -32,5 +52,13 @@ public class Event {
 
     public boolean isEventActive() {
         return isEventActive;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

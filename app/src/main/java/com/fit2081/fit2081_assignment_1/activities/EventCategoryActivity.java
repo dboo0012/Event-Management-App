@@ -40,6 +40,7 @@ public class EventCategoryActivity extends AppCompatActivity {
     EditText findCategoryName;
     EditText findEventCount;
     Switch findCategoryIsActive;
+    EditText findEventLocation;
     categoryBroadcastReceiver myBroadCastReceiver;
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
@@ -55,6 +56,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         findEventCount = findViewById(R.id.et_eventName);
         findCategoryIsActive = findViewById(R.id.switch_isCategoryActive);
         findCategoryId = findViewById(R.id.tv_eventIdValue);
+        findEventLocation = findViewById(R.id.et_eventLocation);
 
         ActivityCompat.requestPermissions(this, new String[]{
                 android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
@@ -86,6 +88,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         String categoryName = findCategoryName.getText().toString();
         boolean isCategoryActive = findCategoryIsActive.isChecked();
         int eventCount;
+        String eventLocation = findEventLocation.getText().toString();
 
         // Default value for event count
         try{
@@ -104,7 +107,7 @@ public class EventCategoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid Event Category Name", Toast.LENGTH_SHORT).show();
         } else {
             String categoryId = generateCategoryID();
-            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive);
+            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
             findCategoryId.setText(categoryId);
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
@@ -117,13 +120,13 @@ public class EventCategoryActivity extends AppCompatActivity {
     }
 
 
-    public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
+    public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){
         // Initialise shared preference class variable to access persistent storage
         SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
 
         // Adding to list
-        addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive));
+        addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive, eventLocation));
 
         // Add all attributes to SharedPreferences
         editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));

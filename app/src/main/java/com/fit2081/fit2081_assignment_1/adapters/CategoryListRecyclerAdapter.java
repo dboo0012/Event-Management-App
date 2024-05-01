@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.models.EventCategory;
+import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 
 import java.util.ArrayList;
 

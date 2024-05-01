@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.EventListRecyclerAdapter;
-import com.fit2081.fit2081_assignment_1.models.Event;
+import com.fit2081.fit2081_assignment_1.providers.Event;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;

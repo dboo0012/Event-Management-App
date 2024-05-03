@@ -52,10 +52,6 @@ public class FragmentListAllCategory extends Fragment {
         // Required empty public constructor
     }
 
-//    public void setAdapter(ListViewRecyclerAdapter adapter) {
-//        this.adapter = adapter;
-//    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -113,40 +109,4 @@ public class FragmentListAllCategory extends Fragment {
 
         return view;
     }
-
-//    private void restoreListData(){
-//        // Grab the array list stored as String in SharedPreferences
-//        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
-//        // Convert the restored string back to ArrayList
-//        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-//        categoryList = gson.fromJson(arrayListStringRestored,type);
-//
-//        // Initializes a category list if it has not been
-//        Log.d("restore", String.format("list restored at fragment: %s",categoryList));
-//    }
-
-    public void notifyAdapter() {
-        if (adapter != null) {
-            // Update the data in the adapter
-            adapter.updateData(categoryList);
-            adapter.notifyDataSetChanged();
-            Log.d("adapter", "Adapter notified");
-        }
-    }
-//
-//    public void deleteListData(){
-//        // Clear the list of categories
-//        categoryList.clear();
-//
-//        // Save the empty list to SharedPreferences
-//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        String emptyListJson = gson.toJson(categoryList);
-//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
-//        editor.apply();
-//        Log.d("list", String.format("category list data cleared, current list: %s",categoryList));
-//
-//        // Update the adapter with the new empty list
-//        notifyAdapter();
-//    }
 }

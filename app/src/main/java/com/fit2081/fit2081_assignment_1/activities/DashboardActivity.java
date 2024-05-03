@@ -154,7 +154,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         if (itemId == R.id.option_refresh) {
             // notify adapter of changes here
-//            fragmentListAllCategory.notifyAdapter();
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
 //            Log.d("list", String.format("Size: %d, dashboard Array: %s", categoryList.size() , categoryList.toString()));
         } else if (itemId == R.id.option_clear) {

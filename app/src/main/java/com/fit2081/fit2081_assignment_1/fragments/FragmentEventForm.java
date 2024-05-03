@@ -242,7 +242,7 @@ public class FragmentEventForm extends Fragment {
                 }
             }
             // notify event category fragment
-            DashboardActivity.fragmentListAllCategory.notifyAdapter();
+//            DashboardActivity.fragmentListAllCategory.notifyAdapter();
 
             // remove the item from the eventlist
             Toast.makeText(getActivity(), String.format("Last event (Name: %s) removed", eventList.get(eventPos).getEventName()), Toast.LENGTH_SHORT).show();
@@ -269,7 +269,7 @@ public class FragmentEventForm extends Fragment {
             }
             updateCategoryListSharedPref();
             // notify event category fragment
-            DashboardActivity.fragmentListAllCategory.notifyAdapter();
+//            DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
 
         // Clear the list of events

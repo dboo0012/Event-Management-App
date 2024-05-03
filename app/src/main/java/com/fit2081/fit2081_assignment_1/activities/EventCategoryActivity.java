@@ -117,7 +117,6 @@ public class EventCategoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid Event Location", Toast.LENGTH_SHORT).show();
         } else {
             String categoryId = generateCategoryID();
-//            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
             saveCategoryToDatabase(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
             findCategoryId.setText(categoryId);
 
@@ -138,29 +137,29 @@ public class EventCategoryActivity extends AppCompatActivity {
         Log.d("db", String.format("Successfully added %s to database", newEventCategory.getId()));
     }
 
-    public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){
-        // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
+//    public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){
+//        // Initialise shared preference class variable to access persistent storage
+//        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
+//
+//        // Adding to list
+//        addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive, eventLocation));
+//
+//        // Add all attributes to SharedPreferences
+//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
+//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_ID, categoryId);
+//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_NAME, categoryName);
+//        editor.putInt(EventCategorySharedPref.KEY_EVENT_COUNT, eventCount);
+//        editor.putBoolean(EventCategorySharedPref.KEY_IS_CATEGORY_ACTIVE, isActive);
+//
+//        // Apply the changes
+//        editor.apply();
+//    }
 
-        // Adding to list
-        addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive, eventLocation));
-
-        // Add all attributes to SharedPreferences
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_ID, categoryId);
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_NAME, categoryName);
-        editor.putInt(EventCategorySharedPref.KEY_EVENT_COUNT, eventCount);
-        editor.putBoolean(EventCategorySharedPref.KEY_IS_CATEGORY_ACTIVE, isActive);
-
-        // Apply the changes
-        editor.apply();
-    }
-
-    public void addItemToCategoryList(EventCategory newEventCategory){
-        categoryList.add(newEventCategory);
-        Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
-    }
+//    public void addItemToCategoryList(EventCategory newEventCategory){
+//        categoryList.add(newEventCategory);
+//        Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
+//    }
 
     public void removeLastAddedItem(){
         int categoryPos = categoryList.size() - 1;

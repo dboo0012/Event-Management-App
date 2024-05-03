@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
+import com.fit2081.fit2081_assignment_1.providers.CategoryViewModel;
 import com.fit2081.fit2081_assignment_1.providers.Event;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
@@ -41,6 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
     public static FragmentListAllCategory fragmentListAllCategory;
     FragmentEventForm fragmentEventForm;
     Gson gson = new Gson();
+    CategoryViewModel eventCategoryViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,7 @@ public class DashboardActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_event, fragmentEventForm).commit(); // Set the adapter to the fragment
 
         // Initialise the shared preference lists at launch
+        eventCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         initialiseSharedPrefLists();
 
         // Debugging
@@ -150,7 +154,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         if (itemId == R.id.option_refresh) {
             // notify adapter of changes here
-            fragmentListAllCategory.notifyAdapter();
+//            fragmentListAllCategory.notifyAdapter();
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
 //            Log.d("list", String.format("Size: %d, dashboard Array: %s", categoryList.size() , categoryList.toString()));
         } else if (itemId == R.id.option_clear) {
@@ -158,7 +162,7 @@ public class DashboardActivity extends AppCompatActivity {
             fragmentEventForm.clearFields();
         } else if (itemId == R.id.option_delete_categories) {
             // clear categories shared pref list here
-            fragmentListAllCategory.deleteListData();
+            eventCategoryViewModel.deleteAllEventCategory();
             Toast.makeText(this, "All Event Categories Deleted.", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_events) {
             // clear events shared pref list here

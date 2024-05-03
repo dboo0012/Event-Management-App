@@ -43,7 +43,7 @@ public class EventCategoryActivity extends AppCompatActivity {
     EditText findEventCount;
     Switch findCategoryIsActive;
     EditText findEventLocation;
-    categoryBroadcastReceiver myBroadCastReceiver;
+//    categoryBroadcastReceiver myBroadCastReceiver;
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
     CategoryViewModel eventCategoryViewModel;
@@ -65,8 +65,8 @@ public class EventCategoryActivity extends AppCompatActivity {
                 android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
         // Register a BroadCastReceiver to listen for incoming SMS
-        myBroadCastReceiver = new categoryBroadcastReceiver();
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
+//        myBroadCastReceiver = new categoryBroadcastReceiver();
+//        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
 
         // restore list data from SharedPreferences
         String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
@@ -85,7 +85,7 @@ public class EventCategoryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(myBroadCastReceiver); // Kill the receiver when the activity is closed
+//        unregisterReceiver(myBroadCastReceiver); // Kill the receiver when the activity is closed
         Log.d(LOG_KEY, "Broadcast receiver unregistered (category)");
     }
 
@@ -118,7 +118,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         } else {
             String categoryId = generateCategoryID();
 //            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
-
+            saveCategoryToDatabase(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
             findCategoryId.setText(categoryId);
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
@@ -134,7 +134,8 @@ public class EventCategoryActivity extends AppCompatActivity {
         // Create a new EventCategory object
         EventCategory newEventCategory = new EventCategory(categoryId, categoryName, eventCount, isActive, eventLocation);
         // Insert the new EventCategory object into the database
-        // eventCategoryViewModel.insert(newEventCategory);
+        eventCategoryViewModel.addEventCategory(newEventCategory);
+        Log.d("db", String.format("Successfully added %s to database", newEventCategory.getId()));
     }
 
     public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){

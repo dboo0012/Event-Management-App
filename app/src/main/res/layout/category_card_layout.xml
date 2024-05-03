@@ -45,5 +45,12 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="TextView 4" />
+
+        <TextView
+            android:id="@+id/rv_eventLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView 5" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

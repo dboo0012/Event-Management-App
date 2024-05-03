@@ -191,7 +191,7 @@ public class FragmentEventForm extends Fragment {
             editor.apply();
 
             // notify event category fragment
-            DashboardActivity.fragmentListAllCategory.notifyAdapter();
+//            DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
     }
 

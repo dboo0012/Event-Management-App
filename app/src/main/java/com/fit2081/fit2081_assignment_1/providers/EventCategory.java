@@ -32,6 +32,7 @@ public class EventCategory {
         this.categoryName = categoryName;
         this.eventCount = eventCount;
         this.isCategoryActive = isCategoryActive;
+        this.eventLocation = eventLocation;
     }
 
     public int getEventCount() {

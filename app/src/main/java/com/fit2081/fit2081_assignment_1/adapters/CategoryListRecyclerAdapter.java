@@ -12,14 +12,12 @@ import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryListRecyclerAdapter.CustomViewHolder>{
-    ArrayList<EventCategory> data;
+    List<EventCategory> data;
 
-    public CategoryListRecyclerAdapter(ArrayList<EventCategory> data) {
-        this.data = data;
-    }
-
+    public CategoryListRecyclerAdapter() {}
 
     @NonNull
     @Override
@@ -32,13 +30,18 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
     public void onBindViewHolder(@NonNull CategoryListRecyclerAdapter.CustomViewHolder holder, int position) {
         // Update card view with data
         // get the object at the position
-        EventCategory eventCategory = this.data.get(position);
+        EventCategory eventCategory = data.get(position);
 
         // set the data to the view holder
         holder.rvCategoryId.setText(String.valueOf(eventCategory.getCategoryId()));
         holder.rvCategoryName.setText(eventCategory.getCategoryName());
         holder.rvEventCount.setText(String.valueOf(eventCategory.getEventCount()));
         holder.rvCategoryIsActive.setText(eventCategory.isCategoryActive() ? "Active" : "Inactive");
+        holder.rvEventLocation.setText(eventCategory.getEventLocation());
+    }
+
+    public void setData(List<EventCategory> data) {
+        this.data = data;
     }
 
     @Override
@@ -60,6 +63,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
         public TextView rvCategoryName;
         public TextView rvEventCount;
         public TextView rvCategoryIsActive;
+        public TextView rvEventLocation;
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             // Reference fields in the view holder layout (card_layout.xml)
@@ -67,6 +71,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
             rvCategoryName = itemView.findViewById(R.id.rv_categoryName);
             rvEventCount = itemView.findViewById(R.id.rv_eventCount);
             rvCategoryIsActive = itemView.findViewById(R.id.rv_categoryIsActive);
+            rvEventLocation = itemView.findViewById(R.id.rv_eventLocation);
         }
     }
 }

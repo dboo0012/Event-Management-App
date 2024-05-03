@@ -22,7 +22,23 @@ public class AppRepository {
         return mAllEvents;
     }
 
+    // Event Category
+    // Read category
     LiveData<List<EventCategory>> getAllEventCategories(){
         return mAllEventCategories;
+    }
+
+    // Save category
+    void addEventCategory(EventCategory eventCategory){
+        AppDatabase.databaseWriteExecutor.execute(()->{
+            appDAO.addEventCategory(eventCategory);
+        });
+    }
+
+    // Delete all category
+    void deleteAllEventCategory(){
+        AppDatabase.databaseWriteExecutor.execute(()->{
+            appDAO.deleteAllEventCategory();
+        });
     }
 }

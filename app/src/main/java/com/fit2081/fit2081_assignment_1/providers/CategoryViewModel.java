@@ -13,5 +13,16 @@ public class CategoryViewModel extends AndroidViewModel {
     private LiveData<List<EventCategory>> mAllEventCategories;
     public CategoryViewModel(@NonNull Application application) {
         super(application);
+        mRepository = new AppRepository(application);
+        mAllEventCategories = mRepository.getAllEventCategories();
+    }
+    public LiveData<List<EventCategory>> getAllEventCategories() {
+        return mAllEventCategories;
+    }
+    public void addEventCategory(EventCategory eventCategory){
+        mRepository.addEventCategory(eventCategory);
+    }
+    public void deleteAllEventCategory(){
+        mRepository.deleteAllEventCategory();
     }
 }

@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "eventCategories")
+@Entity(tableName = EventCategory.TABLE_NAME)
 public class EventCategory {
+    public static final String TABLE_NAME = "eventCategories";
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -33,6 +34,10 @@ public class EventCategory {
         this.isCategoryActive = isCategoryActive;
     }
 
+    public int getEventCount() {
+        return eventCount;
+    }
+
     public void setEventCount(int eventCount) {
         this.eventCount = eventCount;
     }
@@ -41,16 +46,24 @@ public class EventCategory {
         return categoryId;
     }
 
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
 
-    public int getEventCount() {
-        return eventCount;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public boolean isCategoryActive() {
         return isCategoryActive;
+    }
+
+    public void setCategoryActive(boolean categoryActive) {
+        isCategoryActive = categoryActive;
     }
 
     public int getId() {

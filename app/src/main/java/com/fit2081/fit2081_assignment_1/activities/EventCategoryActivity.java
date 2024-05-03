@@ -83,7 +83,7 @@ public class EventCategoryActivity extends AppCompatActivity {
         Log.d(LOG_KEY, "Broadcast receiver unregistered (category)");
     }
 
-    public void createEventCategoryButtonOnClick(View view){
+    public void createEventCategoryButtonOnClick(View view) {
         // Parse the values
         String categoryName = findCategoryName.getText().toString();
         boolean isCategoryActive = findCategoryIsActive.isChecked();
@@ -91,20 +91,24 @@ public class EventCategoryActivity extends AppCompatActivity {
         String eventLocation = findEventLocation.getText().toString();
 
         // Default value for event count
-        try{
+        try {
             eventCount = Integer.parseInt(findEventCount.getText().toString());
-            if (eventCount < 0){
+            if (eventCount < 0) {
                 eventCount = 0;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             eventCount = 0;
         }
 
         // form validation
-        if (categoryName.isEmpty()){ // check that event category name is filled
+        if (categoryName.isEmpty()) { // check that event category name is filled
             Toast.makeText(this, "Event category name required", Toast.LENGTH_SHORT).show();
-        } else if (!validateCategoryName(categoryName)){
+        } else if (!validateCategoryName(categoryName)) {
             Toast.makeText(this, "Invalid Event Category Name", Toast.LENGTH_SHORT).show();
+        } else if (eventLocation.isEmpty()) { // check that event location is filled
+            Toast.makeText(this, "Event location required", Toast.LENGTH_SHORT).show();
+        } else if(!validateEventLocation(eventLocation)){
+            Toast.makeText(this, "Invalid Event Location", Toast.LENGTH_SHORT).show();
         } else {
             String categoryId = generateCategoryID();
             saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
@@ -163,8 +167,13 @@ public class EventCategoryActivity extends AppCompatActivity {
     }
 
     private boolean validateCategoryName(String categoryName){
-        String pattern = "[a-zA-Z][a-zA-Z0-9 ]+"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
+        String pattern = "[a-zA-Z][a-zA-Z0-9 ]+"; // only accept format of alphabets, numbers and spaces, "+" signifies preceding character can appear one or more times
         return categoryName.matches(pattern);
+    }
+
+    private boolean validateEventLocation(String eventLocation){
+        String pattern = "[a-zA-Z ]+"; // only accept format of alphabets and spaces, "+" signifies preceding character can appear one or more times
+        return eventLocation.matches(pattern);
     }
 
     private String generateCategoryID(){

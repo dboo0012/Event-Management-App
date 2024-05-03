@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "events")
+@Entity(tableName = Event.TABLE_NAME)
 public class Event {
+    public static final String TABLE_NAME = "events";
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

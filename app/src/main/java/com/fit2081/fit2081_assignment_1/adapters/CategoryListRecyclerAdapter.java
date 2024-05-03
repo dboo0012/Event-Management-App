@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,15 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
         holder.rvEventCount.setText(String.valueOf(eventCategory.getEventCount()));
         holder.rvCategoryIsActive.setText(eventCategory.isCategoryActive() ? "Active" : "Inactive");
         holder.rvEventLocation.setText(eventCategory.getEventLocation());
+
+        // Listener to navigate to google maps view on click
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Clicked position: " + eventCategory.getCategoryId(), Snackbar.LENGTH_LONG).show();
+                // TODO: Implement navigation to google maps view, by passing the location string as intent extra
+            }
+        });
     }
 
     public void setData(List<EventCategory> data) {
@@ -59,6 +69,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
+        public View itemView;
         public TextView rvCategoryId;
         public TextView rvCategoryName;
         public TextView rvEventCount;
@@ -66,6 +77,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
         public TextView rvEventLocation;
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.itemView = itemView;
             // Reference fields in the view holder layout (card_layout.xml)
             rvCategoryId = itemView.findViewById(R.id.rv_categoryId);
             rvCategoryName = itemView.findViewById(R.id.rv_categoryName);

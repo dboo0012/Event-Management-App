@@ -4,6 +4,7 @@ import static com.fit2081.fit2081_assignment_1.activities.MainActivity.LOG_KEY;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.providers.CategoryViewModel;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
@@ -44,6 +46,7 @@ public class EventCategoryActivity extends AppCompatActivity {
     categoryBroadcastReceiver myBroadCastReceiver;
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
+    CategoryViewModel eventCategoryViewModel;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -70,6 +73,9 @@ public class EventCategoryActivity extends AppCompatActivity {
         // Convert the restored string back to ArrayList
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
         categoryList = gson.fromJson(arrayListStringRestored,type);
+
+        // Initialise the ViewModel
+        eventCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
 
         // Debugging
         Log.d(LOG_KEY, "launched category SMS Receiver");
@@ -111,7 +117,8 @@ public class EventCategoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid Event Location", Toast.LENGTH_SHORT).show();
         } else {
             String categoryId = generateCategoryID();
-            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
+//            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
+
             findCategoryId.setText(categoryId);
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
@@ -123,6 +130,12 @@ public class EventCategoryActivity extends AppCompatActivity {
         }
     }
 
+    public void saveCategoryToDatabase (String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){
+        // Create a new EventCategory object
+        EventCategory newEventCategory = new EventCategory(categoryId, categoryName, eventCount, isActive, eventLocation);
+        // Insert the new EventCategory object into the database
+        // eventCategoryViewModel.insert(newEventCategory);
+    }
 
     public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){
         // Initialise shared preference class variable to access persistent storage

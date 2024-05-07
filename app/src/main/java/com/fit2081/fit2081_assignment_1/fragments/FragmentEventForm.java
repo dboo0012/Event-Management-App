@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.activities.DashboardActivity;
 import com.fit2081.fit2081_assignment_1.providers.Event;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
+import com.fit2081.fit2081_assignment_1.providers.EventViewModel;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
@@ -44,6 +46,8 @@ public class FragmentEventForm extends Fragment {
     ArrayList<Event> eventList;
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
+    EventViewModel eventViewModel;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -96,15 +100,18 @@ public class FragmentEventForm extends Fragment {
         findTicketsAvailable = view.findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = view.findViewById(R.id.switch_isEventActive);
 
-        loadEventList();
+//        loadEventList();
 
+        // Initialise event view model
+        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
+;
         return view;
     }
 
     public boolean saveEventButtonOnClick(){
         Log.d("fab", "event fab clicked");
-        loadEventList();
-        loadCategoryList();
+//        loadEventList();
+//        loadCategoryList();
         boolean saveEvent = false;
         String categoryId = findCategoryId.getText().toString();
         String eventName = findEventName.getText().toString();
@@ -140,7 +147,9 @@ public class FragmentEventForm extends Fragment {
                 generatedEventId = generateEventId();
 
                 // save attributes to shared preferences
-                saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
+//                saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
+//                        ticketsAvailable, isEventActive);
+                saveEventToDatabase(generatedEventId, categoryId, eventName,
                         ticketsAvailable, isEventActive);
 
                 // update the event count in the category
@@ -156,21 +165,25 @@ public class FragmentEventForm extends Fragment {
         }
         return saveEvent;
     }
-
-    private void loadCategoryList(){
-        // Restore the list of event categories from SharedPreferences
-        String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
-        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        categoryList = gson.fromJson(categoryListString, type);
+    public void saveEventToDatabase(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
+        eventViewModel.addEvent(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
     }
 
-    private void loadEventList(){
-        // Restore the list of event categories from SharedPreferences
-        String eventListString = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
-        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
-        eventList = gson.fromJson(eventListString, type);
-        Log.d("list", String.format("event list loaded at fragment, current event list: %s", eventList));
-    }
+
+//    private void loadCategoryList(){
+//        // Restore the list of event categories from SharedPreferences
+//        String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+//        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+//        categoryList = gson.fromJson(categoryListString, type);
+//    }
+//
+//    private void loadEventList(){
+//        // Restore the list of event categories from SharedPreferences
+//        String eventListString = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+//        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+//        eventList = gson.fromJson(eventListString, type);
+//        Log.d("list", String.format("event list loaded at fragment, current event list: %s", eventList));
+//    }
 
     private void updateEventCount(String categoryId) {
         if (categoryList != null) {
@@ -199,23 +212,23 @@ public class FragmentEventForm extends Fragment {
         return String.format("E%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(5));
     }
 
-    private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
-        // Get the destination to save the event attributes
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        // Add to shared pref list of events
-        addItemToEventList(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
-
-        editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
-        editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
-        editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
-        editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
-        editor.putInt(EventSharedPref.KEY_TICKETS_AVAILABLE, ticketsAvailable);
-        editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
-
-        editor.apply();
-    }
+//    private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
+//        // Get the destination to save the event attributes
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        // Add to shared pref list of events
+//        addItemToEventList(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
+//
+//        editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
+//        editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
+//        editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
+//        editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
+//        editor.putInt(EventSharedPref.KEY_TICKETS_AVAILABLE, ticketsAvailable);
+//        editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
+//
+//        editor.apply();
+//    }
 
     private void addItemToEventList(Event newEvent){
         // Instantiate the list if it is null
@@ -255,7 +268,7 @@ public class FragmentEventForm extends Fragment {
     }
 
     public void deleteListData(){
-        loadCategoryList(); // Refresh the category list to the newest version
+//        loadCategoryList(); // Refresh the category list to the newest version
         // iterate through list of events and update the event count in the category list
         if (eventList != null && categoryList != null){
             Log.d("delete", "category list not empty, proceed to reduce event count in each category");
@@ -318,7 +331,6 @@ public class FragmentEventForm extends Fragment {
         }
         return false;
     }
-
 
     public void clearFields(){
         findEventId.setText("(auto generated upon creation)");

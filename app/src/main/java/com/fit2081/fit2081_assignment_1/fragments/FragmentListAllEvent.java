@@ -3,6 +3,7 @@ package com.fit2081.fit2081_assignment_1.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.EventListRecyclerAdapter;
 import com.fit2081.fit2081_assignment_1.providers.Event;
+import com.fit2081.fit2081_assignment_1.providers.EventViewModel;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
@@ -41,6 +43,7 @@ public class FragmentListAllEvent extends Fragment {
     EventListRecyclerAdapter adapter;
     ArrayList<Event> eventList;
     Gson gson = new Gson();
+    EventViewModel eventViewModel;
 
     public FragmentListAllEvent() {
         // Required empty public constructor
@@ -84,36 +87,48 @@ public class FragmentListAllEvent extends Fragment {
 
         // Set the layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        restoreListData();
+
         // Create the adapter with the shared pref list data
-        adapter = new EventListRecyclerAdapter(eventList);
+        adapter = new EventListRecyclerAdapter();
+
+        // Initialise the event view model
+        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
+
+        // Observe live data from view model
+        eventViewModel.getAllEvents().observe(getViewLifecycleOwner(), newData -> {
+            // Update the data in the adapter
+            adapter.setData(newData);
+            adapter.notifyDataSetChanged();
+            Log.d("db", String.format("Event Data updated in fragment. size: %s",newData.size()));
+        });
+
         // Set the adapter to the RecyclerView
         recyclerView.setAdapter(adapter);
 
         return view;
     }
 
-    private void restoreListData(){
-        // restore list data from SharedPreferences
-        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
-        // Convert the restored string back to ArrayList
-        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
-        eventList = gson.fromJson(arrayListStringRestored,type);
+//    private void restoreListData(){
+//        // restore list data from SharedPreferences
+//        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+//        // Convert the restored string back to ArrayList
+//        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+//        eventList = gson.fromJson(arrayListStringRestored,type);
+//
+//        Log.d("fragment_event", String.format("event fragment %s",arrayListStringRestored));
+//
+//        // Initializes a category list if it has not been
+//        Log.d("fragment_event", String.format("list restored at event fragment, size: %d, %s",eventList.size(),eventList));
+////        Log.d("fragment_event", String.format("list restored at event fragment: %s",eventList));
+//    }
 
-        Log.d("fragment_event", String.format("event fragment %s",arrayListStringRestored));
-
-        // Initializes a category list if it has not been
-        Log.d("fragment_event", String.format("list restored at event fragment, size: %d, %s",eventList.size(),eventList));
-//        Log.d("fragment_event", String.format("list restored at event fragment: %s",eventList));
-    }
-
-    public void notifyAdapter() {
-        if (adapter != null) {
-            restoreListData();
-            // Update the data in the adapter
-            adapter.updateData(eventList);
-            adapter.notifyDataSetChanged();
-            Log.d("adapter", "Adapter notified");
-        }
-    }
+//    public void notifyAdapter() {
+//        if (adapter != null) {
+//            restoreListData();
+//            // Update the data in the adapter
+//            adapter.updateData(eventList);
+//            adapter.notifyDataSetChanged();
+//            Log.d("adapter", "Adapter notified");
+//        }
+//    }
 }

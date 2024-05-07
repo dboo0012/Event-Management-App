@@ -22,6 +22,7 @@ import com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory;
 import com.fit2081.fit2081_assignment_1.providers.CategoryViewModel;
 import com.fit2081.fit2081_assignment_1.providers.Event;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
+import com.fit2081.fit2081_assignment_1.providers.EventViewModel;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
@@ -43,7 +44,8 @@ public class DashboardActivity extends AppCompatActivity {
     public static FragmentListAllCategory fragmentListAllCategory;
     FragmentEventForm fragmentEventForm;
     Gson gson = new Gson();
-    CategoryViewModel eventCategoryViewModel;
+    CategoryViewModel categoryViewModel;
+    EventViewModel eventViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,16 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
         toggle.syncState();
 
         // Floating action button
-        fab_save = findViewById(R.id.fab_save);
-        fab_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean isEventSaved = fragmentEventForm.saveEventButtonOnClick();
-                if (isEventSaved) {
-                    showFABSnackbarMessageAction(view, "Saved Event");
-                }
-            }
-        });
+        setFab_save();
 
         // Create the fragments
         fragmentListAllCategory = new FragmentListAllCategory();
@@ -84,9 +77,12 @@ public class DashboardActivity extends AppCompatActivity {
         fragmentEventForm = new FragmentEventForm();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_event, fragmentEventForm).commit(); // Set the adapter to the fragment
 
+        // Initialise view models
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
+
         // Initialise the shared preference lists at launch
-        eventCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        initialiseSharedPrefLists();
+//        initialiseSharedPrefLists();
 
         // Debugging
         Log.d(key, "launched dashboard activity");
@@ -128,18 +124,23 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
+    public void setFab_save(){
+        fab_save = findViewById(R.id.fab_save);
+        fab_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isEventSaved = fragmentEventForm.saveEventButtonOnClick();
+                if (isEventSaved) {
+                    showFABSnackbarMessageAction(view, "Saved Event");
+                }
+            }
+        });
+    }
+
     private void launchIntent(Class<?> targetClass){
         // Creates a new intent instance to the target activity class and launch it
         Intent newIntent = new Intent(this, targetClass);
         startActivity(newIntent);
-    }
-
-    public void eventCategoryButtonOnClick(View view){
-        launchIntent(EventCategoryActivity.class);
-    }
-
-    public void addEventButtonOnClick(View view){
-        launchIntent(EventActivity.class);
     }
 
     @Override
@@ -161,11 +162,11 @@ public class DashboardActivity extends AppCompatActivity {
             fragmentEventForm.clearFields();
         } else if (itemId == R.id.option_delete_categories) {
             // clear categories shared pref list here
-            eventCategoryViewModel.deleteAllEventCategory();
+            categoryViewModel.deleteAllEventCategory();
             Toast.makeText(this, "All Event Categories Deleted.", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.option_delete_events) {
             // clear events shared pref list here
-            fragmentEventForm.deleteListData();
+            eventViewModel.deleteAllEvents();
             Toast.makeText(this, "All Events Deleted.", Toast.LENGTH_SHORT).show();
         }
         // tell the OS

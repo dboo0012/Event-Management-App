@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.providers.Event;
+import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecyclerAdapter.CustomViewHolder>{
-    ArrayList<Event> data;
-    public EventListRecyclerAdapter(ArrayList<Event> data) {
-        this.data = data;
-    }
+    List<Event> data;
+    public EventListRecyclerAdapter() {}
 
     @NonNull
     @Override
@@ -39,14 +39,19 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
         holder.rv_ticketsAvailable.setText(String.valueOf(event.getTicketsAvailable()));
         holder.rv_eventIsActive.setText(event.isEventActive() ? "Active" : "Inactive");
     }
-    public void updateData(ArrayList<Event> newData) {
-        clearData();
-        this.data.addAll(newData);
+
+    public void setData(List<Event> data) {
+        this.data = data;
     }
 
-    public void clearData() {
-        this.data.clear();
-    }
+//    public void updateData(ArrayList<Event> newData) {
+//        clearData();
+//        this.data.addAll(newData);
+//    }
+
+//    public void clearData() {
+//        this.data.clear();
+//    }
 
     @Override
     public int getItemCount() {

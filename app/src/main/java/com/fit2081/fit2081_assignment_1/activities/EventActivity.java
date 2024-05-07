@@ -28,6 +28,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+/**
+ * !!!!!!!!
+ * DISCONTINUED, NEW EVENT HAS BEEN IMPLEMENTED AS A FRAGMENT
+ * !!!!!!!!
+ */
 public class EventActivity extends AppCompatActivity {
     TextView findEventId;
     EditText findCategoryId;

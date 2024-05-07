@@ -18,17 +18,14 @@ public class AppRepository {
         mAllEventCategories = appDAO.getAllEventCategories();
     }
 
-    LiveData<List<Event>> getAllEvents(){
-        return mAllEvents;
-    }
-
     // Event Category
     // Read category
+
     LiveData<List<EventCategory>> getAllEventCategories(){
         return mAllEventCategories;
     }
 
-    // Save category
+    // Save new category
     void addEventCategory(EventCategory eventCategory){
         AppDatabase.databaseWriteExecutor.execute(()->{
             appDAO.addEventCategory(eventCategory);
@@ -39,6 +36,25 @@ public class AppRepository {
     void deleteAllEventCategory(){
         AppDatabase.databaseWriteExecutor.execute(()->{
             appDAO.deleteAllEventCategory();
+        });
+    }
+
+    // Events
+    LiveData<List<Event>> getAllEvents(){
+        return mAllEvents;
+    }
+
+    // Save new event
+    void addEvent(Event event){
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            appDAO.addEvent(event);
+        });
+    }
+
+    // Delete all events
+    void deleteAllEvents(){
+        AppDatabase.databaseWriteExecutor.execute(()->{
+            appDAO.deleteAllEvents();
         });
     }
 }

@@ -101,7 +101,7 @@ public class FragmentListAllCategory extends Fragment {
             // Update the data in the adapter
             adapter.setData(newData);
             adapter.notifyDataSetChanged();
-            Log.d("db", String.format("Data updated in adapter size: %s",newData.size()));
+            Log.d("db", String.format("Category Data updated in fragment. size: %s",newData.size()));
         });
 
         // Set the adapter to the RecyclerView

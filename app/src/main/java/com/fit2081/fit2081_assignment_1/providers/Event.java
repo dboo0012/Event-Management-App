@@ -35,6 +35,26 @@ public class Event {
         this.isEventActive = isEventActive;
     }
 
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setTicketsAvailable(int ticketsAvailable) {
+        this.ticketsAvailable = ticketsAvailable;
+    }
+
+    public void setEventActive(boolean eventActive) {
+        isEventActive = eventActive;
+    }
+
     public String getEventId() {
         return eventId;
     }

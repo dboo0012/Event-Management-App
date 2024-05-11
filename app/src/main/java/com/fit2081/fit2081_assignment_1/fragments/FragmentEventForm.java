@@ -141,8 +141,8 @@ public class FragmentEventForm extends Fragment {
             // Verify categoryId format
             if (!validateCategoryId(categoryId)) {
                 Toast.makeText(getActivity(), "Category ID does not match format.", Toast.LENGTH_SHORT).show();
-            } else if (!validateCategoryIdInList(categoryId)) {
-                Toast.makeText(getActivity(), "Category ID does not exist.", Toast.LENGTH_SHORT).show();
+//            } else if (!validateCategoryIdInList(categoryId)) {
+//                Toast.makeText(getActivity(), "Category ID does not exist.", Toast.LENGTH_SHORT).show();
             } else if (validateCategoryId(categoryId) && validateCategoryIdInList(categoryId)) {
                 generatedEventId = generateEventId();
 
@@ -153,7 +153,7 @@ public class FragmentEventForm extends Fragment {
                         ticketsAvailable, isEventActive);
 
                 // update the event count in the category
-                updateEventCount(categoryId);
+//                updateEventCount(categoryId);
 
                 // Successful
                 // show the generated event ID
@@ -166,7 +166,9 @@ public class FragmentEventForm extends Fragment {
         return saveEvent;
     }
     public void saveEventToDatabase(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
-        eventViewModel.addEvent(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
+        Event newEvent = new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive);
+        eventViewModel.addEvent(newEvent);
+        Log.d("db", String.format("Successfully added %s to database", newEvent.getId()));
     }
 
 

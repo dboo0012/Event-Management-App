@@ -38,6 +38,10 @@
             android:value="AIzaSyAjFwRf1qJmFyuIh2xJORd4OG4T3rmn0l0" />
 
         <activity
+            android:name=".activities.GoogleMapActivity"
+            android:exported="false"
+            android:label="@string/title_activity_google_map" />
+        <activity
             android:name=".providers.EventLocationMapsActivity"
             android:exported="false"
             android:label="@string/title_activity_event_location_maps" />

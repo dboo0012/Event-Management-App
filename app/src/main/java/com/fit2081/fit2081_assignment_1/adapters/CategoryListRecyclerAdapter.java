@@ -1,5 +1,8 @@
 package com.fit2081.fit2081_assignment_1.adapters;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.activities.DashboardActivity;
+import com.fit2081.fit2081_assignment_1.activities.GoogleMapActivity;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -44,8 +49,12 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Clicked position: " + eventCategory.getCategoryId(), Snackbar.LENGTH_LONG).show();
+//                Snackbar.make(v, "Clicked position: " + eventCategory.getCategoryId(), Snackbar.LENGTH_LONG).show();
                 // TODO: Implement navigation to google maps view, by passing the location string as intent extra
+                String location = eventCategory.getEventLocation();
+                Intent intent = new Intent(v.getContext(), GoogleMapActivity.class);
+                intent.putExtra("location", location);
+                v.getContext().startActivity(intent);
             }
         });
     }

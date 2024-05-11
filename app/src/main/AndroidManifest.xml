@@ -21,7 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FIT2081_Assignment_1"
         tools:targetApi="33">
-
+        <activity
+            android:name=".activities.WebViewActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

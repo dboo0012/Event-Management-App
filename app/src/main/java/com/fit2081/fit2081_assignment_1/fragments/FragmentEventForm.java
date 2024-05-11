@@ -18,18 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.activities.DashboardActivity;
 import com.fit2081.fit2081_assignment_1.providers.Event;
 import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 import com.fit2081.fit2081_assignment_1.providers.EventViewModel;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
-import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -141,9 +137,9 @@ public class FragmentEventForm extends Fragment {
             // Verify categoryId format
             if (!validateCategoryId(categoryId)) {
                 Toast.makeText(getActivity(), "Category ID does not match format.", Toast.LENGTH_SHORT).show();
-//            } else if (!validateCategoryIdInList(categoryId)) {
+//            } else if (!validateCategoryIdExists(categoryId)) {
 //                Toast.makeText(getActivity(), "Category ID does not exist.", Toast.LENGTH_SHORT).show();
-            } else if (validateCategoryId(categoryId) && validateCategoryIdInList(categoryId)) {
+            } else if (validateCategoryId(categoryId) ) { //&& validateCategoryIdExists(categoryId)
                 generatedEventId = generateEventId();
 
                 // save attributes to shared preferences
@@ -322,7 +318,7 @@ public class FragmentEventForm extends Fragment {
         return eventName.matches(pattern);
     }
 
-    private boolean validateCategoryIdInList(String categoryId){
+    private boolean validateCategoryIdExists(String categoryId){
         // Check if the categoryId exists in the categoryList
         if (categoryList != null) {
             for (EventCategory category : categoryList) {

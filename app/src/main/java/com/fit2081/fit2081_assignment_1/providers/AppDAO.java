@@ -15,6 +15,9 @@ public interface AppDAO {
     @Query ("select * from eventCategories")
     LiveData<List<EventCategory>> getAllEventCategories();
 
+    @Query ("SELECT categoryId FROM eventCategories")
+    LiveData<List<String>> getAllCategoryIds();
+
     @Insert
     void addEventCategory(EventCategory eventCategory);
 

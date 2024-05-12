@@ -200,7 +200,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // undo the action
-                fragmentEventForm.removeLastAddedItem();
+//                fragmentEventForm.removeLastAddedItem();
             }
         });
         snackbar.show();

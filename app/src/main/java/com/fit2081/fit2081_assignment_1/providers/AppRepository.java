@@ -24,6 +24,7 @@ public class AppRepository {
     LiveData<List<EventCategory>> getAllEventCategories(){
         return mAllEventCategories;
     }
+    LiveData<List<String>> getAllCategoryIds(){return appDAO.getAllCategoryIds();}
 
     // Save new category
     void addEventCategory(EventCategory eventCategory){

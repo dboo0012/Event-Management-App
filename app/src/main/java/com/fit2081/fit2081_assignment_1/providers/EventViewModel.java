@@ -28,4 +28,8 @@ public class EventViewModel extends AndroidViewModel {
     public void deleteAllEvents(){
         mRepository.deleteAllEvents();
     }
+
+    public LiveData<List<String>> getAllCategoryIds(){
+        return mRepository.getAllCategoryIds();
+    }
 }

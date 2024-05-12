@@ -1,5 +1,6 @@
 package com.fit2081.fit2081_assignment_1.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fit2081.fit2081_assignment_1.R;
+import com.fit2081.fit2081_assignment_1.activities.EventGoogleResult;
 import com.fit2081.fit2081_assignment_1.providers.Event;
-import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecyclerAdapter.CustomViewHolder>{
@@ -38,6 +38,17 @@ public class EventListRecyclerAdapter extends RecyclerView.Adapter<EventListRecy
         holder.rv_eventName.setText(event.getEventName());
         holder.rv_ticketsAvailable.setText(String.valueOf(event.getTicketsAvailable()));
         holder.rv_eventIsActive.setText(event.isEventActive() ? "Active" : "Inactive");
+
+        // Listens to click on card views
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), EventGoogleResult.class);
+                intent.putExtra("eventName", event.getEventName());
+                v.getContext().startActivity(intent);
+//                Toast.makeText(v.getContext(), event.getEventName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setData(List<Event> data) {

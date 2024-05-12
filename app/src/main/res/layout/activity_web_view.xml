@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.WebViewActivity"
+    tools:context=".activities.EventGoogleResult"
     android:fitsSystemWindows="true">
 
     <androidx.appcompat.widget.Toolbar

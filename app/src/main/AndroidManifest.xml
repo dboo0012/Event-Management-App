@@ -72,6 +72,7 @@
             android:exported="false" />
         <activity
             android:name=".activities.DashboardActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"> <!-- change to true when testing -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

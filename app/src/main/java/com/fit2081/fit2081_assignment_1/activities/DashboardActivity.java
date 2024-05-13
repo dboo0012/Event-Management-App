@@ -11,10 +11,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
@@ -48,6 +50,8 @@ public class DashboardActivity extends AppCompatActivity {
     CategoryViewModel categoryViewModel;
     EventViewModel eventViewModel;
     View touchpad;
+    private GestureDetector gestureDetector;
+    TextView tvTouchFeedback;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,27 +89,14 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Initialise the touchpad area
         touchpad = findViewById(R.id.touchpad);
+        tvTouchFeedback = findViewById(R.id.tv_touchFeedback);
+
+        // Setup touch
+        gestureDetector = new GestureDetector(this, new CustomGestureListener());
         touchpad.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-
-                // compare the detected event type against pre-defined values
-                if (action == MotionEvent.ACTION_DOWN){
-//                    tvEventType.setText("ACTION_DOWN");
-                    Toast.makeText(DashboardActivity.this, "touch", Toast.LENGTH_SHORT).show();
-                } else if (action == MotionEvent.ACTION_UP){
-//                    tvEventType.setText("ACTION_UP");
-                    Toast.makeText(DashboardActivity.this, "touch", Toast.LENGTH_SHORT).show();
-                } else if (action == MotionEvent.ACTION_MOVE){
-//                    tvEventType.setText("ACTION_MOVE");
-                    Toast.makeText(DashboardActivity.this, "touch", Toast.LENGTH_SHORT).show();
-                }
-
-                // get touch location
-                float x = event.getX();
-                float y = event.getY();
-
+                gestureDetector.onTouchEvent(event);
                 return true;
             }
         });
@@ -114,39 +105,21 @@ public class DashboardActivity extends AppCompatActivity {
         Log.d(key, "launched dashboard activity");
     }
 
-    public void initialiseSharedPrefLists(){
-        // Event Category List
-        // Grab the array list stored as String in SharedPreferences
-        String categoryArrayListString = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
-        // Convert the restored string back to ArrayList
-        Type categoryType = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        ArrayList<EventCategory> categoryList = gson.fromJson(categoryArrayListString,categoryType);
-
-        // Initialize and save the list if it has not been
-        if (categoryList == null) {
-            categoryList = new ArrayList<EventCategory>();
-            SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
-            editor.apply();
-            Log.d("list", String.format("new list created at fragment: %s",categoryList));
+    private class CustomGestureListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public void onLongPress(@NonNull MotionEvent e) {
+            // clear fields
+            fragmentEventForm.clearFields();
+            tvTouchFeedback.setText("onLongPress");
+            super.onLongPress(e);
         }
 
-        // Event List
-        // restore list data from SharedPreferences
-        String eventListString = new SharedPrefRestore(this).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
-        // Convert the restored string back to ArrayList
-        Type eventType = new TypeToken<ArrayList<Event>>() {}.getType();
-        ArrayList<Event> eventList = gson.fromJson(eventListString,eventType);
-        Log.d("fragment_event form", String.format("event fragment %s",eventListString));
-
-        if (eventList == null) {
-            eventList = new ArrayList<Event>();
-            SharedPreferences sharedPreferences = getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
-            editor.apply();
-            Log.d("list", String.format("new list created at fragment: %s",eventList));
+        @Override
+        public boolean onDoubleTap(@NonNull MotionEvent e) {
+            // save new event
+            fragmentEventForm.saveEventButtonOnClick();
+            tvTouchFeedback.setText("onDoubleTap");
+            return true;
         }
     }
 
@@ -182,7 +155,6 @@ public class DashboardActivity extends AppCompatActivity {
         if (itemId == R.id.option_refresh) {
             // notify adapter of changes here
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
-//            Log.d("list", String.format("Size: %d, dashboard Array: %s", categoryList.size() , categoryList.toString()));
         } else if (itemId == R.id.option_clear) {
             // clear fields here
             fragmentEventForm.clearFields();

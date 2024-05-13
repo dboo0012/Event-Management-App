@@ -119,5 +119,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_event" />
 
+    <TextView
+        android:id="@+id/tv_touchFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="touch area"
+        app:layout_constraintBottom_toBottomOf="@+id/touchpad"
+        app:layout_constraintEnd_toEndOf="@+id/touchpad"
+        app:layout_constraintStart_toStartOf="@+id/touchpad"
+        app:layout_constraintTop_toTopOf="@+id/touchpad" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

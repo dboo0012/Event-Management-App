@@ -20,6 +20,9 @@ public class EventViewModel extends AndroidViewModel {
     public LiveData<List<Event>> getAllEvents (){
         return mAllEvents;
     }
+    public LiveData<List<EventCategory>> getAllEventCategories(){
+        return mRepository.getAllEventCategories();
+    }
 
     public void addEvent(Event event){
         mRepository.addEvent(event);
@@ -31,5 +34,9 @@ public class EventViewModel extends AndroidViewModel {
 
     public LiveData<List<String>> getAllCategoryIds(){
         return mRepository.getAllCategoryIds();
+    }
+
+    public void updateCategoryEventCount(String categoryId, int eventCount){
+        mRepository.updateCategoryEventCount(categoryId, eventCount);
     }
 }

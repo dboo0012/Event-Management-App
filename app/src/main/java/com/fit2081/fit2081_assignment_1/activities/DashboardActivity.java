@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class DashboardActivity extends AppCompatActivity {
     Gson gson = new Gson();
     CategoryViewModel categoryViewModel;
     EventViewModel eventViewModel;
+    View touchpad;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +83,32 @@ public class DashboardActivity extends AppCompatActivity {
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
 
-        // Initialise the shared preference lists at launch
-//        initialiseSharedPrefLists();
+        // Initialise the touchpad area
+        touchpad = findViewById(R.id.touchpad);
+        touchpad.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+
+                // compare the detected event type against pre-defined values
+                if (action == MotionEvent.ACTION_DOWN){
+//                    tvEventType.setText("ACTION_DOWN");
+                    Toast.makeText(DashboardActivity.this, "touch", Toast.LENGTH_SHORT).show();
+                } else if (action == MotionEvent.ACTION_UP){
+//                    tvEventType.setText("ACTION_UP");
+                    Toast.makeText(DashboardActivity.this, "touch", Toast.LENGTH_SHORT).show();
+                } else if (action == MotionEvent.ACTION_MOVE){
+//                    tvEventType.setText("ACTION_MOVE");
+                    Toast.makeText(DashboardActivity.this, "touch", Toast.LENGTH_SHORT).show();
+                }
+
+                // get touch location
+                float x = event.getX();
+                float y = event.getY();
+
+                return true;
+            }
+        });
 
         // Debugging
         Log.d(key, "launched dashboard activity");

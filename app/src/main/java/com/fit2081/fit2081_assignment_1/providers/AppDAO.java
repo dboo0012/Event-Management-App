@@ -33,4 +33,7 @@ public interface AppDAO {
 
     @Query("delete from events")
     void deleteAllEvents();
+
+    @Query("UPDATE eventCategories SET eventCount = :eventCount WHERE categoryId = :categoryId")
+    void updateCategoryEventCount(String categoryId, int eventCount);
 }

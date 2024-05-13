@@ -1,5 +1,7 @@
 package com.fit2081.fit2081_assignment_1.activities;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
 import android.location.Address;
@@ -80,7 +82,7 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
                 } else {
                     Toast.makeText(GoogleMapActivity.this, "No country found", Toast.LENGTH_SHORT).show();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -110,7 +112,7 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
                         // repositions the camera according to newAddressLocation
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(newAddressLocation));
 
-                        // just for reference add a new Marker
+                        // Add a new Marker
                         Marker marker = mMap.addMarker(
                                 new MarkerOptions()
                                         .position(newAddressLocation)

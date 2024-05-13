@@ -58,4 +58,10 @@ public class AppRepository {
             appDAO.deleteAllEvents();
         });
     }
+
+    void updateCategoryEventCount(String categoryId, int eventCount){
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            appDAO.updateCategoryEventCount(categoryId, eventCount);
+        });
+    }
 }

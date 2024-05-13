@@ -41,6 +41,7 @@ public class FragmentEventForm extends Fragment {
     EditText findTicketsAvailable;
     Switch findEventIsActive;
     ArrayList<Event> eventList;
+    List<EventCategory> categoryList;
     List<String> categoryIdList;
     Gson gson = new Gson();
     EventViewModel eventViewModel;
@@ -107,6 +108,13 @@ public class FragmentEventForm extends Fragment {
             categoryIdList = categoryIDs;
             Log.d("db", String.format("Category ID list loaded from database: %s", categoryIdList));
         });
+
+        // Load event category
+        eventViewModel.getAllEventCategories().observe(getViewLifecycleOwner(), eventCategories -> {
+            categoryList = eventCategories;
+            Log.d("db", String.format("Category list loaded from database: %s", categoryList));
+        });
+
         return view;
     }
 
@@ -149,13 +157,11 @@ public class FragmentEventForm extends Fragment {
                 generatedEventId = generateEventId();
 
                 // save attributes to shared preferences
-//                saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
-//                        ticketsAvailable, isEventActive);
                 saveEventToDatabase(generatedEventId, categoryId, eventName,
                         ticketsAvailable, isEventActive);
 
                 // update the event count in the category
-//                updateEventCount(categoryId);
+                updateEventCount(categoryId);
 
                 // Successful
                 // show the generated event ID
@@ -173,28 +179,19 @@ public class FragmentEventForm extends Fragment {
         Log.d("db", String.format("Successfully added %s to database", newEvent.getId()));
     }
 
-//    private void updateEventCount(String categoryId) {
-//        if (categoryIdList != null) {
-//            // Iterate over the list to find the matching category
-//            for (EventCategory category : categoryIdList) {
-//                if (category.getCategoryId().equals(categoryId)) {
-//                    // Increment the event count by 1
-//                    category.setEventCount(category.getEventCount() + 1);
-//                    Log.d("count", "Event count updated by 1");
-//                    break;
-//                }
-//            }
-//
-//            // Save the updated list back to SharedPreferences
-//            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryIdList));
-//            editor.apply();
-//
-//            // notify event category fragment
-////            DashboardActivity.fragmentListAllCategory.notifyAdapter();
-//        }
-//    }
+    private void updateEventCount(String categoryId) {
+        if (categoryList != null) {
+            // Iterate over the list to find the matching category
+            for (EventCategory category : categoryList) {
+                if (category.getCategoryId().equals(categoryId)) {
+                    // Increment the event count by 1
+                    eventViewModel.updateCategoryEventCount(categoryId, category.getEventCount() + 1);
+                    Log.d("count", "Event count updated by 1");
+                    break;
+                }
+            }
+        }
+    }
 
     private String generateEventId(){
         return String.format("E%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(5));

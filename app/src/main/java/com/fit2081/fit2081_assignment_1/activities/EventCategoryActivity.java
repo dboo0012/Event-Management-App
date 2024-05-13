@@ -4,6 +4,7 @@ import static com.fit2081.fit2081_assignment_1.activities.MainActivity.LOG_KEY;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,7 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.models.EventCategory;
+import com.fit2081.fit2081_assignment_1.providers.CategoryViewModel;
+import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
@@ -40,9 +42,11 @@ public class EventCategoryActivity extends AppCompatActivity {
     EditText findCategoryName;
     EditText findEventCount;
     Switch findCategoryIsActive;
-    categoryBroadcastReceiver myBroadCastReceiver;
+    EditText findEventLocation;
+//    categoryBroadcastReceiver myBroadCastReceiver;
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
+    CategoryViewModel eventCategoryViewModel;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -55,19 +59,23 @@ public class EventCategoryActivity extends AppCompatActivity {
         findEventCount = findViewById(R.id.et_eventName);
         findCategoryIsActive = findViewById(R.id.switch_isCategoryActive);
         findCategoryId = findViewById(R.id.tv_eventIdValue);
+        findEventLocation = findViewById(R.id.et_eventLocation);
 
         ActivityCompat.requestPermissions(this, new String[]{
                 android.Manifest.permission.SEND_SMS, android.Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
 
         // Register a BroadCastReceiver to listen for incoming SMS
-        myBroadCastReceiver = new categoryBroadcastReceiver();
-        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
+//        myBroadCastReceiver = new categoryBroadcastReceiver();
+//        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.EVENT_CATEGORY_SMS_FILTER));
 
         // restore list data from SharedPreferences
         String arrayListStringRestored = new SharedPrefRestore(this).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
         // Convert the restored string back to ArrayList
         Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
         categoryList = gson.fromJson(arrayListStringRestored,type);
+
+        // Initialise the ViewModel
+        eventCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
 
         // Debugging
         Log.d(LOG_KEY, "launched category SMS Receiver");
@@ -77,34 +85,39 @@ public class EventCategoryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(myBroadCastReceiver); // Kill the receiver when the activity is closed
+//        unregisterReceiver(myBroadCastReceiver); // Kill the receiver when the activity is closed
         Log.d(LOG_KEY, "Broadcast receiver unregistered (category)");
     }
 
-    public void createEventCategoryButtonOnClick(View view){
+    public void createEventCategoryButtonOnClick(View view) {
         // Parse the values
         String categoryName = findCategoryName.getText().toString();
         boolean isCategoryActive = findCategoryIsActive.isChecked();
         int eventCount;
+        String eventLocation = findEventLocation.getText().toString();
 
         // Default value for event count
-        try{
+        try {
             eventCount = Integer.parseInt(findEventCount.getText().toString());
-            if (eventCount < 0){
+            if (eventCount < 0) {
                 eventCount = 0;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             eventCount = 0;
         }
 
         // form validation
-        if (categoryName.isEmpty()){ // check that event category name is filled
+        if (categoryName.isEmpty()) { // check that event category name is filled
             Toast.makeText(this, "Event category name required", Toast.LENGTH_SHORT).show();
-        } else if (!validateCategoryName(categoryName)){
+        } else if (!validateCategoryName(categoryName)) {
             Toast.makeText(this, "Invalid Event Category Name", Toast.LENGTH_SHORT).show();
+        } else if (eventLocation.isEmpty()) { // check that event location is filled
+            Toast.makeText(this, "Event location required", Toast.LENGTH_SHORT).show();
+        } else if(!validateEventLocation(eventLocation)){
+            Toast.makeText(this, "Invalid Event Location", Toast.LENGTH_SHORT).show();
         } else {
             String categoryId = generateCategoryID();
-            saveCategoryAttributesToSharedPreferences(categoryId, categoryName, eventCount, isCategoryActive);
+            saveCategoryToDatabase(categoryId, categoryName, eventCount, isCategoryActive, eventLocation);
             findCategoryId.setText(categoryId);
 
             String out = String.format("Category saved successfully: %s", categoryId); // Show event category ID
@@ -116,30 +129,37 @@ public class EventCategoryActivity extends AppCompatActivity {
         }
     }
 
-
-    public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive){
-        // Initialise shared preference class variable to access persistent storage
-        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
-
-        // Adding to list
-        addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive));
-
-        // Add all attributes to SharedPreferences
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_ID, categoryId);
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_NAME, categoryName);
-        editor.putInt(EventCategorySharedPref.KEY_EVENT_COUNT, eventCount);
-        editor.putBoolean(EventCategorySharedPref.KEY_IS_CATEGORY_ACTIVE, isActive);
-
-        // Apply the changes
-        editor.apply();
+    public void saveCategoryToDatabase (String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){
+        // Create a new EventCategory object
+        EventCategory newEventCategory = new EventCategory(categoryId, categoryName, eventCount, isActive, eventLocation);
+        // Insert the new EventCategory object into the database
+        eventCategoryViewModel.addEventCategory(newEventCategory);
+        Log.d("db", String.format("Successfully added %s to database", newEventCategory.getId()));
     }
 
-    public void addItemToCategoryList(EventCategory newEventCategory){
-        categoryList.add(newEventCategory);
-        Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
-    }
+//    public void saveCategoryAttributesToSharedPreferences(String categoryId, String categoryName, int eventCount, boolean isActive, String eventLocation){
+//        // Initialise shared preference class variable to access persistent storage
+//        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit(); // Open the shared preference editor
+//
+//        // Adding to list
+//        addItemToCategoryList(new EventCategory(categoryId, categoryName, eventCount, isActive, eventLocation));
+//
+//        // Add all attributes to SharedPreferences
+//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
+//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_ID, categoryId);
+//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_NAME, categoryName);
+//        editor.putInt(EventCategorySharedPref.KEY_EVENT_COUNT, eventCount);
+//        editor.putBoolean(EventCategorySharedPref.KEY_IS_CATEGORY_ACTIVE, isActive);
+//
+//        // Apply the changes
+//        editor.apply();
+//    }
+
+//    public void addItemToCategoryList(EventCategory newEventCategory){
+//        categoryList.add(newEventCategory);
+//        Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
+//    }
 
     public void removeLastAddedItem(){
         int categoryPos = categoryList.size() - 1;
@@ -160,8 +180,13 @@ public class EventCategoryActivity extends AppCompatActivity {
     }
 
     private boolean validateCategoryName(String categoryName){
-        String pattern = "[a-zA-Z][a-zA-Z0-9 ]+"; // ^: start of string; []: match any character in the set; *: zero or more times; $: end of string
+        String pattern = "[a-zA-Z][a-zA-Z0-9 ]+"; // only accept format of alphabets, numbers and spaces, "+" signifies preceding character can appear one or more times
         return categoryName.matches(pattern);
+    }
+
+    private boolean validateEventLocation(String eventLocation){
+        String pattern = "[a-zA-Z ]+"; // only accept format of alphabets and spaces, "+" signifies preceding character can appear one or more times
+        return eventLocation.matches(pattern);
     }
 
     private String generateCategoryID(){

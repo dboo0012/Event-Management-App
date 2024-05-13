@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +22,32 @@
         android:theme="@style/Theme.FIT2081_Assignment_1"
         tools:targetApi="33">
         <activity
+            android:name=".activities.EventGoogleResult"
+            android:exported="false" />
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAjFwRf1qJmFyuIh2xJORd4OG4T3rmn0l0" />
+
+        <activity
+            android:name=".activities.GoogleMapActivity"
+            android:exported="false"
+            android:label="@string/title_activity_google_map" />
+        <activity
+            android:name=".providers.EventLocationMapsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_event_location_maps" />
+        <activity
             android:name=".activities.ViewAllEventActivity"
             android:exported="false" />
         <activity
@@ -30,9 +57,8 @@
         <receiver
             android:name=".utilities.SMSReceiver"
             android:enabled="true"
-            android:exported="true">
-
-            <!-- android:permission="android.permission.BROADCAST_SMS"> -->
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -46,25 +72,25 @@
             android:exported="false" />
         <activity
             android:name=".activities.DashboardActivity"
-            android:exported="false"> <!-- change to true when testing -->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="true"> <!-- change to true when testing -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"
-            android:exported="true"> <!-- change back to true -->
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+            android:exported="false"> <!-- change back to true -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

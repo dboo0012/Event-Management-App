@@ -12,7 +12,7 @@
         android:id="@+id/categoryListFragment"
         android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentListAllCategory"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="150dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="12dp"
@@ -97,13 +97,37 @@
         android:id="@+id/fragment_event"
         android:name="com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm"
         android:layout_width="0dp"
-        android:layout_height="307dp"
+        android:layout_height="225dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_eventForm" />
+
+    <View
+        android:id="@+id/touchpad"
+        android:layout_width="335dp"
+        android:layout_height="181dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/slate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_event" />
+
+    <TextView
+        android:id="@+id/tv_touchFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="touch area"
+        app:layout_constraintBottom_toBottomOf="@+id/touchpad"
+        app:layout_constraintEnd_toEndOf="@+id/touchpad"
+        app:layout_constraintStart_toStartOf="@+id/touchpad"
+        app:layout_constraintTop_toTopOf="@+id/touchpad" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

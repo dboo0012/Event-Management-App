@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +17,8 @@ import android.view.ViewGroup;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.adapters.CategoryListRecyclerAdapter;
-import com.fit2081.fit2081_assignment_1.models.EventCategory;
+import com.fit2081.fit2081_assignment_1.providers.CategoryViewModel;
+import com.fit2081.fit2081_assignment_1.providers.EventCategory;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
@@ -44,14 +46,11 @@ public class FragmentListAllCategory extends Fragment {
     CategoryListRecyclerAdapter adapter;
     ArrayList<EventCategory> categoryList;
     Gson gson = new Gson();
+    CategoryViewModel eventCategoryViewModel;
 
     public FragmentListAllCategory() {
         // Required empty public constructor
     }
-
-//    public void setAdapter(ListViewRecyclerAdapter adapter) {
-//        this.adapter = adapter;
-//    }
 
     /**
      * Use this factory method to create a new instance of
@@ -92,49 +91,22 @@ public class FragmentListAllCategory extends Fragment {
         // Set the layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        restoreListData();
         // Create the adapter with the shared pref list data
-        adapter = new CategoryListRecyclerAdapter(categoryList);
+        adapter = new CategoryListRecyclerAdapter();
+
+        // Initialise the ViewModel
+        eventCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        // Observe the LiveData
+        eventCategoryViewModel.getAllEventCategories().observe(getViewLifecycleOwner(), newData -> {
+            // Update the data in the adapter
+            adapter.setData(newData);
+            adapter.notifyDataSetChanged();
+            Log.d("db", String.format("Category Data updated in fragment. size: %s",newData.size()));
+        });
+
         // Set the adapter to the RecyclerView
         recyclerView.setAdapter(adapter);
 
         return view;
-    }
-
-    private void restoreListData(){
-        // Grab the array list stored as String in SharedPreferences
-        String arrayListStringRestored = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
-        // Convert the restored string back to ArrayList
-        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        categoryList = gson.fromJson(arrayListStringRestored,type);
-
-        // Initializes a category list if it has not been
-        Log.d("restore", String.format("list restored at fragment: %s",categoryList));
-    }
-
-    public void notifyAdapter() {
-        if (adapter != null) {
-            restoreListData();
-            // Update the data in the adapter
-            adapter.updateData(categoryList);
-            adapter.notifyDataSetChanged();
-            Log.d("adapter", "Adapter notified");
-        }
-    }
-
-    public void deleteListData(){
-        // Clear the list of categories
-        categoryList.clear();
-
-        // Save the empty list to SharedPreferences
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String emptyListJson = gson.toJson(categoryList);
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, emptyListJson);
-        editor.apply();
-        Log.d("list", String.format("category list data cleared, current list: %s",categoryList));
-
-        // Update the adapter with the new empty list
-        notifyAdapter();
     }
 }

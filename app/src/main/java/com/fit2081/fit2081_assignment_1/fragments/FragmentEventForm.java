@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,18 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
-import com.fit2081.fit2081_assignment_1.activities.DashboardActivity;
-import com.fit2081.fit2081_assignment_1.models.Event;
-import com.fit2081.fit2081_assignment_1.models.EventCategory;
+import com.fit2081.fit2081_assignment_1.providers.Event;
+import com.fit2081.fit2081_assignment_1.providers.EventCategory;
+import com.fit2081.fit2081_assignment_1.providers.EventViewModel;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventCategorySharedPref;
 import com.fit2081.fit2081_assignment_1.sharedPreferences.EventSharedPref;
 import com.fit2081.fit2081_assignment_1.utilities.GenerateRandomId;
-import com.fit2081.fit2081_assignment_1.utilities.SharedPrefRestore;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +41,11 @@ public class FragmentEventForm extends Fragment {
     EditText findTicketsAvailable;
     Switch findEventIsActive;
     ArrayList<Event> eventList;
-    ArrayList<EventCategory> categoryList;
+    List<EventCategory> categoryList;
+    List<String> categoryIdList;
     Gson gson = new Gson();
+    EventViewModel eventViewModel;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -96,15 +98,30 @@ public class FragmentEventForm extends Fragment {
         findTicketsAvailable = view.findViewById(R.id.et_ticketsAvailable);
         findEventIsActive = view.findViewById(R.id.switch_isEventActive);
 
-        loadEventList();
+//        loadEventList();
+
+        // Initialise event view model
+        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
+
+        // Load the category ID List from database
+        eventViewModel.getAllCategoryIds().observe(getViewLifecycleOwner(), categoryIDs -> {
+            categoryIdList = categoryIDs;
+            Log.d("db", String.format("Category ID list loaded from database: %s", categoryIdList));
+        });
+
+        // Load event category
+        eventViewModel.getAllEventCategories().observe(getViewLifecycleOwner(), eventCategories -> {
+            categoryList = eventCategories;
+            Log.d("db", String.format("Category list loaded from database: %s", categoryList));
+        });
 
         return view;
     }
 
     public boolean saveEventButtonOnClick(){
         Log.d("fab", "event fab clicked");
-        loadEventList();
-        loadCategoryList();
+//        loadEventList();
+//        loadCategoryList();
         boolean saveEvent = false;
         String categoryId = findCategoryId.getText().toString();
         String eventName = findEventName.getText().toString();
@@ -134,13 +151,13 @@ public class FragmentEventForm extends Fragment {
             // Verify categoryId format
             if (!validateCategoryId(categoryId)) {
                 Toast.makeText(getActivity(), "Category ID does not match format.", Toast.LENGTH_SHORT).show();
-            } else if (!validateCategoryIdInList(categoryId)) {
+            } else if (!validateCategoryIdExists(categoryId)) {
                 Toast.makeText(getActivity(), "Category ID does not exist.", Toast.LENGTH_SHORT).show();
-            } else if (validateCategoryId(categoryId) && validateCategoryIdInList(categoryId)) {
+            } else if (validateCategoryId(categoryId) && validateCategoryIdExists(categoryId)) { //&& validateCategoryIdExists(categoryId)
                 generatedEventId = generateEventId();
 
                 // save attributes to shared preferences
-                saveEventAttributeToSharedPreferences(generatedEventId, categoryId, eventName,
+                saveEventToDatabase(generatedEventId, categoryId, eventName,
                         ticketsAvailable, isEventActive);
 
                 // update the event count in the category
@@ -156,20 +173,10 @@ public class FragmentEventForm extends Fragment {
         }
         return saveEvent;
     }
-
-    private void loadCategoryList(){
-        // Restore the list of event categories from SharedPreferences
-        String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
-        Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
-        categoryList = gson.fromJson(categoryListString, type);
-    }
-
-    private void loadEventList(){
-        // Restore the list of event categories from SharedPreferences
-        String eventListString = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
-        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
-        eventList = gson.fromJson(eventListString, type);
-        Log.d("list", String.format("event list loaded at fragment, current event list: %s", eventList));
+    public void saveEventToDatabase(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
+        Event newEvent = new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive);
+        eventViewModel.addEvent(newEvent);
+        Log.d("db", String.format("Successfully added %s to database", newEvent.getId()));
     }
 
     private void updateEventCount(String categoryId) {
@@ -178,20 +185,11 @@ public class FragmentEventForm extends Fragment {
             for (EventCategory category : categoryList) {
                 if (category.getCategoryId().equals(categoryId)) {
                     // Increment the event count by 1
-                    category.setEventCount(category.getEventCount() + 1);
+                    eventViewModel.updateCategoryEventCount(categoryId, category.getEventCount() + 1);
                     Log.d("count", "Event count updated by 1");
                     break;
                 }
             }
-
-            // Save the updated list back to SharedPreferences
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
-            editor.apply();
-
-            // notify event category fragment
-            DashboardActivity.fragmentListAllCategory.notifyAdapter();
         }
     }
 
@@ -199,23 +197,23 @@ public class FragmentEventForm extends Fragment {
         return String.format("E%s-%s", GenerateRandomId.generateRandomUpperString(2), GenerateRandomId.generateRandomInt(5));
     }
 
-    private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
-        // Get the destination to save the event attributes
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        // Add to shared pref list of events
-        addItemToEventList(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
-
-        editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
-        editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
-        editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
-        editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
-        editor.putInt(EventSharedPref.KEY_TICKETS_AVAILABLE, ticketsAvailable);
-        editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
-
-        editor.apply();
-    }
+//    private void saveEventAttributeToSharedPreferences(String eventId, String categoryId, String eventName, int ticketsAvailable, boolean isEventActive){
+//        // Get the destination to save the event attributes
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventSharedPref.FILE_NAME, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        // Add to shared pref list of events
+//        addItemToEventList(new Event(eventId, categoryId, eventName, ticketsAvailable, isEventActive));
+//
+//        editor.putString(EventSharedPref.KEY_EVENT_LIST, gson.toJson(eventList));
+//        editor.putString(EventSharedPref.KEY_EVENT_ID, eventId);
+//        editor.putString(EventSharedPref.KEY_EVENT_CATEGORY_ID, categoryId);
+//        editor.putString(EventSharedPref.KEY_EVENT_NAME, eventName);
+//        editor.putInt(EventSharedPref.KEY_TICKETS_AVAILABLE, ticketsAvailable);
+//        editor.putBoolean(EventSharedPref.KEY_IS_EVENT_ACTIVE, isEventActive);
+//
+//        editor.apply();
+//    }
 
     private void addItemToEventList(Event newEvent){
         // Instantiate the list if it is null
@@ -228,58 +226,71 @@ public class FragmentEventForm extends Fragment {
         Log.d("list", String.format("Added item to event list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
     }
 
-    public void removeLastAddedItem(){
-        int eventPos = eventList.size() - 1;
-        if (!eventList.isEmpty()) {
-            // reduce event category by 1
-            Log.d("remove", String.format("removing event from category %s", eventList.get(eventPos).getCategoryId()));
-            for (EventCategory category : categoryList) {
-                if (category.getCategoryId().equals(eventList.get(eventPos).getCategoryId())) {
-                    category.setEventCount(category.getEventCount() - 1);
-                    Log.d("remove", String.format("removed the event %s from category %s", eventList.get(eventList.size() - 1).getEventName(), category.getCategoryName()));
-                    updateCategoryListSharedPref();
-                    break;
-                }
-            }
-            // notify event category fragment
-            DashboardActivity.fragmentListAllCategory.notifyAdapter();
-
-            // remove the item from the eventlist
-            Toast.makeText(getActivity(), String.format("Last event (Name: %s) removed", eventList.get(eventPos).getEventName()), Toast.LENGTH_SHORT).show();
-            eventList.remove(eventPos);
-            updateEventListSharedPref();
-            Log.d("list", String.format("Removed last item from event, list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
-        } else {
-            Toast.makeText(getActivity(), "No events to remove", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void deleteListData(){
-        loadCategoryList(); // Refresh the category list to the newest version
-        // iterate through list of events and update the event count in the category list
-        if (eventList != null && categoryList != null){
-            Log.d("delete", "category list not empty, proceed to reduce event count in each category");
-            for (Event event : eventList) {
-                for (EventCategory category : categoryList) {
-                    if (category.getCategoryId().equals(event.getCategoryId())) {
-                        category.setEventCount(category.getEventCount() - 1);
-                        break;
-                    }
-                }
-            }
-            updateCategoryListSharedPref();
-            // notify event category fragment
-            DashboardActivity.fragmentListAllCategory.notifyAdapter();
-        }
-
-        // Clear the list of events
-        if (eventList!=null && !eventList.isEmpty()) {
-            eventList.clear();
-            Log.d("list", String.format("clear method called on: %s", eventList));
-        }
-        updateEventListSharedPref();
-        Log.d("list", String.format("list data cleared, current event list: %s", eventList));
-    }
+//    public void removeLastAddedItem(){
+//        int eventPos = eventList.size() - 1;
+//        if (!eventList.isEmpty()) {
+//            // reduce event category by 1
+//            Log.d("remove", String.format("removing event from category %s", eventList.get(eventPos).getCategoryId()));
+//            for (EventCategory category : categoryIdList) {
+//                if (category.getCategoryId().equals(eventList.get(eventPos).getCategoryId())) {
+//                    category.setEventCount(category.getEventCount() - 1);
+//                    Log.d("remove", String.format("removed the event %s from category %s", eventList.get(eventList.size() - 1).getEventName(), category.getCategoryName()));
+//                    updateCategoryListSharedPref();
+//                    break;
+//                }
+//            }
+//            // notify event category fragment
+////            DashboardActivity.fragmentListAllCategory.notifyAdapter();
+//
+//            // remove the item from the eventlist
+//            Toast.makeText(getActivity(), String.format("Last event (Name: %s) removed", eventList.get(eventPos).getEventName()), Toast.LENGTH_SHORT).show();
+//            eventList.remove(eventPos);
+//            updateEventListSharedPref();
+//            Log.d("list", String.format("Removed last item from event, list Size: %d, event Array: %s", eventList.size(), eventList.toString()));
+//        } else {
+//            Toast.makeText(getActivity(), "No events to remove", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//    private void loadCategoryList(){
+//    // Restore the list of event categories from SharedPreferences
+//    String categoryListString = new SharedPrefRestore(getActivity()).restoreData(EventCategorySharedPref.FILE_NAME, EventCategorySharedPref.KEY_CATEGORY_LIST);
+//    Type type = new TypeToken<ArrayList<EventCategory>>() {}.getType();
+//    categoryList = gson.fromJson(categoryListString, type);
+//    }
+//
+//    private void loadEventList(){
+//        // Restore the list of event categories from SharedPreferences
+//        String eventListString = new SharedPrefRestore(getActivity()).restoreData(EventSharedPref.FILE_NAME, EventSharedPref.KEY_EVENT_LIST);
+//        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+//        eventList = gson.fromJson(eventListString, type);
+//        Log.d("list", String.format("event list loaded at fragment, current event list: %s", eventList));
+//    }
+//    public void deleteListData(){
+////        loadCategoryList(); // Refresh the category list to the newest version
+//        // iterate through list of events and update the event count in the category list
+//        if (eventList != null && categoryList != null){
+//            Log.d("delete", "category list not empty, proceed to reduce event count in each category");
+//            for (Event event : eventList) {
+//                for (EventCategory category : categoryList) {
+//                    if (category.getCategoryId().equals(event.getCategoryId())) {
+//                        category.setEventCount(category.getEventCount() - 1);
+//                        break;
+//                    }
+//                }
+//            }
+//            updateCategoryListSharedPref();
+//            // notify event category fragment
+////            DashboardActivity.fragmentListAllCategory.notifyAdapter();
+//        }
+//
+//        // Clear the list of events
+//        if (eventList!=null && !eventList.isEmpty()) {
+//            eventList.clear();
+//            Log.d("list", String.format("clear method called on: %s", eventList));
+//        }
+//        updateEventListSharedPref();
+//        Log.d("list", String.format("list data cleared, current event list: %s", eventList));
+//    }
 
     private void updateEventListSharedPref(){
         // Get the destination to save the event attributes
@@ -293,7 +304,7 @@ public class FragmentEventForm extends Fragment {
         // Get the destination to save the event attributes
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
+        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryIdList));
         editor.apply();
     }
 
@@ -307,18 +318,18 @@ public class FragmentEventForm extends Fragment {
         return eventName.matches(pattern);
     }
 
-    private boolean validateCategoryIdInList(String categoryId){
+    private boolean validateCategoryIdExists(String categoryId){
         // Check if the categoryId exists in the categoryList
-        if (categoryList != null) {
-            for (EventCategory category : categoryList) {
-                if (category.getCategoryId().equals(categoryId)) {
+        if (categoryIdList != null) {
+            for (String dbCategoryID : categoryIdList) {
+                if (dbCategoryID.equals(categoryId)) {
+                    Log.d("validate", String.format("Category ID in db: '%s'; Category ID in field: '%s'",dbCategoryID, categoryId));
                     return true;
                 }
             }
         }
         return false;
     }
-
 
     public void clearFields(){
         findEventId.setText("(auto generated upon creation)");

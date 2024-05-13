@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.fit2081.fit2081_assignment_1.R;
 import com.fit2081.fit2081_assignment_1.fragments.FragmentEventForm;
-import com.fit2081.fit2081_assignment_1.models.Event;
+import com.fit2081.fit2081_assignment_1.providers.Event;
 import com.fit2081.fit2081_assignment_1.utilities.ExtractStringAfterColon;
 import com.fit2081.fit2081_assignment_1.utilities.SMSReceiver;
 import com.google.gson.Gson;
@@ -28,6 +28,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+/**
+ * !!!!!!!!
+ * DISCONTINUED, NEW EVENT HAS BEEN IMPLEMENTED AS A FRAGMENT
+ * !!!!!!!!
+ */
 public class EventActivity extends AppCompatActivity {
     TextView findEventId;
     EditText findCategoryId;

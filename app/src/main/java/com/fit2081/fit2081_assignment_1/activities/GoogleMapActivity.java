@@ -31,6 +31,7 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
     private ActivityGoogleMapBinding binding;
     private String location;
     private Geocoder geocoder;
+    private String categoryName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,7 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
 
         // Receive intent
         location = getIntent().getExtras().getString("location", "Australia");
+        categoryName = getIntent().getExtras().getString("categoryName", "Category");
         Log.d("Google map", "Location Name: " + location);
 
         // Instantiate GeoCoder
@@ -116,7 +118,7 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
                         Marker marker = mMap.addMarker(
                                 new MarkerOptions()
                                         .position(newAddressLocation)
-                                        .title(location)
+                                        .title(categoryName)
                         );
                         marker.showInfoWindow();
 

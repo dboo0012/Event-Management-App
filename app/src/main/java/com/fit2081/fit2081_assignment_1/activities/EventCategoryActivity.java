@@ -161,23 +161,23 @@ public class EventCategoryActivity extends AppCompatActivity {
 //        Log.d("list", String.format("Added item to category list Size: %d, category Array: %s",categoryList.size(), categoryList.toString()));
 //    }
 
-    public void removeLastAddedItem(){
-        int categoryPos = categoryList.size() - 1;
-        if (!categoryList.isEmpty()){
-            Log.d("remove", String.format("removing category %s", categoryList.get(categoryPos).getCategoryId()));
-            categoryList.remove(categoryPos);
-            updateCategoryListSharedPref();
-            Toast.makeText(this, String.format("Category: %s removed", categoryList.get(categoryPos).getCategoryId()), Toast.LENGTH_SHORT).show();
-        }
-    }
+//    public void removeLastAddedItem(){
+//        int categoryPos = categoryList.size() - 1;
+//        if (!categoryList.isEmpty()){
+//            Log.d("remove", String.format("removing category %s", categoryList.get(categoryPos).getCategoryId()));
+//            categoryList.remove(categoryPos);
+//            updateCategoryListSharedPref();
+//            Toast.makeText(this, String.format("Category: %s removed", categoryList.get(categoryPos).getCategoryId()), Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
-    private void updateCategoryListSharedPref(){
-        // Get the destination to save the event attributes
-        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
-        editor.apply();
-    }
+//    private void updateCategoryListSharedPref(){
+//        // Get the destination to save the event attributes
+//        SharedPreferences sharedPreferences = getSharedPreferences(EventCategorySharedPref.FILE_NAME, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(EventCategorySharedPref.KEY_CATEGORY_LIST, gson.toJson(categoryList));
+//        editor.apply();
+//    }
 
     private boolean validateCategoryName(String categoryName){
         String pattern = "[a-zA-Z][a-zA-Z0-9 ]+"; // only accept format of alphabets, numbers and spaces, "+" signifies preceding character can appear one or more times
@@ -200,7 +200,7 @@ public class EventCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // undo the action
-                removeLastAddedItem();
+//                removeLastAddedItem();
             }
         });
         snackbar.show();

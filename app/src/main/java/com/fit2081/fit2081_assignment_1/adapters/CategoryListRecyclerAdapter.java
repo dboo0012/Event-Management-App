@@ -54,6 +54,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                 String location = eventCategory.getEventLocation();
                 Intent intent = new Intent(v.getContext(), GoogleMapActivity.class);
                 intent.putExtra("location", location);
+                intent.putExtra("categoryName", eventCategory.getCategoryName());
                 v.getContext().startActivity(intent);
             }
         });
